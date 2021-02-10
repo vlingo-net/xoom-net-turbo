@@ -11,34 +11,33 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace io.vlingo.xoom.actors {
+namespace Vlingo.Xoom.Actors {
     public class Settings {
 
-        private static Dictionary<string, string> PROPERTIES = new Dictionary<string, string>();
-        private static readonly string PROPERTIES_FILENAME = "/vlingo-xoom.properties";
-        private static readonly long serialVersionUID = 1L;
-        private static readonly Dictionary<object, object> DEFAULT_DATABASE_PROPERTIES = new Dictionary<object, object>() {
+        private static Dictionary<string, string> properties = new Dictionary<string, string>();
+        private static string propertiesFileName = "/vlingo-xoom.properties";
+        private static Dictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {
             { "database", "IN_MEMORY" },
             { "query.database", "IN_MEMORY" }
         };
 
         static Settings() {
-            loadProperties();
+            LoadProperties();
         }
 
-        public static void loadProperties() {
+        public static void LoadProperties() {
             try {
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                TextReader stream = new StreamReader(assembly.GetManifestResourceStream(PROPERTIES_FILENAME));
+                TextReader stream = new StreamReader(assembly.GetManifestResourceStream(propertiesFileName));
                 if (stream == null) {
                     Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
-                    PROPERTIES = DEFAULT_DATABASE_PROPERTIES.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
+                    properties = defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
                 }
                 else {
                     string line;
                     while ((line = stream.ReadLine()) != null) {
                         string[] keyValuePair = line.Split('=');
-                        PROPERTIES.Add(keyValuePair[0], keyValuePair[1]);
+                        properties.Add(keyValuePair[0], keyValuePair[1]);
 
                     }
                 }
@@ -48,8 +47,8 @@ namespace io.vlingo.xoom.actors {
             }
         }
 
-        public static Dictionary<string, string> properties() {
-            return PROPERTIES;
+        public static Dictionary<string, string> Properties() {
+            return properties;
         }
     }
 }

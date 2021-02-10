@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 
-namespace io.vlingo.xoom.codegen.content {
+namespace Vlingo.Xoom.Codegen.Content {
     public class ClassFormatter {
 
         public static string qualifiedNameOf(string packageName, string className) {

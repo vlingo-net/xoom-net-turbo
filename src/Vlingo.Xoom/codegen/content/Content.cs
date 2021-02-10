@@ -9,7 +9,7 @@
 // using System.Collections.Generic;
 // using System.Text;
 //
-// namespace Vlingo.Xoom.codegen.content {
+// namespace Vlingo.Xoom.Codegen.Content {
 //     public abstract class Content {
 //
 //         public readonly TemplateStandard standard;

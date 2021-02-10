@@ -7,7 +7,7 @@
 
 using System.ComponentModel;
 
-namespace io.vlingo.xoom.codegen.template {
+namespace Vlingo.Xoom.Codegen.Template {
     public enum Template {
         [Description("AnnotatedBootstrap")]
         ANNOTATED_BOOTSTRAP,

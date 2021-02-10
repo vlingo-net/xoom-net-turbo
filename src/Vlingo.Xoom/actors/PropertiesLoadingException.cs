@@ -7,9 +7,8 @@
 
 using System;
 
-namespace io.vlingo.xoom.actors {
+namespace Vlingo.Xoom.Actors {
     public class PropertiesLoadingException : SystemException {
-        private static readonly long serialVersionUID = 1L;
 
         public PropertiesLoadingException(string message) : base(message) {
         }
