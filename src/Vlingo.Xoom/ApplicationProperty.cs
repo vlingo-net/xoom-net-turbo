@@ -14,18 +14,18 @@ namespace Vlingo.Xoom {
         private static string xoomPrefix = "VLINGO_XOOM";
         private static string combinationPattern = "{0}.{1}";
 
-        public static string readValue(string key, Dictionary<string, string> properties) {
-            string propertiesValue = retrieveFromProperties(key, properties);
-            return propertiesValue != null ? propertiesValue : retrieveFromEnvironment(key);
+        public static string ReadValue(string key, Dictionary<string, string> properties) {
+            string propertiesValue = RetrieveFromProperties(key, properties);
+            return propertiesValue != null ? propertiesValue : RetrieveFromEnvironment(key);
         }
 
-        public static List<string> readMultipleValues(string key, string separator, Dictionary<string, string> properties) {
-            string value = readValue(key, properties);
+        public static List<string> ReadMultipleValues(string key, string separator, Dictionary<string, string> properties) {
+            string value = ReadValue(key, properties);
 
             return value == null ? new List<string>() : value.Split(new string[] { separator }, StringSplitOptions.None).ToList();
         }
 
-        private static string retrieveFromProperties(string key, Dictionary<string, string> properties) {
+        private static string RetrieveFromProperties(string key, Dictionary<string, string> properties) {
             if (!properties.ContainsKey(key)) {
                 return null;
             }
@@ -34,14 +34,14 @@ namespace Vlingo.Xoom {
             return string.IsNullOrEmpty(value) ? null : value;
         }
 
-        private static string retrieveFromEnvironment(string key) {
-            string envKey = resolveEnvironmentVariable(key);
+        private static string RetrieveFromEnvironment(string key) {
+            string envKey = ResolveEnvironmentVariable(key);
 
             if (SystemHolder.variables.ContainsKey(envKey)) {
                 return null;
             }
 
-            string value = SystemHolder.getValue(envKey);
+            string value = SystemHolder.GetValue(envKey);
 
             if (value == null || string.IsNullOrEmpty(value.Trim())) {
                 return null;
@@ -50,7 +50,7 @@ namespace Vlingo.Xoom {
             return value.Trim();
         }
 
-        private static string resolveEnvironmentVariable(string key) {
+        private static string ResolveEnvironmentVariable(string key) {
             return string.Format(combinationPattern, xoomPrefix, key).Replace("\\.", "_");
         }
     }

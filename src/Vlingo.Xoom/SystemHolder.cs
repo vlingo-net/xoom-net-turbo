@@ -18,7 +18,7 @@ namespace Vlingo.Xoom {
             LoadVariables();
         }
 
-        public static string getValue(string key) {
+        public static string GetValue(string key) {
             return variables.FirstOrDefault(x => x.Key == key).Value;
         }
 
