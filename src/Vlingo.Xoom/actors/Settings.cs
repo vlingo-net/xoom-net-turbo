@@ -11,43 +11,53 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Vlingo.Xoom.Actors {
-    public class Settings {
+namespace Vlingo.Xoom.Actors
+{
+    public class Settings
+    {
 
-        private static Dictionary<string, string> properties = new Dictionary<string, string>();
+        private static IDictionary<string, string> properties = new Dictionary<string, string>();
         private static string propertiesFileName = "/vlingo-xoom.properties";
-        private static Dictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {
+        private static IDictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {
             { "database", "IN_MEMORY" },
             { "query.database", "IN_MEMORY" }
         };
 
-        static Settings() {
+        static Settings()
+        {
             LoadProperties();
         }
 
-        public static void LoadProperties() {
-            try {
+        public static void LoadProperties()
+        {
+            try
+            {
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 TextReader stream = new StreamReader(assembly.GetManifestResourceStream(propertiesFileName));
-                if (stream == null) {
+                if (stream == null)
+                {
                     Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
                     properties = defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
                 }
-                else {
+                else
+                {
                     string line;
-                    while ((line = stream.ReadLine()) != null) {
+                    while ((line = stream.ReadLine()) != null)
+                    {
                         string[] keyValuePair = line.Split('=');
                         properties.Add(keyValuePair[0], keyValuePair[1]);
 
                     }
                 }
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 throw new PropertiesLoadingException(e.Message, e);
             }
         }
 
-        public static Dictionary<string, string> Properties() {
+        public static IDictionary<string, string> Properties()
+        {
             return properties;
         }
     }
