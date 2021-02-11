@@ -5,8 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Codegen.Template {
-    public enum Template {
+namespace Vlingo.Xoom.Codegen.Template
+{
+    public enum Template
+    {
         ANNOTATED_BOOTSTRAP,
         DEFAULT_BOOTSTRAP,
         AGGREGATE_PROTOCOL,

@@ -33,7 +33,7 @@ namespace Vlingo.Xoom.Codegen.Content
             return qualifiedName.Substring(qualifiedName.LastIndexOf(".") + 1);
         }
 
-        public static string packageOf(string qualifiedName)
+        public static string PackageOf(string qualifiedName)
         {
             return qualifiedName.Substring(0, qualifiedName.LastIndexOf("."));
         }
