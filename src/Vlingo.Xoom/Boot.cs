@@ -12,7 +12,7 @@ namespace Vlingo.Xoom
     public class Boot
     {
 
-        private static World xoomBootWorld;
+        private static World? xoomBootWorld;
 
         public static void Main(string[] args)
         {
@@ -21,7 +21,7 @@ namespace Vlingo.Xoom
             xoomBootWorld = Start(name);
         }
 
-        public static World XoomBootWorld()
+        public static World? XoomBootWorld()
         {
             return xoomBootWorld;
         }

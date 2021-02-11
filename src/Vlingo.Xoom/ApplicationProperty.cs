@@ -16,20 +16,20 @@ namespace Vlingo.Xoom
         private static string xoomPrefix = "VLINGO_XOOM";
         private static string combinationPattern = "{0}.{1}";
 
-        public static string ReadValue(string key, IReadOnlyDictionary<string, string> properties)
+        public static string? ReadValue(string key, IReadOnlyDictionary<string, string> properties)
         {
-            string propertiesValue = RetrieveFromProperties(key, properties);
+            string? propertiesValue = RetrieveFromProperties(key, properties);
             return propertiesValue != null ? propertiesValue : RetrieveFromEnvironment(key);
         }
 
         public static List<string> ReadMultipleValues(string key, string separator, IReadOnlyDictionary<string, string> properties)
         {
-            string value = ReadValue(key, properties);
+            string? value = ReadValue(key, properties);
 
             return value == null ? new List<string>() : value.Split(new string[] { separator }, StringSplitOptions.None).ToList();
         }
 
-        private static string RetrieveFromProperties(string key, IReadOnlyDictionary<string, string> properties)
+        private static string? RetrieveFromProperties(string key, IReadOnlyDictionary<string, string> properties)
         {
             if (!properties.ContainsKey(key))
             {
@@ -40,7 +40,7 @@ namespace Vlingo.Xoom
             return string.IsNullOrEmpty(value) ? null : value;
         }
 
-        private static string RetrieveFromEnvironment(string key)
+        private static string? RetrieveFromEnvironment(string key)
         {
             string envKey = ResolveEnvironmentVariable(key);
 

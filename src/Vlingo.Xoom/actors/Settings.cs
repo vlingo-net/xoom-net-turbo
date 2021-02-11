@@ -41,8 +41,8 @@ namespace Vlingo.Xoom.Actors
                 }
                 else
                 {
-                    string line;
-                    while ((line = stream.ReadLine()) != null)
+                    string? line;
+                    while ((line = stream?.ReadLine()) != null)
                     {
                         string[] keyValuePair = line.Split('=');
                         properties.Add(keyValuePair[0], keyValuePair[1]);
