@@ -11,7 +11,6 @@ namespace Vlingo.Xoom.Actors
 {
     public class PropertiesLoadingException : SystemException
     {
-
         public PropertiesLoadingException(string message) : base(message)
         {
         }

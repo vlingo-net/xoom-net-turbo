@@ -15,7 +15,6 @@ namespace Vlingo.Xoom.Actors
 {
     public class Settings
     {
-
         private static IDictionary<string, string> properties = new Dictionary<string, string>();
         private static string propertiesFileName = "/vlingo-xoom.properties";
         private static IDictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {

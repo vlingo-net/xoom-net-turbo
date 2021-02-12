@@ -12,7 +12,6 @@ namespace Vlingo.Xoom.Codegen.Content
 {
     public class ClassFormatter
     {
-
         public static string QualifiedNameOf(string packageName, string className)
         {
             return string.Concat(packageName, ".", className);
@@ -37,6 +36,5 @@ namespace Vlingo.Xoom.Codegen.Content
         {
             return qualifiedName.Substring(0, qualifiedName.LastIndexOf("."));
         }
-
     }
 }
