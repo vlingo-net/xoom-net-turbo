@@ -49,7 +49,7 @@
 //
 //         public abstract bool contains(string term);
 //
-//         public String retrieveProtocolQualifiedName() {
+//         public string retrieveProtocolQualifiedName() {
 //             throw new UnsupportedOperationException("Content does not have a protocol by default");
 //         }
 //

@@ -27,7 +27,7 @@ namespace Vlingo.Xoom.Storage
         public string? username;
         public string? password;
         public string? originator;
-        public List<String> keys;
+        public List<string> keys;
         public bool autoCreate;
 
         public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties) : this(model, properties, true)
