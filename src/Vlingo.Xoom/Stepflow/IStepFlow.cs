@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Stepflow
 {
 
     /// <summary>
-    /// <p>A <see cref="StepFlow"/> is a distributed task executor that dereferences actors to a lower-level library. Processors
+    /// A <see cref="IStepFlow{TState, TRawState, TTypeState}"/> is a distributed task executor that dereferences actors to a lower-level library. Processors
     /// are provided with a set of handlers that are exposed by a defined collection of protocols.Handlers are
     /// address-referencable functions that are invoked through a protocol definition.Processors manage a registry of
     /// handlers that pipe together other processor implementations.Processor dispatchers are discoverable through a
@@ -73,9 +73,9 @@ namespace Vlingo.Xoom.Stepflow
 
         ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
 
-        IStepFlow<TState, TRawState, TTypeState> StartWith(Stage stage, Type clazz, string actorName, List<object> @params);
+        IStepFlow<TState, TRawState, TTypeState> StartWith(Stage stage, Type clazz, string actorName, IEnumerable<object> @params);
 
-        P StartWith<P>(Stage stage, Type clazz, Type protocol, string actorName, List<object> @params) where P : IStepFlow<TState, TRawState, TTypeState>;
+        TP StartWith<TP>(Stage stage, Type clazz, Type protocol, string actorName, IEnumerable<object> @params) where TP : IStepFlow<TState, TRawState, TTypeState>;
 
         IStepFlow<TState, TRawState, TTypeState> StartWith(Stage stage, Type clazz, string actorName);
     }

@@ -13,22 +13,23 @@ namespace Vlingo.Xoom.Storage
 {
     public class DatabaseParameters
     {
-        private static string xoomPrefix = "VLINGO_XOOM";
-        private static string queryModelPrefix = "query";
-        private static string combinationPattern = "{0}.{1}";
-        private static List<string> propertiesKeys = new List<string>() { "database", "database.name", "database.driver", "database.url",
+        private static string _xoomPrefix = "VLINGO_XOOM";
+        private static string _queryModelPrefix = "query";
+        private static string _combinationPattern = "{0}.{1}";
+        private static readonly List<string> PropertiesKeys = new List<string>
+        { "database", "database.name", "database.driver", "database.url",
                     "database.username", "database.password", "database.originator" };
 
-        public Model model;
-        public string? database;
-        public string? name;
-        public string? driver;
-        public string? url;
-        public string? username;
-        public string? password;
-        public string? originator;
-        public List<string> keys;
-        public bool autoCreate;
+        public Model Model { get; }
+        public string? Database { get; }
+        public string? Name { get; }
+        public string? Driver{ get; }
+        public string? Url { get; }
+        public string? Username { get; }
+        public string? Password { get; }
+        public string? Originator { get; }
+        public List<string> Keys { get; }
+        public bool AutoCreate { get; }
 
         public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties) : this(model, properties, true)
         {
@@ -36,66 +37,62 @@ namespace Vlingo.Xoom.Storage
 
         public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties, bool autoCreate)
         {
-            this.model = model;
-            this.keys = PrepareKeys();
-            this.database = ValueFromIndex(0, properties);
-            this.name = ValueFromIndex(1, properties);
-            this.driver = ValueFromIndex(2, properties);
-            this.url = ValueFromIndex(3, properties);
-            this.username = ValueFromIndex(4, properties);
-            this.password = ValueFromIndex(5, properties);
-            this.originator = ValueFromIndex(6, properties);
-            this.autoCreate = autoCreate;
+            Model = model;
+            Keys = PrepareKeys();
+            Database = ValueFromIndex(0, properties);
+            Name = ValueFromIndex(1, properties);
+            Driver = ValueFromIndex(2, properties);
+            Url = ValueFromIndex(3, properties);
+            Username = ValueFromIndex(4, properties);
+            Password = ValueFromIndex(5, properties);
+            Originator = ValueFromIndex(6, properties);
+            AutoCreate = autoCreate;
         }
 
         private string? ValueFromIndex(int index, IReadOnlyDictionary<string, string> properties)
         {
-            if (keys.Count <= index)
+            if (Keys.Count <= index)
             {
                 return null;
             }
-            return ApplicationProperty.ReadValue(keys[index], properties);
+            return ApplicationProperty.ReadValue(Keys[index], properties);
         }
 
         private void Validate()
         {
-            if (database == null)
+            if (Database == null)
             {
-                throw new DatabaseParameterNotFoundException(model);
+                throw new DatabaseParameterNotFoundException(Model);
             }
-            if (!string.Equals(database, DatabaseCategory.IN_MEMORY.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(Database, DatabaseCategory.InMemory.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                if (name == null)
+                if (Name == null)
                 {
-                    throw new DatabaseParameterNotFoundException(model, "name");
+                    throw new DatabaseParameterNotFoundException(Model, "name");
                 }
-                if (driver == null)
+                if (Driver == null)
                 {
-                    throw new DatabaseParameterNotFoundException(model, "driver");
+                    throw new DatabaseParameterNotFoundException(Model, "driver");
                 }
-                if (url == null)
+                if (Url == null)
                 {
-                    throw new DatabaseParameterNotFoundException(model, "url");
+                    throw new DatabaseParameterNotFoundException(Model, "url");
                 }
-                if (username == null)
+                if (Username == null)
                 {
-                    throw new DatabaseParameterNotFoundException(model, "username");
+                    throw new DatabaseParameterNotFoundException(Model, "username");
                 }
-                if (originator == null)
+                if (Originator == null)
                 {
-                    throw new DatabaseParameterNotFoundException(model, "originator");
+                    throw new DatabaseParameterNotFoundException(Model, "originator");
                 }
             }
         }
 
-        private List<string> PrepareKeys()
-        {
-            return propertiesKeys.Where(x => model.IsQueryModel()).Select(key => string.Format(combinationPattern, queryModelPrefix, key)).ToList();
-        }
+        private List<string> PrepareKeys() => 
+            PropertiesKeys.Where(x => Model.IsQueryModel).Select(key => string.Format(_combinationPattern, _queryModelPrefix, key)).ToList();
 
-        public void MapToConfiguration()
-        {
+        public void MapToConfiguration() => 
             Validate();
-        }
     }
 }

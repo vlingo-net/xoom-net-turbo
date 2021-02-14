@@ -42,9 +42,9 @@ namespace Vlingo.Xoom.Stepflow
 
         void RegisterStates(params State<TState>[] states);
 
-        ICompletes<List<State<TState>>> GetStates();
+        ICompletes<IEnumerable<State<TState>>> GetStates();
 
-        ICompletes<List<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions();
+        ICompletes<IEnumerable<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions();
 
         ICompletes<IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap();
 

@@ -16,36 +16,33 @@ namespace Vlingo.Xoom.Actors
 {
     public class Settings : ConfigurationProperties
     {
-        private static IDictionary<string, string> properties = new Dictionary<string, string>();
-        private static string propertiesFileName = "/vlingo-xoom.json";
-        private static IDictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {
+        private static IDictionary<string, string> _properties = new Dictionary<string, string>();
+        private static readonly string _propertiesFileName = "/vlingo-xoom.json";
+        private static readonly IDictionary<object, object> _defaultDatabaseProperties = new Dictionary<object, object>() {
             { "database", "IN_MEMORY" },
             { "query.database", "IN_MEMORY" }
         };
 
-        static Settings()
-        {
-            LoadProperties();
-        }
+        static Settings() => LoadProperties();
 
         public static void LoadProperties()
         {
             try
             {
                 var props = new Properties();
-                props.Load(new FileInfo(propertiesFileName));
+                props.Load(new FileInfo(_propertiesFileName));
                 var keys = props.Keys;
 
                 if (props == null || keys.Count == 0)
                 {
                     Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
-                    properties = defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
+                    _properties = _defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
                 }
                 else
                 {
                     foreach (var key in keys)
                     {
-                        properties.Add(key, props.GetProperty(key) ?? string.Empty);
+                        _properties.Add(key, props.GetProperty(key) ?? string.Empty);
                     }
                 }
             }
@@ -55,9 +52,6 @@ namespace Vlingo.Xoom.Actors
             }
         }
 
-        public static IDictionary<string, string> Properties()
-        {
-            return properties;
-        }
+        public static IDictionary<string, string> Properties() => _properties;
     }
 }

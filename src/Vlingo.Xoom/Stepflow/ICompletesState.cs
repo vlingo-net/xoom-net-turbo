@@ -11,10 +11,10 @@ using Vlingo.Common;
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// A functional interface that transforms a <see cref="StateTransition"/> into a <see cref="Completes"/>.
+    /// A functional interface that transforms a <see cref="StateTransition{TState, TRawState, TA}"/> into a <see cref="Completes"/>.
     /// </summary>
-    /// <param name="T"> <T>  is the target <see cref="State"/> </param>
-    /// <param name="R"> <R>  is the target <see cref="State"/> </param>
+    /// <typeparam name="TState"> is the target <see cref="State{T}"/></typeparam>
+    /// <typeparam name="TRawState"> is the target <see cref="State{T}"/></typeparam>
     public interface ICompletesState<TState, TRawState> where TState : State<object> where TRawState : State<object>
     {
         void Apply<TTypeState>(StateTransition<TState, TRawState, TTypeState> transition, TRawState state) where TTypeState : Type;

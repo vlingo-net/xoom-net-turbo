@@ -9,75 +9,60 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Actors;
-using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Common;
 
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// The default <see cref="IKernel"/> <see cref="Actor"/> implementation.
-    /// 
+    /// The default <see cref="IKernel{TState, TRawState, TTypeState}"/> <see cref="Actor"/> implementation.
     ///  <see cref="Actor"/>
-    ///  <see cref="IKernel"/>
-    ///  <see cref="IStepFlow"/>
     /// </summary>
     public class KernelActor<TState, TRawState, TTypeState> : Actor, IKernel<TState, TRawState, TTypeState> where TState : State<object> where TRawState : State<object> where TTypeState : Type
     {
-        private Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>> transitionHandlerMap;
-        private Dictionary<string, State<TState>> stateMap;
-        private string kernelName = "DefaultProcessorKernel";
+        private readonly Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>> _transitionHandlerMap;
+        private readonly Dictionary<string, State<TState>> _stateMap;
+        private string _kernelName = "DefaultProcessorKernel";
 
         public KernelActor()
         {
-            transitionHandlerMap = new Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>();
-            stateMap = new Dictionary<string, State<TState>>();
+            _transitionHandlerMap = new Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>();
+            _stateMap = new Dictionary<string, State<TState>>();
         }
 
-        public ICompletes<string> GetName()
-        {
-            return Completes().With(this.kernelName);
-        }
+        public ICompletes<string> GetName() => Completes().With(_kernelName);
 
-        public void SetName(string name)
-        {
-            this.kernelName = name;
-        }
+        public void SetName(string name) => _kernelName = name;
 
         public void RegisterStates(params State<TState>[] states)
         {
             states.ToList().ForEach(s =>
             {
-                if (stateMap.ContainsKey(s.GetName()))
+                if (_stateMap.ContainsKey(s.GetName()))
                 {
                     throw new InvalidOperationException(string.Concat("The state with the name ", s.GetName(), " has already been registered"));
                 }
 
                 s.GetTransitionHandlers<TTypeState>().ToList().ForEach(transitionHandler =>
                 {
-                    if (transitionHandlerMap.TryGetValue(transitionHandler.GetAddress(), out var value))
+                    if (_transitionHandlerMap.TryGetValue(transitionHandler.GetAddress(), out var value))
                     {
                         throw new InvalidOperationException(string.Concat("The state transition for " + value + " is already registered"));
                     }
                 });
 
-                stateMap.Add(s.GetName(), s);
+                _stateMap.Add(s.GetName(), s);
             });
 
         }
 
-        public ICompletes<List<State<TState>>> GetStates()
-        {
-            return Completes().With(stateMap.Values.ToList());
-        }
+        public ICompletes<IEnumerable<State<TState>>> GetStates() => Completes().With(_stateMap.Values.AsEnumerable());
 
-        public ICompletes<List<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions()
-        {
-            return Completes().With(transitionHandlerMap.Values.Select(x => x.GetStateTransition()).ToList());
-        }
+        public ICompletes<IEnumerable<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions() => 
+            Completes().With(_transitionHandlerMap.Values.Select(x => x.GetStateTransition()));
 
-        public ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<N>(N @event) where N : Event
+        public ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TN>(TN @event) where TN : Event
         {
-            TransitionHandler<TState, TRawState, TTypeState> handler = transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
+            TransitionHandler<TState, TRawState, TTypeState> handler = _transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
             try
             {
                 if (handler == null)
@@ -87,14 +72,12 @@ namespace Vlingo.Xoom.Stepflow
             }
             catch (Exception ex)
             {
-                ConsoleLogger.BasicInstance().Debug(ex.Message, ex);
+                Logger.Debug(ex.Message, ex);
                 return Completes().With<StateTransition<TState, TRawState, TTypeState>>(null);
             }
         }
 
-        public ICompletes<IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap()
-        {
-            return Completes().With(transitionHandlerMap as IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>);
-        }
+        public ICompletes<IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap() => 
+            Completes().With(_transitionHandlerMap as IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>);
     }
 }

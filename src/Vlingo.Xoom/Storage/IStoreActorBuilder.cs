@@ -12,7 +12,7 @@ using Vlingo.Symbio.Store.Dispatch;
 
 namespace Vlingo.Xoom.Storage
 {
-    public interface IStoreActorBuilder<T> where T : class
+    public interface IStoreActorBuilder<out T>
     {
         public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers);
 

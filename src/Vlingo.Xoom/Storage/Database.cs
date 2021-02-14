@@ -20,7 +20,7 @@ namespace Vlingo.Xoom.Storage
 
             try
             {
-                DatabaseCategory database = (DatabaseCategory)Enum.Parse(typeof(DatabaseCategory), name);
+                var database = (DatabaseCategory)Enum.Parse(typeof(DatabaseCategory), name);
                 return database;
             }
             catch (Exception e)
@@ -32,10 +32,10 @@ namespace Vlingo.Xoom.Storage
 
     public enum DatabaseCategory
     {
-        IN_MEMORY,
-        POSTGRES,
-        HSQLDB,
-        MYSQL,
-        YUGA_BYTE
+        InMemory,
+        Postgres,
+        Hsqldb,
+        Mysql,
+        YugaByte
     }
 }

@@ -11,12 +11,12 @@ using Vlingo.Common;
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// A <see cref="IStateHandler"> is a functional interface that describes a <see cref="StateTransition">.
+    /// A <see cref="IStateHandler{TState, TRawState, TTypeState}" /> is a functional interface that describes a <see cref="StateTransition{TState, TRawState, TA}" />.
     /// </summary>
-    /// <param name="T"> T is the source <see cref="State"></param>
-    /// <param name="R"> R is the source <see cref="State"></param>
+    /// <typeparam name="TState">The source <see cref="State{T}" /></typeparam>
+    /// <typeparam name="TRawState">The source <see cref="State{T}" /></typeparam>
+    /// <typeparam name="TTypeState">The type of the handler</typeparam>
     public interface IStateHandler<TState, TRawState, TTypeState> where TState : State<object> where TRawState : State<object> where TTypeState : Type
-
     {
         ICompletes<StateTransition<TState, TRawState, TTypeState>> Execute();
     }

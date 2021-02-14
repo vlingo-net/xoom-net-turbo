@@ -12,8 +12,8 @@ namespace Vlingo.Xoom.Stepflow
 {
     public abstract class Event : Source<Event>, ITransition
     {
-        private string sourceName = string.Empty;
-        private string targetName = string.Empty;
+        private string _sourceName = string.Empty;
+        private string _targetName = string.Empty;
 
         public Event()
         {
@@ -21,38 +21,21 @@ namespace Vlingo.Xoom.Stepflow
 
         public Event(string source, string target)
         {
-            this.sourceName = source;
-            this.targetName = target;
+            _sourceName = source;
+            _targetName = target;
         }
 
-        public string GetSourceName()
-        {
-            return sourceName;
-        }
+        public string GetSourceName() => _sourceName;
 
-        public void SetSourceName(string sourceName)
-        {
-            this.sourceName = sourceName;
-        }
+        public void SetSourceName(string sourceName) => _sourceName = sourceName;
 
-        public string GetTargetName()
-        {
-            return targetName;
-        }
+        public string GetTargetName() => _targetName;
 
-        public void SetTargetName(string targetName)
-        {
-            this.targetName = targetName;
-        }
+        public void SetTargetName(string targetName) => _targetName = targetName;
 
-        public string GetEventType()
-        {
-            return string.Concat(GetSourceName(), "::", GetTargetName());
-        }
+        public string GetEventType() => string.Concat(GetSourceName(), "::", GetTargetName());
 
-        public void LogResult<TState, TRawState>(TState s, TRawState t) where TState : State<object> where TRawState : State<object>
-        {
+        public void LogResult<TState, TRawState>(TState s, TRawState t) where TState : State<object> where TRawState : State<object> => 
             ConsoleLogger.BasicInstance().Info(string.Concat(s.GetVersion(), ": [", s.GetName(), "] to [", t.GetName(), "]"));
-        }
     }
 }

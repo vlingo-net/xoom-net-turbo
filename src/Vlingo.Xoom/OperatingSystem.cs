@@ -11,17 +11,14 @@ namespace Vlingo.Xoom
 {
     public class OperatingSystem
     {
-        public static OperatingSystemType Detect()
-        {
-            return isWindows ? OperatingSystemType.WINDOWS : OperatingSystemType.OTHER;
-        }
+        public static OperatingSystemType Detect() => IsWindows ? OperatingSystemType.Windows : OperatingSystemType.Other;
 
-        public static bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     }
 
     public enum OperatingSystemType
     {
-        WINDOWS,
-        OTHER
+        Windows,
+        Other
     }
 }

@@ -13,7 +13,7 @@ using Vlingo.Symbio.Store.Dispatch;
 
 namespace Vlingo.Xoom.Storage
 {
-    public class ObjectStoreActorBuilder<T> : IStoreActorBuilder<T> where T : class
+    public class ObjectStoreActorBuilder<T> : IStoreActorBuilder<T>
     {
         public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers)
         {
@@ -21,9 +21,6 @@ namespace Vlingo.Xoom.Storage
             throw new NotSupportedException("Object Store is not supported");
         }
 
-        public bool Support(DatabaseType databaseType)
-        {
-            return databaseType.IsInMemory();
-        }
+        public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
     }
 }

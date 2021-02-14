@@ -5,12 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Symbio;
-
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// A <see cref="ITransition"/> is a base interface for a <see cref="StateTransition"/> and describes the identity of a source
+    /// A <see cref="ITransition"/> is a base interface for a <see cref="StateTransition{TState, TRawState, TA}"/> and describes the identity of a source
     /// state and a target state.
     /// </summary>
     public interface ITransition

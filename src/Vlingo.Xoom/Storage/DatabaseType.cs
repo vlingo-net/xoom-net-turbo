@@ -12,31 +12,22 @@ namespace Vlingo.Xoom.Storage
 {
     public class DatabaseType
     {
-        private string name;
+        private readonly string _name;
 
-        public DatabaseType(string name)
-        {
-            this.name = name;
-        }
+        public DatabaseType(string name) => _name = name;
 
-        public static DatabaseCategory retrieveFromConfiguration(Configuration configuration)
+        public static DatabaseCategory RetrieveFromConfiguration(Configuration configuration)
         {
             if (configuration == null)
             {
-                return DatabaseCategory.IN_MEMORY;
+                return DatabaseCategory.InMemory;
             }
 
-            throw new ArgumentException(string.Concat("Configuration is not supported"));
+            throw new ArgumentException($"Configuration is not supported");
         }
 
-        public bool IsInMemory()
-        {
-            return this.Equals(DatabaseCategory.IN_MEMORY);
-        }
+        public bool IsInMemory => Equals(DatabaseCategory.InMemory);
 
-        public bool HasName(string name)
-        {
-            return this.name == name;
-        }
+        public bool HasName(string name) => _name == name;
     }
 }

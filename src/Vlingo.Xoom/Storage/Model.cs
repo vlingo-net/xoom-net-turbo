@@ -9,33 +9,14 @@ namespace Vlingo.Xoom.Storage
 {
     public class Model
     {
-        private string label;
+        private readonly string _label;
 
-        public Model(string label)
-        {
-            this.label = label;
-        }
+        public Model(string label) => _label = label;
 
-        public bool IsQueryModel()
-        {
-            return this.Equals(ModelType.QUERY);
-        }
+        public bool IsQueryModel => Equals(ModelType.Query);
 
-        public bool IsDomainModel()
-        {
-            return this.Equals(ModelType.DOMAIN);
-        }
+        public bool IsDomainModel => Equals(ModelType.Domain);
 
-        public override string ToString()
-        {
-            return label;
-        }
-    }
-
-    public enum ModelType
-    {
-        DOMAIN,
-        COMMAND,
-        QUERY
+        public override string ToString() => _label;
     }
 }

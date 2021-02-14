@@ -11,30 +11,26 @@ namespace Vlingo.Xoom
 {
     public class Boot
     {
-
-        private static World? xoomBootWorld;
+        private static World? _xoomBootWorld;
 
         public static void Main(string[] args)
         {
             string name = args.Length > 0 ? args[0] : "vlingo-xoom";
 
-            xoomBootWorld = Start(name);
+            _xoomBootWorld = Start(name);
         }
 
-        public static World? XoomBootWorld()
-        {
-            return xoomBootWorld;
-        }
+        public static World? XoomBootWorld() => _xoomBootWorld;
 
         /// <summary>
         /// Answers a new <see cref="World"/> with the given name and that is configured with the contents of the <see langword="Vlingo-Zoom.Properties"/> file.
         /// </summary>
-        /// <param name="@name"> the <see cref="string"/> @name to assign to the new <see cref="World"/> instance</param>
+        /// <param name="name"> the <see cref="string"/> @name to assign to the new <see cref="World"/> instance</param>
         /// <returns><see cref="World"/></returns>
         public static World Start(string name)
         {
-            xoomBootWorld = World.Start(name);
-            return xoomBootWorld;
+            _xoomBootWorld = World.Start(name);
+            return _xoomBootWorld;
         }
     }
 }

@@ -16,14 +16,9 @@ namespace Vlingo.Xoom.Storage
 {
     public class InMemoryJournalActorBuilder<T> : IStoreActorBuilder<T> where T : class
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers)
-        {
-            return (T)Journal<T>.Using<Actor, IEntry<T>, IState>(stage, (IDispatcher<Dispatchable<IEntry<T>, IState>>)dispatchers, typeof(InMemoryJournalActor<T, IEntry<T>, IState>));
-        }
+        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers) => 
+            (T)Journal<T>.Using<Actor, IEntry<T>, IState>(stage, (IDispatcher<Dispatchable<IEntry<T>, IState>>)dispatchers, typeof(InMemoryJournalActor<T, IEntry<T>, IState>));
 
-        public bool Support(DatabaseType databaseType)
-        {
-            return databaseType.IsInMemory();
-        }
+        public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
     }
 }

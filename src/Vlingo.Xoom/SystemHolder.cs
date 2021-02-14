@@ -12,33 +12,27 @@ namespace Vlingo.Xoom
 {
     public class SystemHolder
     {
-        private static IDictionary<string, string> variables = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> Variables = new Dictionary<string, string>();
 
-        static SystemHolder()
-        {
-            LoadVariables();
-        }
+        static SystemHolder() => LoadVariables();
 
-        public static string GetValue(string key)
-        {
-            return variables.FirstOrDefault(x => x.Key == key).Value;
-        }
+        public static string GetValue(string key) => Variables.FirstOrDefault(x => x.Key == key).Value;
 
         public static void SetValue(string key, string value)
         {
-            if (variables.ContainsKey(key))
+            if (Variables.ContainsKey(key))
             {
-                variables[key] = value;
+                Variables[key] = value;
             }
             else
             {
-                variables.Add(key, value);
+                Variables.Add(key, value);
             }
         }
 
         public static bool ContainsKey(string key)
         {
-            return variables.ContainsKey(key);
+            return Variables.ContainsKey(key);
         }
 
         private static void LoadVariables()

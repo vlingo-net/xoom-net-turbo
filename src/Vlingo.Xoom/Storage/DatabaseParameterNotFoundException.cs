@@ -17,7 +17,7 @@ namespace Vlingo.Xoom.Storage
         {
         }
 
-        public DatabaseParameterNotFoundException(Model model, string attribute) : base(model.IsDomainModel() ?
+        public DatabaseParameterNotFoundException(Model model, string attribute) : base(model.IsDomainModel ?
                 string.Format(exceptionMessagePattern, string.Empty, attribute) :
                 string.Format(exceptionMessagePattern, model, attribute))
         {
