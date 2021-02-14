@@ -6,17 +6,16 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Common;
-using Vlingo.Symbio;
 
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// A <see cref="StateHandler"> is a functional interface that describes a <see cref="StateTransition">.
+    /// A <see cref="IStateHandler"> is a functional interface that describes a <see cref="StateTransition">.
     /// </summary>
     /// <param name="T"> T is the source <see cref="State"></param>
     /// <param name="R"> R is the source <see cref="State"></param>
-    public interface StateHandler<T, R> where T : IState where R : IState
+    public interface IStateHandler<TState, TRawState> where TState : State<object> where TRawState : State<object>
     {
-        ICompletes<StateTransition<T, R, object>> execute();
+        ICompletes<StateTransition<TState, TRawState, object>> Execute();
     }
 }

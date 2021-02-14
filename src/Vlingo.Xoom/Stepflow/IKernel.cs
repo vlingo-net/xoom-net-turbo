@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using Vlingo.Common;
-using Vlingo.Symbio;
 
 namespace Vlingo.Xoom.Stepflow
 {
@@ -34,20 +33,20 @@ namespace Vlingo.Xoom.Stepflow
     /// When no input state is provided, the logical state will remain the same while the versioned state will be
     /// incremented.
     /// </summary>
-    public interface IKernel
+    public interface IKernel<TState, TRawState> where TState : State<object> where TRawState : State<object>
     {
         ICompletes<string> GetName();
 
         void SetName(string name);
 
-        void RegisterStates<T>(params State<T>[] states) where T : IState;
+        void RegisterStates(params State<TState>[] states);
 
-        ICompletes<List<State<T>>> GetStates<T>() where T : IState;
+        ICompletes<List<State<TState>>> GetStates();
 
-        ICompletes<List<StateTransition<T, R, A>>> GetStateTransitions<T, R, A>() where T : IState where R : IState;
+        ICompletes<List<StateTransition<TState, TRawState, object>>> GetStateTransitions();
 
-        ICompletes<Dictionary<string, TransitionHandler<T, R>>> GetTransitionMap<T, R>() where T : IState where R : IState;
+        ICompletes<Dictionary<string, TransitionHandler<TState, TRawState>>> GetTransitionMap();
 
-        ICompletes<StateTransition<T, R, A>> ApplyEvent<T, R, A, N>(N @event) where N : Event where T : IState where R : IState;
+        ICompletes<StateTransition<TState, TRawState, object>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
     }
 }

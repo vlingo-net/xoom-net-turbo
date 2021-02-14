@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Actors;
+using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Common;
 using Vlingo.Symbio;
 
@@ -17,10 +18,10 @@ namespace Vlingo.Xoom.Stepflow
     /// <summary>
     /// The <see cref="FlowActor"/> is the default <see cref="Actor"/> implementation for a <see cref="StepFlow"/>.
     /// </summary>
-    public abstract class FlowActor : Actor, IStepFlow, IScheduled<IMessage>
+    public abstract class FlowActor<TState, TRawState> : Actor, IStepFlow<TState, TRawState>, IScheduled<IMessage> where TState : State<object> where TRawState : State<object>
     {
         private List<IState> states;
-        private IKernel kernel;
+        private IKernel<TState, TRawState> kernel;
 
         public FlowActor()
         {
@@ -38,17 +39,16 @@ namespace Vlingo.Xoom.Stepflow
             return Completes().With(true);
         }
 
-        public ICompletes<bool> StartUp<T, R>() where T : IState where R : IState
+        public ICompletes<bool> StartUp()
         {
-            //TODO:
-            //logger().info("Starting " + this.definition().actorName() + "...");
-            this.kernel = Stage.ActorFor<IKernel>(typeof(IKernel), typeof(KernelActor<T, R>));
+            ConsoleLogger.BasicInstance().Info(string.Concat("Starting ", this.Definition.ActorName, "..."));
+            this.kernel = Stage.ActorFor<IKernel<TState, TRawState>>(typeof(IKernel<TState, TRawState>), typeof(KernelActor<TState, TRawState>));
             this.kernel.SetName(string.Concat(this.Definition.ActorName, "/Kernel"));
-            this.kernel.RegisterStates(states.Select(x => (State<T>)x).ToArray());
+            this.kernel.RegisterStates(states.Select(x => (State<TState>)x).ToArray());
             return Completes().With(true);
         }
 
-        public ICompletes<IKernel> GetKernel()
+        public ICompletes<IKernel<TState, TRawState>> GetKernel()
         {
             if (kernel != null)
             {
@@ -60,9 +60,9 @@ namespace Vlingo.Xoom.Stepflow
             }
         }
 
-        public ICompletes<StateTransition<T, R, A>> ApplyEvent<T, R, A, N>(N @event) where N : Event where T : IState where R : IState
+        public ICompletes<StateTransition<TState, TRawState, object>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event
         {
-            return Completes().With(this.kernel.ApplyEvent<T, R, A, N>(@event).Await());
+            return Completes().With(this.kernel.ApplyEvent(@event).Await());
         }
 
         public ICompletes<string> GetName()
@@ -74,12 +74,12 @@ namespace Vlingo.Xoom.Stepflow
         {
         }
 
-        public IStepFlow StartWith<T, R>(Stage stage, Type clazz, string actorName) where T : IState where R : IState
+        public IStepFlow<TState, TRawState> StartWith(Stage stage, Type clazz, string actorName)
         {
-            return StartWith<T, R>(stage, clazz, actorName, Definition.NoParameters);
+            return StartWith(stage, clazz, actorName, Definition.NoParameters);
         }
 
-        public P StartWith<P, T, R>(Stage stage, Type clazz, Type protocol, string actorName, List<object> @params) where P : IStepFlow where T : IState where R : IState
+        public P StartWith<P>(Stage stage, Type clazz, Type protocol, string actorName, List<object> @params) where P : IStepFlow<TState, TRawState>
         {
             P processor = stage.ActorFor<P>(protocol, Definition.Has(
                     clazz,
@@ -88,20 +88,20 @@ namespace Vlingo.Xoom.Stepflow
                     stage.World.AddressFactory.WithHighId(),
                     stage.World.DefaultLogger);
 
-            processor.StartUp<T, R>();
+            processor.StartUp();
             return processor;
         }
 
-        public IStepFlow StartWith<T, R>(Stage stage, Type clazz, string actorName, List<object> @params) where T : IState where R : IState
+        public IStepFlow<TState, TRawState> StartWith(Stage stage, Type clazz, string actorName, List<object> @params)
         {
-            IStepFlow processor = stage.ActorFor<IStepFlow>(typeof(IStepFlow), Definition.Has(
+            IStepFlow<TState, TRawState> processor = stage.ActorFor<IStepFlow<TState, TRawState>>(typeof(IStepFlow<TState, TRawState>), Definition.Has(
                     clazz,
                     @params,
                     "queueMailbox", actorName),
                     stage.World.AddressFactory.WithHighId(),
                     stage.World.DefaultLogger);
 
-            processor.StartUp<T, R>();
+            processor.StartUp();
             return processor;
         }
     }

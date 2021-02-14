@@ -13,11 +13,10 @@ using Vlingo.Symbio;
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// A <see cref="State"> is an interface definition that should describe a collection of input states and output states.
+    /// A <see cref="IState"> is an interface definition that should describe a collection of input states and output states.
     /// </summary>
-    public abstract class State<T> where T : IState
+    public abstract class State<TState> where TState : class
     {
-
         private long createdAt;
         private Guid version;
         private string name;
@@ -54,7 +53,7 @@ namespace Vlingo.Xoom.Stepflow
             return this.name;
         }
 
-        public abstract TransitionHandler<T,T>[] GetTransitionHandlers();
+        public abstract TransitionHandler<State<object>, State<object>>[] GetTransitionHandlers();
 
         public Dictionary<string, HashSet<string>> GetMap()
         {

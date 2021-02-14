@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using Vlingo.Symbio;
+using Vlingo.Actors.Plugin.Logging.Console;
 
 namespace Vlingo.Xoom.Stepflow
 {
@@ -16,16 +16,16 @@ namespace Vlingo.Xoom.Stepflow
     /// </summary>
     /// <param name="T"> <T>  is the target state </param>
     /// <param name="R"> <R>  is the target state </param>
-    public class StateTransition<T, R, A> : ITransition where T : IState where R : IState
+    public class StateTransition<TState, TRawstate, A> : ITransition where TState : State<object> where TRawstate : State<object>
     {
-        private T from;
-        private R to;
-        private Action<T, R> action = (a, b) =>
+        private TState from;
+        private TRawstate to;
+        private Action<TState, TRawstate> action = (a, b) =>
         {
         };
         private Func<A, A> aggregateConsumer = (a) => a;
 
-        public StateTransition(T from, R to)
+        public StateTransition(TState from, TRawstate to)
         {
             this.from = from;
             this.to = to;
@@ -42,7 +42,7 @@ namespace Vlingo.Xoom.Stepflow
             return a;
         }
 
-        public void SetActionHandler(Action<T, R> action)
+        public void SetActionHandler(Action<TState, TRawstate> action)
         {
             this.action = action;
         }
@@ -52,12 +52,12 @@ namespace Vlingo.Xoom.Stepflow
             this.aggregateConsumer = consumer;
         }
 
-        public T GetFrom()
+        public TState GetFrom()
         {
             return from;
         }
 
-        public R GetTo()
+        public TRawstate GetTo()
         {
             return to;
         }
@@ -77,11 +77,9 @@ namespace Vlingo.Xoom.Stepflow
             return string.Concat("StateTransition{from=", from, ", to=", to, ", action=", action, "}");
         }
 
-        public void LogResult<T1, R1>(T1 s, R1 t) where T1 : IState where R1 : IState
+        public void LogResult<T1, R1>(T1 s, R1 t) where T1 : State<object> where R1 : State<object>
         {
-            //TODO:
-            throw new NotImplementedException();
-            //Logger.basicLogger().info(s.getVersion() + ": [" + s.getName() + "] to [" + t.getName() + "]");
+            ConsoleLogger.BasicInstance().Info(string.Concat(s.GetVersion(), ": [", s.GetName(), "] to [", t.GetName(), "]"));
         }
     }
 }

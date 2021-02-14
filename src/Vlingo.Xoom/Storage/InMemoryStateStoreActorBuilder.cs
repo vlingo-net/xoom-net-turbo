@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Storage
 {
     public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T> where T : class
     {
-        public T Build(Stage stage, List<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers)
+        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers)
         {
             return stage.ActorFor<T>(typeof(IStateStore<IEntry>), typeof(InMemoryStateStoreActor<IState, IEntry>), dispatchers);
         }

@@ -44,7 +44,7 @@ namespace Vlingo.Xoom
         {
             string envKey = ResolveEnvironmentVariable(key);
 
-            if (SystemHolder.variables.ContainsKey(envKey))
+            if (SystemHolder.ContainsKey(envKey))
             {
                 return null;
             }

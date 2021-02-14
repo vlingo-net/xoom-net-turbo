@@ -9,14 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using Vlingo.Cluster.Model;
 
 namespace Vlingo.Xoom.Actors
 {
     public class Settings
     {
         private static IDictionary<string, string> properties = new Dictionary<string, string>();
-        private static string propertiesFileName = "/vlingo-xoom.properties";
+        private static string propertiesFileName = "/vlingo-xoom.json";
         private static IDictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {
             { "database", "IN_MEMORY" },
             { "query.database", "IN_MEMORY" }
@@ -31,21 +31,20 @@ namespace Vlingo.Xoom.Actors
         {
             try
             {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                TextReader stream = new StreamReader(assembly.GetManifestResourceStream(propertiesFileName));
-                if (stream == null)
+                var props = new Properties();
+                props.Load(new FileInfo(propertiesFileName));
+                var keys = props.Keys;
+
+                if (props == null || keys.Count == 0)
                 {
                     Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
                     properties = defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
                 }
                 else
                 {
-                    string? line;
-                    while ((line = stream?.ReadLine()) != null)
+                    foreach (var key in keys)
                     {
-                        string[] keyValuePair = line.Split('=');
-                        properties.Add(keyValuePair[0], keyValuePair[1]);
-
+                        properties.Add(key, props.GetProperty(key) ?? string.Empty);
                     }
                 }
             }

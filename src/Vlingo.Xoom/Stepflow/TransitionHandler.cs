@@ -6,7 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using Vlingo.Symbio;
 
 namespace Vlingo.Xoom.Stepflow
 {
@@ -15,25 +14,25 @@ namespace Vlingo.Xoom.Stepflow
     /// <see cref="StateTransition"/>.
     /// <param name=T"> T is the source state</param>
     /// <param name=R"> R is the source state</param>
-    public class TransitionHandler<T, R> where T : IState where R : IState
+    public class TransitionHandler<TState, TRawState> where TState : State<object> where TRawState : State<object>
     {
         private string address;
         private Type aggregateType = typeof(object);
-        private StateTransition<T, R, object> stateTransition;
+        private StateTransition<TState, TRawState, object> stateTransition;
 
-        private TransitionHandler(StateTransition<T, R, object> stateTransition)
+        private TransitionHandler(StateTransition<TState, TRawState, object> stateTransition)
         {
             this.stateTransition = stateTransition;
             this.address = string.Concat(stateTransition.GetSourceName(), "::", stateTransition.GetTargetName());
         }
 
-        public TransitionHandler<T, R> WithAddress(string address)
+        public TransitionHandler<TState, TRawState> WithAddress(string address)
         {
             this.address = string.Concat(this.address, "::", address);
             return this;
         }
 
-        public TransitionHandler<T, R> WithAggregate(Type type)
+        public TransitionHandler<TState, TRawState> WithAggregate(Type type)
         {
             this.aggregateType = type;
             return this;
@@ -49,17 +48,17 @@ namespace Vlingo.Xoom.Stepflow
             return aggregateType;
         }
 
-        public StateTransition<T, R, object> GetStateTransition()
+        public StateTransition<TState, TRawState, object> GetStateTransition()
         {
             return stateTransition;
         }
 
-        public static TransitionHandler<T1, R1> Handle<T1, R1>(StateTransition<T1, R1, object> stateTransition) where T1 : IState where R1 : IState
+        public static TransitionHandler<TState, TRawState> Handle(StateTransition<TState, TRawState, object> stateTransition)
         {
-            return new TransitionHandler<T1, R1>(stateTransition);
+            return new TransitionHandler<TState, TRawState>(stateTransition);
         }
 
-        public static TransitionHandler<T1, R1>[] Transitions<T1, R1>(params TransitionHandler<T1, R1>[] handlers) where T1 : IState where R1 : IState
+        public static TransitionHandler<TState, TRawState>[] Transitions(params TransitionHandler<TState, TRawState>[] handlers)
         {
             return handlers;
         }

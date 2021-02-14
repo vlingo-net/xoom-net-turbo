@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
+using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Symbio;
 
 namespace Vlingo.Xoom.Stepflow
@@ -50,11 +50,9 @@ namespace Vlingo.Xoom.Stepflow
             return string.Concat(GetSourceName(), "::", GetTargetName());
         }
 
-        public void LogResult<T1, R1>(T1 s, R1 t) where T1 : IState where R1 : IState
+        public void LogResult<TState, TRawState>(TState s, TRawState t) where TState : State<object> where TRawState : State<object>
         {
-            //TODO:
-            throw new NotImplementedException();
-            //Logger.basicLogger().info(s.getVersion() + ": [" + s.getName() + "] to [" + t.getName() + "]");
+            ConsoleLogger.BasicInstance().Info(string.Concat(s.GetVersion(), ": [", s.GetName(), "] to [", t.GetName(), "]"));
         }
     }
 }

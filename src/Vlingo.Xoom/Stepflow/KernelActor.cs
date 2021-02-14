@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Actors;
+using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Common;
 using Vlingo.Symbio;
 
@@ -21,16 +22,16 @@ namespace Vlingo.Xoom.Stepflow
     ///  <see cref="IKernel"/>
     ///  <see cref="IStepFlow"/>
     /// </summary>
-    public class KernelActor<T, R> : Actor, IKernel where T : IState where R : IState
+    public class KernelActor<TState, TRawState> : Actor, IKernel<TState, TRawState> where TState : State<object> where TRawState : State<object>
     {
-        private Dictionary<string, TransitionHandler<T, R>> transitionHandlerMap;
-        private Dictionary<string, State<T>> stateMap;
+        private Dictionary<string, TransitionHandler<TState, TRawState>> transitionHandlerMap;
+        private Dictionary<string, State<TState>> stateMap;
         private string kernelName = "DefaultProcessorKernel";
 
         public KernelActor()
         {
-            transitionHandlerMap = new Dictionary<string, TransitionHandler<T, R>>();
-            stateMap = new Dictionary<string, State<T>>();
+            transitionHandlerMap = new Dictionary<string, TransitionHandler<TState, TRawState>>();
+            stateMap = new Dictionary<string, State<TState>>();
         }
 
         public ICompletes<string> GetName()
@@ -43,7 +44,7 @@ namespace Vlingo.Xoom.Stepflow
             this.kernelName = name;
         }
 
-        public void RegisterStates(params State<T>[] states)
+        public void RegisterStates(params State<TState>[] states)
         {
             states.ToList().ForEach(s =>
             {
@@ -65,20 +66,19 @@ namespace Vlingo.Xoom.Stepflow
 
         }
 
-
-        public ICompletes<List<State<T>>> GetStates()
+        public ICompletes<List<State<TState>>> GetStates()
         {
             return Completes().With(stateMap.Values.ToList());
         }
 
-        public ICompletes<List<StateTransition<T, R, object>>> getStateTransitions()
+        public ICompletes<List<StateTransition<TState, TRawState, object>>> GetStateTransitions()
         {
             return Completes().With(transitionHandlerMap.Values.Select(x => x.GetStateTransition()).ToList());
         }
 
-        public ICompletes<StateTransition<T, R, object>> ApplyEvent<N>(N @event) where N : Event
+        public ICompletes<StateTransition<TState, TRawState, object>> ApplyEvent<N>(N @event) where N : Event
         {
-            TransitionHandler<T, R> handler = transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
+            TransitionHandler<TState, TRawState> handler = transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
             try
             {
                 if (handler == null)
@@ -88,47 +88,14 @@ namespace Vlingo.Xoom.Stepflow
             }
             catch (Exception ex)
             {
-                //TODO:
-                //logger().debug(ex.getMessage(), ex);
-                return Completes().With<StateTransition<T, R, object>>(null);
+                ConsoleLogger.BasicInstance().Debug(ex.Message, ex);
+                return Completes().With<StateTransition<TState, TRawState, object>>(null);
             }
         }
 
-        public ICompletes<Dictionary<string, TransitionHandler<T,R>>> GetTransitionMap()
+        public ICompletes<Dictionary<string, TransitionHandler<TState, TRawState>>> GetTransitionMap()
         {
             return Completes().With(transitionHandlerMap);
-        }
-
-        public void RegisterStates<T1>(params State<T1>[] states) where T1 : IState
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICompletes<List<State<T1>>> GetStates<T1>() where T1 : IState
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICompletes<List<StateTransition<T1, R1, A>>> GetStateTransitions<T1, R1, A>()
-            where T1 : IState
-            where R1 : IState
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICompletes<Dictionary<string, TransitionHandler<T1, R1>>> GetTransitionMap<T1, R1>()
-            where T1 : IState
-            where R1 : IState
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICompletes<StateTransition<T1, R1, A>> ApplyEvent<T1, R1, A, N>(N @event)
-            where T1 : IState
-            where R1 : IState
-            where N : Event
-        {
-            throw new NotImplementedException();
         }
     }
 }

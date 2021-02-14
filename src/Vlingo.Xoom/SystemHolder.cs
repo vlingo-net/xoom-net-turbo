@@ -12,7 +12,7 @@ namespace Vlingo.Xoom
 {
     public class SystemHolder
     {
-        public static IDictionary<string, string> variables = new Dictionary<string, string>();
+        private static IDictionary<string, string> variables = new Dictionary<string, string>();
 
         static SystemHolder()
         {
@@ -21,11 +21,24 @@ namespace Vlingo.Xoom
 
         public static string GetValue(string key)
         {
-            if (variables == null)
-            {
-                return string.Empty;
-            }
             return variables.FirstOrDefault(x => x.Key == key).Value;
+        }
+
+        public static void SetValue(string key, string value)
+        {
+            if (variables.ContainsKey(key))
+            {
+                variables[key] = value;
+            }
+            else
+            {
+                variables.Add(key, value);
+            }
+        }
+
+        public static bool ContainsKey(string key)
+        {
+            return variables.ContainsKey(key);
         }
 
         private static void LoadVariables()

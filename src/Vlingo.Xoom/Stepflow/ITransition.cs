@@ -10,15 +10,15 @@ using Vlingo.Symbio;
 namespace Vlingo.Xoom.Stepflow
 {
     /// <summary>
-    /// A <see cref="Transition"/> is a base interface for a <see cref="StateTransition"/> and describes the identity of a source
+    /// A <see cref="ITransition"/> is a base interface for a <see cref="StateTransition"/> and describes the identity of a source
     /// state and a target state.
     /// </summary>
-    public interface ITransition 
+    public interface ITransition
     {
         string GetSourceName();
 
         string GetTargetName();
 
-        void LogResult<T1, R1>(T1 s, R1 t) where T1 : IState where R1 : IState;
+        void LogResult<TState, TRawState>(TState s, TRawState t) where TState : State<object> where TRawState : State<object>;
     }
 }

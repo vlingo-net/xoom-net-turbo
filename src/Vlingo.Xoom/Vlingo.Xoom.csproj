@@ -48,6 +48,10 @@
                 <ProjectReference Include="..\..\..\vlingo-net-actors\src\Vlingo.Actors\Vlingo.Actors.csproj" />
             </ItemGroup>
         </When>
-        <Otherwise />
+      <Otherwise>
+        <ItemGroup>
+          <PackageReference Include="Vlingo.Actors" Version="$(VlingoVersion)" />
+        </ItemGroup>
+      </Otherwise>
     </Choose>
 </Project>
