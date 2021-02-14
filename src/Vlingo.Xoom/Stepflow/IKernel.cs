@@ -46,7 +46,7 @@ namespace Vlingo.Xoom.Stepflow
 
         ICompletes<List<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions();
 
-        ICompletes<Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap();
+        ICompletes<IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap();
 
         ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
     }

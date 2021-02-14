@@ -92,9 +92,9 @@ namespace Vlingo.Xoom.Stepflow
             }
         }
 
-        public ICompletes<Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap()
+        public ICompletes<IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap()
         {
-            return Completes().With(transitionHandlerMap);
+            return Completes().With(transitionHandlerMap as IReadOnlyDictionary<string, TransitionHandler<TState, TRawState, TTypeState>>);
         }
     }
 }

@@ -10,10 +10,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Vlingo.Cluster.Model;
+using Vlingo.Common;
 
 namespace Vlingo.Xoom.Actors
 {
-    public class Settings
+    public class Settings : ConfigurationProperties
     {
         private static IDictionary<string, string> properties = new Dictionary<string, string>();
         private static string propertiesFileName = "/vlingo-xoom.json";
