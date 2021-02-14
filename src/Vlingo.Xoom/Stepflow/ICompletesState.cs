@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using Vlingo.Common;
 
 namespace Vlingo.Xoom.Stepflow
@@ -16,6 +17,6 @@ namespace Vlingo.Xoom.Stepflow
     /// <param name="R"> <R>  is the target <see cref="State"/> </param>
     public interface ICompletesState<TState, TRawState> where TState : State<object> where TRawState : State<object>
     {
-        void Apply(StateTransition<TState, TRawState, object> transition, TRawState state);
+        void Apply<TTypeState>(StateTransition<TState, TRawState, TTypeState> transition, TRawState state) where TTypeState : Type;
     }
 }

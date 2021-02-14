@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Collections.Generic;
 using Vlingo.Common;
 
@@ -33,7 +34,7 @@ namespace Vlingo.Xoom.Stepflow
     /// When no input state is provided, the logical state will remain the same while the versioned state will be
     /// incremented.
     /// </summary>
-    public interface IKernel<TState, TRawState> where TState : State<object> where TRawState : State<object>
+    public interface IKernel<TState, TRawState, TTypeState> where TState : State<object> where TRawState : State<object> where TTypeState : Type
     {
         ICompletes<string> GetName();
 
@@ -43,10 +44,10 @@ namespace Vlingo.Xoom.Stepflow
 
         ICompletes<List<State<TState>>> GetStates();
 
-        ICompletes<List<StateTransition<TState, TRawState, object>>> GetStateTransitions();
+        ICompletes<List<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions();
 
-        ICompletes<Dictionary<string, TransitionHandler<TState, TRawState>>> GetTransitionMap();
+        ICompletes<Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap();
 
-        ICompletes<StateTransition<TState, TRawState, object>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
+        ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
     }
 }

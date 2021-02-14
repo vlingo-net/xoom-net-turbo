@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Stepflow
     /// </summary>
     /// <param name="T"> <T>  is the target state </param>
     /// <param name="R"> <R>  is the target state </param>
-    public class StateTransition<TState, TRawstate, A> : ITransition where TState : State<object> where TRawstate : State<object>
+    public class StateTransition<TState, TRawstate, A> : ITransition where TState : State<object> where TRawstate : State<object> where A : Type
     {
         private TState from;
         private TRawstate to;

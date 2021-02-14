@@ -11,7 +11,6 @@ using System.Linq;
 using Vlingo.Actors;
 using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Common;
-using Vlingo.Symbio;
 
 namespace Vlingo.Xoom.Stepflow
 {
@@ -22,15 +21,15 @@ namespace Vlingo.Xoom.Stepflow
     ///  <see cref="IKernel"/>
     ///  <see cref="IStepFlow"/>
     /// </summary>
-    public class KernelActor<TState, TRawState> : Actor, IKernel<TState, TRawState> where TState : State<object> where TRawState : State<object>
+    public class KernelActor<TState, TRawState, TTypeState> : Actor, IKernel<TState, TRawState, TTypeState> where TState : State<object> where TRawState : State<object> where TTypeState : Type
     {
-        private Dictionary<string, TransitionHandler<TState, TRawState>> transitionHandlerMap;
+        private Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>> transitionHandlerMap;
         private Dictionary<string, State<TState>> stateMap;
         private string kernelName = "DefaultProcessorKernel";
 
         public KernelActor()
         {
-            transitionHandlerMap = new Dictionary<string, TransitionHandler<TState, TRawState>>();
+            transitionHandlerMap = new Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>();
             stateMap = new Dictionary<string, State<TState>>();
         }
 
@@ -53,7 +52,7 @@ namespace Vlingo.Xoom.Stepflow
                     throw new InvalidOperationException(string.Concat("The state with the name ", s.GetName(), " has already been registered"));
                 }
 
-                s.GetTransitionHandlers().ToList().ForEach(transitionHandler =>
+                s.GetTransitionHandlers<TTypeState>().ToList().ForEach(transitionHandler =>
                 {
                     if (transitionHandlerMap.TryGetValue(transitionHandler.GetAddress(), out var value))
                     {
@@ -71,14 +70,14 @@ namespace Vlingo.Xoom.Stepflow
             return Completes().With(stateMap.Values.ToList());
         }
 
-        public ICompletes<List<StateTransition<TState, TRawState, object>>> GetStateTransitions()
+        public ICompletes<List<StateTransition<TState, TRawState, TTypeState>>> GetStateTransitions()
         {
             return Completes().With(transitionHandlerMap.Values.Select(x => x.GetStateTransition()).ToList());
         }
 
-        public ICompletes<StateTransition<TState, TRawState, object>> ApplyEvent<N>(N @event) where N : Event
+        public ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<N>(N @event) where N : Event
         {
-            TransitionHandler<TState, TRawState> handler = transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
+            TransitionHandler<TState, TRawState, TTypeState> handler = transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
             try
             {
                 if (handler == null)
@@ -89,11 +88,11 @@ namespace Vlingo.Xoom.Stepflow
             catch (Exception ex)
             {
                 ConsoleLogger.BasicInstance().Debug(ex.Message, ex);
-                return Completes().With<StateTransition<TState, TRawState, object>>(null);
+                return Completes().With<StateTransition<TState, TRawState, TTypeState>>(null);
             }
         }
 
-        public ICompletes<Dictionary<string, TransitionHandler<TState, TRawState>>> GetTransitionMap()
+        public ICompletes<Dictionary<string, TransitionHandler<TState, TRawState, TTypeState>>> GetTransitionMap()
         {
             return Completes().With(transitionHandlerMap);
         }

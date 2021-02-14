@@ -53,14 +53,14 @@ namespace Vlingo.Xoom.Stepflow
             return this.name;
         }
 
-        public abstract TransitionHandler<State<object>, State<object>>[] GetTransitionHandlers();
+        public abstract TransitionHandler<State<object>, State<object>, TTypeState>[] GetTransitionHandlers<TTypeState>() where TTypeState : Type;
 
-        public Dictionary<string, HashSet<string>> GetMap()
+        public Dictionary<string, HashSet<string>> GetMap<TTypeState>() where TTypeState : Type
         {
             Dictionary<string, HashSet<string>> result = new Dictionary<string, HashSet<string>>();
 
             var values = new HashSet<string>();
-            this.GetTransitionHandlers().Select(t => (ITransition)t.GetStateTransition()).ToList().ForEach(x =>
+            this.GetTransitionHandlers<TTypeState>().Select(t => (ITransition)t.GetStateTransition()).ToList().ForEach(x =>
             {
                 if (!result.TryGetValue(x.GetSourceName(), out var value))
                 {
@@ -72,9 +72,9 @@ namespace Vlingo.Xoom.Stepflow
             return result;
         }
 
-        public string ToGraph()
+        public string ToGraph<TTypeState>() where TTypeState : Type
         {
-            return string.Join("\n", this.GetMap().Select(x => string.Concat("(", x.Key, ")-->(", x.Value, ")")));
+            return string.Join("\n", this.GetMap<TTypeState>().Select(x => string.Concat("(", x.Key, ")-->(", x.Value, ")")));
         }
 
         public override string ToString()

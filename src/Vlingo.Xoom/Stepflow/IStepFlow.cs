@@ -61,22 +61,22 @@ namespace Vlingo.Xoom.Stepflow
     /// 
     /// Backpressure can be applied by consumers as a part of the subscription to a producer using server-sent events.
     /// </summary>
-    public interface IStepFlow<TState, TRawState> : IStoppable where TState : State<object> where TRawState : State<object>
+    public interface IStepFlow<TState, TRawState, TTypeState> : IStoppable where TState : State<object> where TRawState : State<object> where TTypeState : Type
     {
         ICompletes<bool> ShutDown();
 
         ICompletes<bool> StartUp();
 
-        ICompletes<IKernel<TState, TRawState>> GetKernel();
+        ICompletes<IKernel<TState, TRawState, TTypeState>> GetKernel();
 
         ICompletes<string> GetName();
 
-        ICompletes<StateTransition<TState, TRawState, object>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
+        ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event;
 
-        IStepFlow<TState, TRawState> StartWith(Stage stage, Type clazz, string actorName, List<object> @params);
+        IStepFlow<TState, TRawState, TTypeState> StartWith(Stage stage, Type clazz, string actorName, List<object> @params);
 
-        P StartWith<P>(Stage stage, Type clazz, Type protocol, string actorName, List<object> @params) where P : IStepFlow<TState, TRawState>;
+        P StartWith<P>(Stage stage, Type clazz, Type protocol, string actorName, List<object> @params) where P : IStepFlow<TState, TRawState, TTypeState>;
 
-        IStepFlow<TState, TRawState> StartWith(Stage stage, Type clazz, string actorName);
+        IStepFlow<TState, TRawState, TTypeState> StartWith(Stage stage, Type clazz, string actorName);
     }
 }
