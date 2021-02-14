@@ -9,47 +9,55 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using Vlingo.Cluster.Model;
+using Vlingo.Common;
 
-namespace io.vlingo.xoom.actors {
-    public class Settings {
-
-        private static Dictionary<string, string> PROPERTIES = new Dictionary<string, string>();
-        private static readonly string PROPERTIES_FILENAME = "/vlingo-xoom.properties";
-        private static readonly long serialVersionUID = 1L;
-        private static readonly Dictionary<object, object> DEFAULT_DATABASE_PROPERTIES = new Dictionary<object, object>() {
+namespace Vlingo.Xoom.Actors
+{
+    public class Settings : ConfigurationProperties
+    {
+        private static IDictionary<string, string> properties = new Dictionary<string, string>();
+        private static string propertiesFileName = "/vlingo-xoom.json";
+        private static IDictionary<object, object> defaultDatabaseProperties = new Dictionary<object, object>() {
             { "database", "IN_MEMORY" },
             { "query.database", "IN_MEMORY" }
         };
 
-        static Settings() {
-            loadProperties();
+        static Settings()
+        {
+            LoadProperties();
         }
 
-        public static void loadProperties() {
-            try {
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                TextReader stream = new StreamReader(assembly.GetManifestResourceStream(PROPERTIES_FILENAME));
-                if (stream == null) {
-                    Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
-                    PROPERTIES = DEFAULT_DATABASE_PROPERTIES.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
-                }
-                else {
-                    string line;
-                    while ((line = stream.ReadLine()) != null) {
-                        string[] keyValuePair = line.Split('=');
-                        PROPERTIES.Add(keyValuePair[0], keyValuePair[1]);
+        public static void LoadProperties()
+        {
+            try
+            {
+                var props = new Properties();
+                props.Load(new FileInfo(propertiesFileName));
+                var keys = props.Keys;
 
+                if (props == null || keys.Count == 0)
+                {
+                    Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
+                    properties = defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
+                }
+                else
+                {
+                    foreach (var key in keys)
+                    {
+                        properties.Add(key, props.GetProperty(key) ?? string.Empty);
                     }
                 }
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 throw new PropertiesLoadingException(e.Message, e);
             }
         }
 
-        public static Dictionary<string, string> properties() {
-            return PROPERTIES;
+        public static IDictionary<string, string> Properties()
+        {
+            return properties;
         }
     }
 }

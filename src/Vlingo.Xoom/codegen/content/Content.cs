@@ -9,7 +9,7 @@
 // using System.Collections.Generic;
 // using System.Text;
 //
-// namespace Vlingo.Xoom.codegen.content {
+// namespace Vlingo.Xoom.Codegen.Content {
 //     public abstract class Content {
 //
 //         public readonly TemplateStandard standard;
@@ -49,7 +49,7 @@
 //
 //         public abstract bool contains(string term);
 //
-//         public String retrieveProtocolQualifiedName() {
+//         public string retrieveProtocolQualifiedName() {
 //             throw new UnsupportedOperationException("Content does not have a protocol by default");
 //         }
 //

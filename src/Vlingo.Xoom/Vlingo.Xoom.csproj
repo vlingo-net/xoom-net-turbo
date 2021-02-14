@@ -30,16 +30,28 @@
         <None Include="..\..\vlingo-64x64.png" Pack="true" PackagePath="\" />
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Vlingo.Actors" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Cluster" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Common" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Directory" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Http" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Lattice" Version="0.0.1" />
+      <PackageReference Include="Vlingo.Symbio" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Symbio.Ado" Version="0.1.0" />
+      <PackageReference Include="Vlingo.UUID" Version="0.9.10" />
+      <PackageReference Include="Vlingo.Wire" Version="0.9.10" />
+    </ItemGroup>
     <Choose>
         <When Condition="'$(Configuration)' == 'Debug With Project References'">
             <ItemGroup>
                 <ProjectReference Include="..\..\..\vlingo-net-actors\src\Vlingo.Actors\Vlingo.Actors.csproj" />
             </ItemGroup>
         </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="Vlingo.Actors" Version="$(VlingoVersion)" />
-            </ItemGroup>
-        </Otherwise>
+      <Otherwise>
+        <ItemGroup>
+          <PackageReference Include="Vlingo.Actors" Version="$(VlingoVersion)" />
+        </ItemGroup>
+      </Otherwise>
     </Choose>
 </Project>
