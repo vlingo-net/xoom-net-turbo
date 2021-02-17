@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Storage
 {
     public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T>
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<IDispatchable<IEntry, IState>>> dispatchers) => 
+        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry<T>, IState>>> dispatchers) => 
             stage.ActorFor<T>(typeof(IStateStore<IEntry>), typeof(InMemoryStateStoreActor<IState, IEntry>), dispatchers);
 
         public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
