@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Storage
 {
     public interface IStoreActorBuilder<out T>
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers);
+        public T Build(Stage stage, IEnumerable<IDispatcher<IDispatchable<IEntry, IState>>> dispatchers);
 
         public bool Support(DatabaseType databaseType);
     }

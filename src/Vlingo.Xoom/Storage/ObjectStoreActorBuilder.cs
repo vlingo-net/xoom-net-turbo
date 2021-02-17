@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Storage
 {
     public class ObjectStoreActorBuilder<T> : IStoreActorBuilder<T>
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers)
+        public T Build(Stage stage, IEnumerable<IDispatcher<IDispatchable<IEntry, IState>>> dispatchers)
         {
             //TODO: Implement Object Store Actor Builder
             throw new NotSupportedException("Object Store is not supported");
