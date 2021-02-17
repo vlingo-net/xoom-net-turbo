@@ -5,20 +5,21 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using static System.IO.File;
+using Vlingo.Xoom.Codegen.File;
 using System.IO;
 
 namespace Vlingo.Xoom.Codegen.Template
 {
     public class TemplateFile
     {
-
         private readonly string _absolutePath;
         private readonly string _filename;
         private readonly string _offset;
         private readonly bool _placeholder;
 
-        public TemplateFile(CodeGenerationContext context, TemplateData templateData) : this(context.isInternalGeneration() ? "" : FileLocationResolver.from(context, templateData),
-                    templateData.filename(), templateData.parameters().find(OFFSET), templateData.isPlaceholder())
+        public TemplateFile(CodeGenerationContext context, TemplateData templateData) : this(context.IsInternalGeneration ? "" : FileLocationResolver.From(context, templateData),
+                    templateData.Filename(), templateData.Parameters().Find<string>(TemplateParameter.Offset), templateData.IsPlaceholder)
         {
         }
 
@@ -40,7 +41,7 @@ namespace Vlingo.Xoom.Codegen.Template
 
         public string FilePath() => Path.Combine(_absolutePath, _filename);
 
-        public FileStream ToFile() => File.Create(FilePath());
+        public FileStream ToFile() => Create(FilePath());
 
         public string Offset() => _offset;
     }

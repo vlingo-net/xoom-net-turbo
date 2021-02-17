@@ -30,6 +30,9 @@
         <None Include="..\..\vlingo-64x64.png" Pack="true" PackagePath="\" />
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Vlingo.Lattice" Version="0.0.2" />
+    </ItemGroup>
     <Choose>
         <When Condition="'$(Configuration)' == 'Debug With Project References'">
             <ItemGroup>
@@ -52,7 +55,6 @@
           <PackageReference Include="Vlingo.Common" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Directory" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Http" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Lattice" Version="0.0.2" />
           <PackageReference Include="Vlingo.Symbio" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Symbio.Ado" Version="0.1.0" />
           <PackageReference Include="Vlingo.UUID" Version="$(VlingoVersion)" />

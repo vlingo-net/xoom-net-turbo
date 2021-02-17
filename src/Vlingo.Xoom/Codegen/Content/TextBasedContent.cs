@@ -6,14 +6,14 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using System.IO;
+using static System.IO.File;
 using Vlingo.Xoom.Codegen.Template;
+using System.IO;
 
 namespace Vlingo.Xoom.Codegen.Content
 {
     public class TextBasedContent : ContentBase
     {
-
         public readonly FileStream file;
         public readonly string text;
         private readonly FileStream _filer;
@@ -46,29 +46,40 @@ namespace Vlingo.Xoom.Codegen.Content
             }
         }
 
-        //        private void HandleDefaultCreation() throws IOException
-        //        {
-        //                if (Files.isRegularFile(file.toPath()))
-        //                {
-        //                    Files.write(file.toPath(), text.getBytes(), APPEND);
-        //                }
-        //                else
-        //                {
-        //                    file.getParentFile().mkdirs();
-        //    file.createNewFile();
-        //                    Files.write(file.toPath(), text.getBytes());
-        //                }
-        //            }
+        private void HandleDefaultCreation()
+        {
+            try
+            {
+                if (Exists(file.Name))
+                {
+                    AppendAllText(file.Name, text);
+                }
+                else
+                {
+                    WriteAllText(System.IO.Directory.GetParent(file.Name).FullName, text);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException(ex.Message, ex);
+            }
 
-        //            private void handleCreationFromSourceElement() throws IOException
-        //{
-        //    final Writer writer =
-        //                        filer.createSourceFile(retrieveQualifiedName(), source).openWriter();
-        //    writer.write(text);
-        //    writer.close();
-        //}
+        }
 
-        public override string RetrieveClassName() => FilenameUtils.RemoveExtension(file.getName());
+        private void HandleCreationFromSourceElement()
+        {
+            try
+            {
+                var path = string.Format("{0}/{1}.{2}", Environment.CurrentDirectory, RetrieveQualifiedName(), _source.Name);
+                WriteAllText(path, text);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException(ex.Message, ex);
+            }
+        }
+
+        public override string RetrieveClassName() => Path.GetFileNameWithoutExtension(file.Name);
 
         public override string RetrievePackage()
         {

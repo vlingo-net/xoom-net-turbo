@@ -12,8 +12,9 @@ namespace Vlingo.Xoom.Codegen
         INTERNAL,
         EXTERNAL
     }
-    public static class CodeGenerationLocation
+
+    public class CodeGenerationLocation
     {
-        public static bool IsInternal(this CodeGenerationLocationType codeGenerationLocationType) => codeGenerationLocationType.Equals(CodeGenerationLocationType.INTERNAL);
+        public static bool IsInternal(CodeGenerationLocationType codeGenerationLocationType) => codeGenerationLocationType.Equals(CodeGenerationLocationType.INTERNAL);
     }
 }

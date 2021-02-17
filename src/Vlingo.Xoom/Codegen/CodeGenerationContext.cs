@@ -123,7 +123,7 @@ namespace Vlingo.Xoom.Codegen
             return databases;
         }
 
-        public bool IsInternalGeneration => ParameterOf<CodeGenerationLocationType>(Label.GenerationLocation).IsInternal();
+        public bool IsInternalGeneration => CodeGenerationLocation.IsInternal(ParameterOf<CodeGenerationLocationType>(Label.GenerationLocation));
 
         public IEnumerable<CodeGenerationParameter> ParametersOf(Label label) => _parameters.RetrieveAll(label);
 
