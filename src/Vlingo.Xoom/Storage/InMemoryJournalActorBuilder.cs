@@ -11,14 +11,15 @@ using Vlingo.Symbio;
 using Vlingo.Symbio.Store.Dispatch;
 using Vlingo.Symbio.Store.Journal;
 using Vlingo.Symbio.Store.Journal.InMemory;
+using Vlingo.Xoom.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Storage
 {
-    public class InMemoryJournalActorBuilder<T> : IStoreActorBuilder<T> where T : class
+    public class InMemoryJournalActorBuilder : IStoreActorBuilder
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers) => 
+        public T Build<T>(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers, Configuration configuration) =>
             (T)Journal<T>.Using<Actor, IEntry<T>, IState>(stage, (IDispatcher<Dispatchable<IEntry<T>, IState>>)dispatchers, typeof(InMemoryJournalActor<T, IEntry<T>, IState>));
 
-        public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
+        public bool Support(StorageType storageType, DatabaseCategory databaseType) => databaseType == DatabaseCategory.InMemory;
     }
 }

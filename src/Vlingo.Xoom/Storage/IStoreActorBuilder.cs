@@ -9,13 +9,14 @@ using System.Collections.Generic;
 using Vlingo.Actors;
 using Vlingo.Symbio;
 using Vlingo.Symbio.Store.Dispatch;
+using Vlingo.Xoom.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Storage
 {
-    public interface IStoreActorBuilder<out T>
+    public interface IStoreActorBuilder
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers);
+        public T Build<T>(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers, Configuration configuration);
 
-        public bool Support(DatabaseType databaseType);
+        public bool Support(StorageType storageType, DatabaseCategory databaseType);
     }
 }

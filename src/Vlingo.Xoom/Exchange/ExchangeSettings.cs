@@ -64,14 +64,18 @@ namespace Vlingo.Xoom.Exchange
 
         private bool HasName(string exchangeName) => _exchangeName == exchangeName;
 
-        //public ConnectionSettings mapToConnection()
-        //{
-        //    return new ConnectionSettings(retrieveParameterValue("hostname"),
-        //            retrieveParameterValue("port", Integer::valueOf),
-        //            retrieveParameterValue("virtual.host"),
-        //            retrieveParameterValue("username"),
-        //            retrieveParameterValue("password"));
-        //}
+        public List<string> MapToConnection()
+        {
+            return new List<string>()
+            {
+                RetrieveParameterValue("hostname"),
+                RetrieveParameterValue("port"),
+                RetrieveParameterValue("virtual.host"),
+                RetrieveParameterValue("username"),
+                RetrieveParameterValue("password"),
+
+            };
+        }
 
         private string RetrieveParameterValue(string key) => RetrieveParameterValue(key, value => value);
 

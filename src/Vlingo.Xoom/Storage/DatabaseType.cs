@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Storage
 
         public DatabaseType(string name) => _name = name;
 
-        public static DatabaseCategory RetrieveFromConfiguration(Configuration configuration)
+        public static DatabaseCategory RetrieveFromConfiguration(Configuration? configuration)
         {
             if (configuration == null)
             {

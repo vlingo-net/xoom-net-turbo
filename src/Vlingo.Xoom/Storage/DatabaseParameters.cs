@@ -92,7 +92,6 @@ namespace Vlingo.Xoom.Storage
         private List<string> PrepareKeys() => 
             PropertiesKeys.Where(x => Model.IsQueryModel).Select(key => string.Format(_combinationPattern, _queryModelPrefix, key)).ToList();
 
-        public void MapToConfiguration() => 
-            Validate();
+        public void MapToConfiguration() => Validate();
     }
 }

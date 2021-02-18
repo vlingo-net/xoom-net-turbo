@@ -10,17 +10,18 @@ using System.Collections.Generic;
 using Vlingo.Actors;
 using Vlingo.Symbio;
 using Vlingo.Symbio.Store.Dispatch;
+using Vlingo.Xoom.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Storage
 {
-    public class ObjectStoreActorBuilder<T> : IStoreActorBuilder<T>
+    public class ObjectStoreActorBuilder : IStoreActorBuilder
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers)
+        public T Build<T>(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers, Configuration configuration)
         {
             //TODO: Implement Object Store Actor Builder
             throw new NotSupportedException("Object Store is not supported");
         }
 
-        public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
+        public bool Support(StorageType storageType, DatabaseCategory databaseType) => databaseType == DatabaseCategory.InMemory;
     }
 }
