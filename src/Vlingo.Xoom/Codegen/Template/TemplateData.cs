@@ -25,9 +25,9 @@ namespace Vlingo.Xoom.Codegen.Template
 
         public void HandleDependencyOutcome(TemplateStandard standard, string outcome) => throw new NotSupportedException("Unable to handle dependency outcome");
 
-        public string Filename() => Standard().ResolveFilename(Parameters());
+        public virtual string Filename() => Standard().ResolveFilename(Parameters());
 
-        public bool HasStandard(TemplateStandard standard) => Standard().Equals(standard);
+        public bool HasStandard(TemplateStandardType standard) => Standard().Equals(standard);
 
         public IReadOnlyList<TemplateData> Dependencies() => _dependencies;
 

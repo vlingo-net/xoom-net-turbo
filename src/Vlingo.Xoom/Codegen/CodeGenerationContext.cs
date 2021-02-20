@@ -82,7 +82,7 @@ namespace Vlingo.Xoom.Codegen
             return mapper(value);
         }
 
-        public IEnumerable<TemplateData> templateParametersOf(TemplateStandard standard) => _templatesData.Where(templateData => templateData.HasStandard(standard));
+        public IEnumerable<TemplateData> TemplateParametersOf(TemplateStandardType standard) => _templatesData.Where(templateData => templateData.HasStandard(standard));
 
         public void registerTemplateProcessing(TemplateData templateData, string text)
         {
@@ -90,7 +90,6 @@ namespace Vlingo.Xoom.Codegen
             _templatesData.Add(templateData);
         }
 
-        //TODO: Make it private
         public CodeGenerationContext AddContent(TemplateStandard standard, TemplateFile file, string text)
         {
             _contents.Add(ContentBase.With(standard, file, _filer, _source, text));
@@ -114,12 +113,12 @@ namespace Vlingo.Xoom.Codegen
             var databases = new Dictionary<ModelType, Storage.DatabaseCategory>() { };
             if (ParameterOf<bool>(Label.Cqrs))
             {
-                databases.Add(ModelType.COMMAND, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
-                databases.Add(ModelType.QUERY, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
+                databases.Add(ModelType.Ccommand, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
+                databases.Add(ModelType.Query, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
                 return databases;
             }
 
-            databases.Add(ModelType.DOMAIN, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
+            databases.Add(ModelType.Domain, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
             return databases;
         }
 

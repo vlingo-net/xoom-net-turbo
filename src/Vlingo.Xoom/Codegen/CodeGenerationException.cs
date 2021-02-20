@@ -5,10 +5,19 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
+
 namespace Vlingo.Xoom.Codegen
 {
-    public interface ICodeGenerationStep
+    public class CodeGenerationException : SystemException
     {
-        public void Process(CodeGenerationContext context);
+
+        public CodeGenerationException(Exception exception) : base(exception.Message, exception)
+        {
+        }
+
+        public CodeGenerationException(string message) : base(message)
+        {
+        }
     }
 }

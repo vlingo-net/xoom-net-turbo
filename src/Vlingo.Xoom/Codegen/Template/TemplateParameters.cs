@@ -82,7 +82,7 @@ namespace Vlingo.Xoom.Codegen.Template
             return (T)_parameters[parameter.ToString()];
         }
 
-        public IReadOnlyDictionary<string, object>? map() => _parameters as IReadOnlyDictionary<string, object>;
+        public IReadOnlyDictionary<string, object>? Map() => _parameters as IReadOnlyDictionary<string, object>;
 
         public bool Has(TemplateParameter parameter) => _parameters.ContainsKey(parameter.ToString()) && _parameters[parameter.ToString()] != null && _parameters[parameter.ToString()].ToString().Trim() != string.Empty;
 

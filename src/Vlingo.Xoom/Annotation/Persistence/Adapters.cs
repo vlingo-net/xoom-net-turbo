@@ -5,10 +5,16 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Codegen
+using System;
+
+namespace Vlingo.Xoom.Annotation.Persistence
 {
-    public interface ICodeGenerationStep
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+    public class Adapters : Attribute
     {
-        public void Process(CodeGenerationContext context);
+        Type[] types;
+        void Value()
+        {
+        }
     }
 }

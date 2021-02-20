@@ -54,6 +54,13 @@ namespace Vlingo.Xoom.Codegen.Template
 
         private readonly Func<TemplateParameters, string> _templateFileRetriever;
         private readonly Func<string, TemplateParameters, string> _nameResolver;
+        private readonly TemplateStandardType _templateStandardType;
+
+        public TemplateStandard()
+        {
+        }
+
+        public TemplateStandard(TemplateStandardType templateStandardType) => _templateStandardType = templateStandardType; 
 
         public TemplateStandard(Func<TemplateParameters, string> templateFileRetriever) : this(templateFileRetriever, (name, parameters) => name)
         {

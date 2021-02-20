@@ -11,9 +11,9 @@ namespace Vlingo.Xoom.Codegen.Template.Storage
 {
     public enum ModelType
     {
-        DOMAIN,
-        COMMAND,
-        QUERY
+        Domain,
+        Ccommand,
+        Query
     }
 
     public class Model
@@ -29,9 +29,9 @@ namespace Vlingo.Xoom.Codegen.Template.Storage
         {
             if (useCQRS)
             {
-                return new List<ModelType>() { ModelType.QUERY, ModelType.COMMAND };
+                return new List<ModelType>() { ModelType.Query, ModelType.Ccommand };
             }
-            return new List<ModelType>() { ModelType.DOMAIN };
+            return new List<ModelType>() { ModelType.Domain };
         }
 
         public bool IsCommandModel() => title == "CommandModel";
