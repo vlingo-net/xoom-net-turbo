@@ -52,9 +52,9 @@
           <PackageReference Include="Vlingo.Common" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Directory" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Http" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Lattice" Version="0.1.5" />
+          <PackageReference Include="Vlingo.Lattice" Version="0.1.6" />
           <PackageReference Include="Vlingo.Symbio" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Symbio.Ado" Version="0.1.3" />
+          <PackageReference Include="Vlingo.Symbio.Ado" Version="0.1.4" />
           <PackageReference Include="Vlingo.UUID" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Wire" Version="$(VlingoVersion)" />
         </ItemGroup>
