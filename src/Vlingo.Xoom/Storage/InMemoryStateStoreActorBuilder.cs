@@ -8,15 +8,15 @@
 using System.Collections.Generic;
 using Vlingo.Actors;
 using Vlingo.Symbio;
-using Vlingo.Symbio.Store.Dispatch;
 using Vlingo.Symbio.Store.State;
 using Vlingo.Symbio.Store.State.InMemory;
+using IDispatcher = Vlingo.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Storage
 {
     public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T>
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry<T>, IState>>> dispatchers) => 
+        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers) => 
             stage.ActorFor<T>(typeof(IStateStore), typeof(InMemoryStateStoreActor<IState, IEntry>), dispatchers);
 
         public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;

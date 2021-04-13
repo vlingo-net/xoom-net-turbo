@@ -7,14 +7,13 @@
 
 using System.Collections.Generic;
 using Vlingo.Actors;
-using Vlingo.Symbio;
-using Vlingo.Symbio.Store.Dispatch;
+using IDispatcher = Vlingo.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Storage
 {
-    public interface IStoreActorBuilder<T>
+    public interface IStoreActorBuilder<out T>
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry<T>, IState>>> dispatchers);
+        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers);
 
         public bool Support(DatabaseType databaseType);
     }
