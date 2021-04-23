@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Actors;
 using Vlingo.Xoom.Common;
 using Vlingo.Symbio;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Xoom.Stepflow
 {
