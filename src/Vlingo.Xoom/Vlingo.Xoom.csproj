@@ -51,12 +51,12 @@
           <PackageReference Include="Vlingo.Cluster" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Common" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Directory" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Http" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Lattice" Version="0.1.7" />
           <PackageReference Include="Vlingo.Symbio" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Symbio.Ado" Version="0.1.5" />
           <PackageReference Include="Vlingo.Xoom.UUID" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Wire" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Wire" Version="$(VlingoVersion)" />
         </ItemGroup>
       </Otherwise>
     </Choose>
