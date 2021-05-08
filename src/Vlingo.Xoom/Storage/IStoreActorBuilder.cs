@@ -6,16 +6,17 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using Vlingo.Actors;
-using Vlingo.Symbio;
-using Vlingo.Symbio.Store.Dispatch;
+using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Symbio;
+using Vlingo.Xoom.Symbio.Store.Dispatch;
 using Vlingo.Xoom.Annotation.Persistence;
+using IDispatcher = Vlingo.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Storage
 {
-    public interface IStoreActorBuilder
+    public interface IStoreActorBuilder<out T>
     {
-        public T Build<T>(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers, Configuration configuration);
+        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers);
 
         public bool Support(StorageType storageType, DatabaseCategory databaseType);
     }

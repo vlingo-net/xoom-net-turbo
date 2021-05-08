@@ -5,8 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Symbio;
+using Vlingo.Xoom.Actors.Plugin.Logging.Console;
 
 namespace Vlingo.Xoom.Stepflow
 {

@@ -8,9 +8,11 @@
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors;
-using Vlingo.Symbio;
-using Vlingo.Symbio.Store.Dispatch;
+using Vlingo.Xoom.Symbio;
+using Vlingo.Xoom.Symbio.Store.Dispatch;
 using Vlingo.Xoom.Annotation.Persistence;
+using Vlingo.Xoom.Actors;
+using IDispatcher = Vlingo.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Storage
 {
