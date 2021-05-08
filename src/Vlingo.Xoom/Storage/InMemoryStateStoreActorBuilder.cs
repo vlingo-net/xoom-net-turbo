@@ -6,19 +6,20 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using Vlingo.Symbio;
-using Vlingo.Symbio.Store.State;
-using Vlingo.Symbio.Store.State.InMemory;
+using Vlingo.Xoom.Symbio;
+using Vlingo.Xoom.Symbio.Store.State;
+using Vlingo.Xoom.Symbio.Store.State.InMemory;
+using Vlingo.Xoom.Annotation.Persistence;
 using Vlingo.Xoom.Actors;
 using IDispatcher = Vlingo.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Storage
 {
-    public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T>
+    public class InMemoryStateStoreActorBuilder : IStoreActorBuilder
     {
-        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers) => 
-            stage.ActorFor<T>(typeof(IStateStore), typeof(InMemoryStateStoreActor<IState, IEntry>), dispatchers);
+        public T Build<T>(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers, Configuration configuration) =>
+            stage.ActorFor<T>(typeof(IStateStore<IEntry>), typeof(InMemoryStateStoreActor<IState, IEntry>), dispatchers);
 
-        public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
+        public bool Support(StorageType storageType, DatabaseCategory databaseType) => databaseType == DatabaseCategory.InMemory;
     }
 }

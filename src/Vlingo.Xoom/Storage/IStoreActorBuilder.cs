@@ -7,6 +7,9 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Symbio;
+using Vlingo.Xoom.Symbio.Store.Dispatch;
+using Vlingo.Xoom.Annotation.Persistence;
 using IDispatcher = Vlingo.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Storage
@@ -15,6 +18,6 @@ namespace Vlingo.Xoom.Storage
     {
         public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers);
 
-        public bool Support(DatabaseType databaseType);
+        public bool Support(StorageType storageType, DatabaseCategory databaseType);
     }
 }
