@@ -18,7 +18,7 @@
         <PackageProjectUrl>https://github.com/vlingo-net/vlingo-net-xoom</PackageProjectUrl>
         <PackageIcon>vlingo-64x64.png</PackageIcon>
         <RepositoryUrl>https://github.com/vlingo-net/vlingo-net-xoom</RepositoryUrl>
-        <PackageTags>vlingo-net-symbio;.net;c#;f#;reactive-programming;actors;actor-model;reactive;persistence;netstandard;ado.net</PackageTags>
+        <PackageTags>xoom-net-symbio;.net;c#;f#;reactive-programming;actors;actor-model;reactive;persistence;netstandard;ado.net</PackageTags>
         <Configurations>Debug;Release;Debug With Project References</Configurations>
     </PropertyGroup>
     <ItemGroup>
@@ -39,7 +39,7 @@
                 <ProjectReference Include="..\..\..\vlingo-net-lattice\src\Vlingo.Lattice\Vlingo.Lattice.csproj" />
             </ItemGroup>
             <ItemGroup>
-                <ProjectReference Include="..\..\..\vlingo-net-symbio\src\Vlingo.Symbio\Vlingo.Symbio.csproj" />
+                <ProjectReference Include="..\..\..\xoom-net-symbio\src\Vlingo.Xoom.Symbio\Vlingo.Xoom.Symbio.csproj" />
             </ItemGroup>
             <ItemGroup>
                 <ProjectReference Include="..\..\..\vlingo-net-cluster\src\Vlingo.Cluster\Vlingo.Cluster.csproj" />
@@ -53,7 +53,7 @@
           <PackageReference Include="Vlingo.Directory" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Lattice" Version="0.1.7" />
-          <PackageReference Include="Vlingo.Symbio" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Symbio" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Symbio.Ado" Version="0.1.5" />
           <PackageReference Include="Vlingo.Xoom.UUID" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Wire" Version="$(VlingoVersion)" />
