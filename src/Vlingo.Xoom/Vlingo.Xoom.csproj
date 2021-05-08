@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
@@ -43,6 +43,9 @@
             </ItemGroup>
             <ItemGroup>
                 <ProjectReference Include="..\..\..\vlingo-net-cluster\src\Vlingo.Cluster\Vlingo.Cluster.csproj" />
+            </ItemGroup>
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-http\src\Vlingo.Xoom.Http\Vlingo.Xoom.Http.csproj" />
             </ItemGroup>
         </When>
       <Otherwise>

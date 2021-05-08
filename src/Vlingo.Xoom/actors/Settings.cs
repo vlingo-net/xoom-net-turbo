@@ -18,8 +18,7 @@ namespace Vlingo.Xoom.Actors
     {
         private static IDictionary<string, string> _properties = new Dictionary<string, string>();
         private static readonly string _propertiesFileName = "/vlingo-xoom.json";
-        private static readonly IDictionary<object, object> DefaultDatabaseProperties = new Dictionary<object, object>()
-        {
+        private static readonly IDictionary<object, object> _defaultDatabaseProperties = new Dictionary<object, object>() {
             { "database", "IN_MEMORY" },
             { "query.database", "IN_MEMORY" }
         };
@@ -37,7 +36,7 @@ namespace Vlingo.Xoom.Actors
                 if (props == null || keys.Count == 0)
                 {
                     Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
-                    _properties = DefaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
+                    _properties = _defaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
                 }
                 else
                 {
