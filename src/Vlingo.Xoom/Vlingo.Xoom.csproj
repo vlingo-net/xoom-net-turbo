@@ -53,7 +53,7 @@
           <PackageReference Include="Vlingo.Xoom.Actors" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Cluster" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Common" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Directory" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Directory" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Lattice" Version="0.1.7" />
           <PackageReference Include="Vlingo.Xoom.Symbio" Version="$(VlingoVersion)" />
