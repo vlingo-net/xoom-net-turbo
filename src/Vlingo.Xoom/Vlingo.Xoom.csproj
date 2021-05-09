@@ -36,7 +36,7 @@
                 <ProjectReference Include="..\..\..\xoom-net-actors\src\Vlingo.Xoom.Actors\Vlingo.Xoom.Actors.csproj" />
             </ItemGroup>
             <ItemGroup>
-                <ProjectReference Include="..\..\..\vlingo-net-lattice\src\Vlingo.Lattice\Vlingo.Lattice.csproj" />
+                <ProjectReference Include="..\..\..\xoom-net-lattice\src\Vlingo.Xoom.Lattice\Vlingo.Xoom.Lattice.csproj" />
             </ItemGroup>
             <ItemGroup>
                 <ProjectReference Include="..\..\..\xoom-net-symbio\src\Vlingo.Xoom.Symbio\Vlingo.Xoom.Symbio.csproj" />
@@ -55,9 +55,9 @@
           <PackageReference Include="Vlingo.Xoom.Common" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Directory" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Lattice" Version="0.1.7" />
+          <PackageReference Include="Vlingo.Xoom.Lattice" Version="0.1.8" />
           <PackageReference Include="Vlingo.Xoom.Symbio" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.1.5" />
+          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.1.6" />
           <PackageReference Include="Vlingo.Xoom.UUID" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Wire" Version="$(VlingoVersion)" />
         </ItemGroup>
