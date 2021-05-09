@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+
+        <!-- NuGet Metadata -->
+        <IsPackable>true</IsPackable>
+        <PackageVersion>0.1.1</PackageVersion>
+        <PackageId>Vlingo.Xoom.Turbo</PackageId>
+        <Authors>Vlingo</Authors>
+        <Description>
+            Vlingo Xoom Turbo
+        </Description>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageProjectUrl>https://github.com/vlingo-net/xoom-net-turbo</PackageProjectUrl>
+        <PackageIcon>vlingo-64x64.png</PackageIcon>
+        <RepositoryUrl>https://github.com/vlingo-net/xoom-net-turbo</RepositoryUrl>
+        <PackageTags>xoom-net-symbio;.net;c#;f#;reactive-programming;actors;actor-model;reactive;persistence;netstandard;ado.net</PackageTags>
+        <Configurations>Debug;Release;Debug With Project References</Configurations>
+    </PropertyGroup>
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>$(MSBuildProjectName).Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\vlingo-64x64.png" Pack="true" PackagePath="\" />
+        <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    </ItemGroup>
+    <Choose>
+        <When Condition="'$(Configuration)' == 'Debug With Project References'">
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-actors\src\Vlingo.Xoom.Actors\Vlingo.Xoom.Actors.csproj" />
+            </ItemGroup>
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-lattice\src\Vlingo.Xoom.Lattice\Vlingo.Xoom.Lattice.csproj" />
+            </ItemGroup>
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-symbio\src\Vlingo.Xoom.Symbio\Vlingo.Xoom.Symbio.csproj" />
+            </ItemGroup>
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-cluster\src\Vlingo.Xoom.Cluster\Vlingo.Xoom.Cluster.csproj" />
+            </ItemGroup>
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-http\src\Vlingo.Xoom.Http\Vlingo.Xoom.Http.csproj" />
+            </ItemGroup>
+        </When>
+      <Otherwise>
+        <ItemGroup>
+          <PackageReference Include="Vlingo.Xoom.Actors" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Cluster" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Common" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Directory" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Lattice" Version="0.1.8" />
+          <PackageReference Include="Vlingo.Xoom.Symbio" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.1.6" />
+          <PackageReference Include="Vlingo.Xoom.UUID" Version="$(VlingoVersion)" />
+          <PackageReference Include="Vlingo.Xoom.Wire" Version="$(VlingoVersion)" />
+        </ItemGroup>
+      </Otherwise>
+    </Choose>
+</Project>
