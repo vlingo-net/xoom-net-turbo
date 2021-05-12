@@ -55,9 +55,9 @@
           <PackageReference Include="Vlingo.Xoom.Common" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Directory" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Xoom.Lattice" Version="0.1.8" />
+          <PackageReference Include="Vlingo.Xoom.Lattice" Version="0.1.9" />
           <PackageReference Include="Vlingo.Xoom.Symbio" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.1.6" />
+          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.1.7" />
           <PackageReference Include="Vlingo.Xoom.UUID" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Wire" Version="$(VlingoVersion)" />
         </ItemGroup>
