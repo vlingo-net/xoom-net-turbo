@@ -1,5 +1,6 @@
 ﻿{
   "database": {
+    "category": "IN_MEMORY",
     "name": "",
     "driver": "",
     "url": "",
@@ -9,6 +10,7 @@
   },
   "query": {
     "database": {
+      "category": "MYSQL",
       "name": "STORAGE_TEST",
       "driver": "",
       "url": "jdbc:mysql://localhost:2215/",

@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo.Tests
         [Fact]
         public void TestThatSettingsAreLoadedForBlockingMailbox()
         {
-            Assert.Equal(23, Settings.Properties().Count);
+            Assert.Equal(25, Settings.Properties().Count);
         }
     }
 }
