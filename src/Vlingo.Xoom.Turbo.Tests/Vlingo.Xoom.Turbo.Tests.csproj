@@ -34,5 +34,9 @@
     </ItemGroup>
     <ItemGroup>
       <None Remove="vlingo-xoom.json" />
+      <None Remove="Exchange\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Exchange\" />
     </ItemGroup>
 </Project>
