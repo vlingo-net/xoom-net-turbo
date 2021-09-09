@@ -24,4 +24,12 @@
         <ProjectReference Include="..\Vlingo.Xoom.Turbo\Vlingo.Xoom.Turbo.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="vlingo-xoom.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="vlingo-xoom.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>
