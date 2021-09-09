@@ -28,7 +28,7 @@
       <None Remove="vlingo-xoom.json" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="vlingo-xoom.json">
+      <Content Include="vlingo-actors.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
