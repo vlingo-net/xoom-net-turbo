@@ -25,11 +25,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="vlingo-xoom.json" />
-    </ItemGroup>
-    <ItemGroup>
       <Content Include="vlingo-actors.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <Content Include="vlingo-xoom.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="vlingo-xoom.json" />
     </ItemGroup>
 </Project>
