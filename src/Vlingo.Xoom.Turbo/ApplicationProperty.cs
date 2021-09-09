@@ -11,53 +11,56 @@ using System.Linq;
 
 namespace Vlingo.Xoom.Turbo
 {
-    public class ApplicationProperty
+  public class ApplicationProperty
+  {
+    private static readonly string XoomPrefix = "VLINGO_XOOM";
+    private static readonly string CombinationPattern = "{0}.{1}";
+
+    public static string? ReadValue(string key, IReadOnlyDictionary<string, string> properties)
     {
-        private static readonly string XoomPrefix = "VLINGO_XOOM";
-        private static readonly string CombinationPattern = "{0}.{1}";
-
-        public static string? ReadValue(string key, IReadOnlyDictionary<string, string> properties)
-        {
-            var propertiesValue = RetrieveFromProperties(key, properties);
-            return propertiesValue != null ? propertiesValue : RetrieveFromEnvironment(key);
-        }
-
-        public static List<string> ReadMultipleValues(string key, string separator, IReadOnlyDictionary<string, string> properties)
-        {
-            var value = ReadValue(key, properties);
-            return value == null ? new List<string>() : value.Split(new[] { separator }, StringSplitOptions.None).ToList();
-        }
-
-        private static string? RetrieveFromProperties(string key, IReadOnlyDictionary<string, string> properties)
-        {
-            if (!properties.ContainsKey(key))
-            {
-                return null;
-            }
-            string value = properties.FirstOrDefault(x => x.Key == key).Value.Trim();
-
-            return string.IsNullOrEmpty(value) ? null : value;
-        }
-
-        private static string? RetrieveFromEnvironment(string key)
-        {
-            string envKey = ResolveEnvironmentVariable(key);
-
-            if (SystemHolder.ContainsKey(envKey))
-            {
-                return null;
-            }
-
-            string value = SystemHolder.GetValue(envKey);
-
-            if (value == null || string.IsNullOrEmpty(value.Trim()))
-            {
-                return null;
-            }
-
-            return value.Trim();
-        }
-
-        private static string ResolveEnvironmentVariable(string key) => string.Format(CombinationPattern, XoomPrefix, key).Replace("\\.", "_");
+      var propertiesValue = RetrieveFromProperties(key, properties);
+      return propertiesValue != null ? propertiesValue : RetrieveFromEnvironment(key);
     }
+
+    public static List<string> ReadMultipleValues(string key, string separator,
+      IReadOnlyDictionary<string, string> properties)
+    {
+      var value = ReadValue(key, properties);
+      return value == null ? new List<string>() : value.Split(new[] {separator}, StringSplitOptions.None).ToList();
+    }
+
+    private static string? RetrieveFromProperties(string key, IReadOnlyDictionary<string, string> properties)
+    {
+      if (!properties.ContainsKey(key))
+      {
+        return null;
+      }
+
+      string value = properties.FirstOrDefault(x => x.Key == key).Value.Trim();
+
+      return string.IsNullOrEmpty(value) ? null : value;
+    }
+
+    private static string? RetrieveFromEnvironment(string key)
+    {
+      string envKey = ResolveEnvironmentVariable(key);
+
+      if (!EnvironmentVariables.ContainsKey(envKey))
+      {
+        return null;
+      }
+
+      string value = EnvironmentVariables.Retrieve(envKey);
+
+      if (value == null || string.IsNullOrEmpty(value.Trim()))
+      {
+        return null;
+      }
+
+      return value.Trim();
+    }
+
+    private static string ResolveEnvironmentVariable(string key) => string.Format(CombinationPattern, XoomPrefix, key)
+      .Replace(".", "_").ToUpper();
+  }
 }

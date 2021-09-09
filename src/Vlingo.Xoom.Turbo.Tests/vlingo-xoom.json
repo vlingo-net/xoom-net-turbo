@@ -12,7 +12,7 @@
     "database": {
       "category": "MYSQL",
       "name": "STORAGE_TEST",
-      "driver": "",
+      "driver": "com.mysql.cj.jdbc.Driver",
       "url": "jdbc:mysql://localhost:2215/",
       "username": "vlingo_test",
       "password": "vlingo123",
