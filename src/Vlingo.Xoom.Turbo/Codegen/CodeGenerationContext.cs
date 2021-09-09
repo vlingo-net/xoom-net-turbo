@@ -113,7 +113,7 @@ namespace Vlingo.Xoom.Turbo.Codegen
             var databases = new Dictionary<ModelType, Storage.DatabaseCategory>() { };
             if (ParameterOf<bool>(Label.Cqrs))
             {
-                databases.Add(ModelType.Ccommand, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
+                databases.Add(ModelType.Command, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
                 databases.Add(ModelType.Query, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
                 return databases;
             }

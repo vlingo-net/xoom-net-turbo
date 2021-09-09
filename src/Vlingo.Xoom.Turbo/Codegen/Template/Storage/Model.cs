@@ -12,7 +12,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Storage
     public enum ModelType
     {
         Domain,
-        Ccommand,
+        Command,
         Query
     }
 
@@ -29,7 +29,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Storage
         {
             if (useCQRS)
             {
-                return new List<ModelType>() { ModelType.Query, ModelType.Ccommand };
+                return new List<ModelType>() { ModelType.Query, ModelType.Command };
             }
             return new List<ModelType>() { ModelType.Domain };
         }
