@@ -15,6 +15,20 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       Assert.True(state1.PersistenceId > 0);
       Assert.Equal("12345", state1.Number);
       Assert.Equal(50000, state1.Salary);
+      
+      employee.Assign("67890");
+      
+      var state2 = employee.Applied().state;
+      Assert.Equal(state1.PersistenceId, state2.PersistenceId);
+      Assert.Equal("67890", state2.Number);
+      Assert.Equal(50000, state2.Salary);
+      
+      employee.Adjust(55000);
+
+      var state3 = employee.Applied().state;
+      Assert.Equal(state1.PersistenceId, state3.PersistenceId);
+      Assert.Equal("67890", state3.Number);
+      Assert.Equal(55000, state3.Salary);
     }
   }
 }

@@ -19,12 +19,12 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 
     public void Assign(string number)
     {
-      throw new System.NotImplementedException();
+      Apply(_employee.With(number), new Employee.EmployeeNumberAssigned());
     }
 
     public void Adjust(int salary)
     {
-      throw new System.NotImplementedException();
+      Apply(_employee.With(salary), new Employee.EmployeeSalaryAdjusted());
     }
 
     public void Hire(string number, int salary)

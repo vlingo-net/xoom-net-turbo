@@ -33,7 +33,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       throw new System.NotImplementedException();
     }
 
-    public EmployeeState With(string number) => new EmployeeState(PersistenceId, number, 0);
+    public EmployeeState With(string number) => new EmployeeState(PersistenceId, number, Salary);
 
     public EmployeeState With(int salary) => new EmployeeState(PersistenceId, Number, salary);
   }
