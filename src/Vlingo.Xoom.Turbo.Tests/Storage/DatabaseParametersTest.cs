@@ -17,7 +17,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Storage
 {
   public class DatabaseParametersTest : IDisposable
   {
-    private readonly MockEnvironmentVariables _mockEnvironmentVariables;
+    private readonly MockIEnvironmentVariables _mockIEnvironmentVariables;
 
     public DatabaseParametersTest()
     {
@@ -31,8 +31,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Storage
       dict.Add("VLINGO_XOOM_QUERY_DATABASE_ORIGINATOR", "FTI");
       dict.Add("VLINGO_XOOM_QUERY_DATABASE_CONNECTION_ATTEMPTS", "2");
 
-      _mockEnvironmentVariables = new MockEnvironmentVariables(dict);
-      ComponentRegistry.Register(typeof(EnvironmentVariablesRetriever), _mockEnvironmentVariables);
+      _mockIEnvironmentVariables = new MockIEnvironmentVariables(dict);
+      ComponentRegistry.Register(typeof(IEnvironmentVariablesRetriever), _mockIEnvironmentVariables);
     }
 
     [Fact]

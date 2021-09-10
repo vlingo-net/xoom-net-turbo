@@ -9,11 +9,11 @@ using System.Collections.Generic;
 
 namespace Vlingo.Xoom.Turbo.Tests
 {
-  public class MockEnvironmentVariables : EnvironmentVariables.EnvironmentVariablesRetriever
+  public class MockIEnvironmentVariables : EnvironmentVariables.IEnvironmentVariablesRetriever
   {
     private readonly Dictionary<string, string> _values;
 
-    public MockEnvironmentVariables(Dictionary<string, string> values)
+    public MockIEnvironmentVariables(Dictionary<string, string> values)
     {
       _values = values;
     }
