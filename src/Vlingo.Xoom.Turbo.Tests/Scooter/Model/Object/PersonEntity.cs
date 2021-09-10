@@ -39,10 +39,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       Apply(_person.With(_person.Age + 1));
     }
 
-    public override string Id()
-    {
-      throw new System.NotImplementedException();
-    }
+    public override string Id() => _person.PersistenceId.ToString();
 
     protected override void StateObject(PersonState stateObject)
     {

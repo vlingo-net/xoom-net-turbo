@@ -5,13 +5,13 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.Collections.Generic;
+using System;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Symbio.Store.Object;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 {
-  public class PersonState : StateObject, IEqualityComparer<PersonState>
+  public class PersonState : StateObject, IComparable<PersonState>
   {
     private static readonly AtomicLong _identityGenerator = new AtomicLong(0);
 
@@ -39,15 +39,25 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
     public PersonState With(string name) => new PersonState(PersistenceId, name, Age);
 
     public PersonState With(int age) => new PersonState(PersistenceId, Name, age);
+    public int GetHashCode(PersonState obj) => 31 * Name.GetHashCode() * Age;
 
-    public bool Equals(PersonState x, PersonState y)
+    public override bool Equals(object? other)
     {
-      throw new System.NotImplementedException();
+      if (other == null || other.GetType() != GetType())
+      {
+        return false;
+      }
+
+      if (this == other)
+      {
+        return true;
+      }
+
+      var otherPerson = (PersonState) other;
+
+      return PersistenceId == otherPerson.PersistenceId;
     }
 
-    public int GetHashCode(PersonState obj)
-    {
-      throw new System.NotImplementedException();
-    }
+    public int CompareTo(PersonState otherPerson) => PersistenceId.CompareTo(otherPerson.PersistenceId);
   }
 }
