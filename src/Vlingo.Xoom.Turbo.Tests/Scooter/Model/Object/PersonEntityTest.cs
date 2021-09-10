@@ -23,6 +23,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       Assert.Equal(state1.PersistenceId, state2.PersistenceId);
       Assert.Equal("Tom J Jones", state2.Name);
       Assert.Equal(78, state2.Age);
+
+      person.IncreaseAge();
+
+      var state3 = person.Applied().state;
+      Assert.Equal(state1.PersistenceId, state3.PersistenceId);
+      Assert.Equal("Tom J Jones", state3.Name);
+      Assert.Equal(79, state3.Age);
     }
   }
 }

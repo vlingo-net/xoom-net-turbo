@@ -8,8 +8,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
   {
     private static readonly AtomicLong _identityGenerator = new AtomicLong(0);
 
-    public string Name;
-    public int Age;
+    public readonly string Name;
+    public readonly int Age;
 
     public PersonState(long id, string name, int age) : base(id)
     {
@@ -17,17 +17,21 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       Age = age;
     }
 
-    public PersonState() : base(_identityGenerator.IncrementAndGet())
+    public PersonState()
     {
       Name = "";
       Age = 0;
     }
 
-    public PersonState(string name, int age) : this()
+    public PersonState(string name, int age) : base(_identityGenerator.IncrementAndGet())
     {
       Name = name;
       Age = age;
     }
+
+    public PersonState With(string name) => new PersonState(PersistenceId, name, Age);
+
+    public PersonState With(int age) => new PersonState(PersistenceId, Name, age);
 
     public bool Equals(PersonState x, PersonState y)
     {
@@ -38,7 +42,5 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
     {
       throw new System.NotImplementedException();
     }
-
-    public PersonState With(string name) => new PersonState(PersistenceId, name, Age);
   }
 }

@@ -29,7 +29,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 
     public void IncreaseAge()
     {
-      throw new System.NotImplementedException();
+      Apply(_person.With(_person.Age + 1));
     }
 
     public override string Id()
