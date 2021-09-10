@@ -39,10 +39,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       Apply(_employee.With(number).With(salary), new EmployeeHired());
     }
 
-    public override string Id()
-    {
-      throw new System.NotImplementedException();
-    }
+    public override string Id() => _employee.PersistenceId.ToString();
 
     protected override void StateObject(EmployeeState stateObject)
     {

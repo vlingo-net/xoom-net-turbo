@@ -5,13 +5,13 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.Collections.Generic;
+using System;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Symbio.Store.Object;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 {
-  public class EmployeeState : StateObject, IEqualityComparer<EmployeeState>
+  public class EmployeeState : StateObject, IComparable<EmployeeState>
   {
     private static readonly AtomicLong _identityGenerator = new AtomicLong(0);
 
@@ -30,18 +30,29 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
       Salary = salary;
     }
 
-    public bool Equals(EmployeeState x, EmployeeState y)
-    {
-      throw new System.NotImplementedException();
-    }
-
-    public int GetHashCode(EmployeeState obj)
-    {
-      throw new System.NotImplementedException();
-    }
-
     public EmployeeState With(string number) => new EmployeeState(PersistenceId, number, Salary);
 
     public EmployeeState With(int salary) => new EmployeeState(PersistenceId, Number, salary);
+
+    public int GetHashCode(EmployeeState obj) => 31 * Number.GetHashCode() * Salary;
+
+    public override bool Equals(object? other)
+    {
+      if (other == null || other.GetType() != GetType())
+      {
+        return false;
+      }
+
+      if (this == other)
+      {
+        return true;
+      }
+
+      var otherEmployee = (EmployeeState) other;
+
+      return PersistenceId == otherEmployee.PersistenceId;
+    }
+
+    public int CompareTo(EmployeeState otherEmployee) => PersistenceId.CompareTo(otherEmployee.PersistenceId);
   }
 }
