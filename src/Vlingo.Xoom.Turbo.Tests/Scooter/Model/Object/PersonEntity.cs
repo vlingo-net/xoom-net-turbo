@@ -24,7 +24,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 
     public void Change(string name)
     {
-      throw new System.NotImplementedException();
+      Apply(_person.With(name));
     }
 
     public void IncreaseAge()

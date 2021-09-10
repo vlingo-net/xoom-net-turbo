@@ -11,7 +11,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
     public string Name;
     public int Age;
 
-    public PersonState(int id, string name, int age) : base(id)
+    public PersonState(long id, string name, int age) : base(id)
     {
       Name = name;
       Age = age;
@@ -38,5 +38,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
     {
       throw new System.NotImplementedException();
     }
+
+    public PersonState With(string name) => new PersonState(PersistenceId, name, Age);
   }
 }
