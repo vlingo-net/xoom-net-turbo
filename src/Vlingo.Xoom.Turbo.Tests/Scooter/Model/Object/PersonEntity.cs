@@ -3,7 +3,7 @@ using Vlingo.Xoom.Turbo.Scooter.Model.Object;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 {
-  public class PersonEntity : ObjectEntity<PersonState, DomainEvent>, Person
+  public class PersonEntity : ObjectEntity<PersonState, DomainEvent>, IPerson
   {
     private PersonState _person;
 
