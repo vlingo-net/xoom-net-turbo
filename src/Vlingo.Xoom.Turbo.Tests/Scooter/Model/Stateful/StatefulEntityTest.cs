@@ -22,6 +22,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
 			entity1.ChangeName("Sally Jane");
 			var newState = entity1.State();
 			Assert.Equal("Sally Jane", newState.Name);
+
+			entity1.IncreaseAge();
+			newState = entity1.State();
+			Assert.Equal(24, newState.Age);
 		}
 
 		public class Entity1Entity : StatefulEntity<Entity1State, DomainEvent>, IEntity1
@@ -50,7 +54,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
 
 			public void IncreaseAge()
 			{
-				throw new NotImplementedException();
+				Apply(_state.WithAge(_state.Age + 1));
 			}
 
 			public Entity1State State() => _state;
@@ -70,6 +74,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
 			}
 
 			public Entity1State WithName(string name) => new Entity1State(Id, name, Age);
+
+			public Entity1State WithAge(int age) => new Entity1State(Id, Name, age);
 		}
 	}
 
