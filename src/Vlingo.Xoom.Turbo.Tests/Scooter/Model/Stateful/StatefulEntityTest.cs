@@ -1,6 +1,7 @@
 using System;
 using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Turbo.Scooter.Model.Stateful;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
@@ -17,6 +18,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
 
 			var entity1 = new Entity1Entity(state);
 			Assert.Equal(state, entity1.State());
+
+			entity1.ChangeName("Sally Jane");
+			var newState = entity1.State();
+			Assert.Equal("Sally Jane", newState.Name);
 		}
 
 		public class Entity1Entity : StatefulEntity<Entity1State, DomainEvent>, IEntity1
@@ -40,7 +45,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
 
 			public void ChangeName(string name)
 			{
-				throw new NotImplementedException();
+				Apply(_state.WithName(name));
 			}
 
 			public void IncreaseAge()
@@ -63,6 +68,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
 				Name = name;
 				Age = age;
 			}
+
+			public Entity1State WithName(string name) => new Entity1State(Id, name, Age);
 		}
 	}
 
