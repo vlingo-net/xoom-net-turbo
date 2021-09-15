@@ -5,17 +5,17 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
-using Vlingo.Xoom.Symbio.Store;
-using Vlingo.Xoom.Symbio.Store.Dispatch;
+using Vlingo.Xoom.Lattice.Model;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 {
-	public class MockConfirmDispatchedResultInterest : IConfirmDispatchedResultInterest
+	public class Test1Happened : DomainEvent
 	{
-		public void ConfirmDispatchedResultedIn(Result result, string dispatchId)
+		private readonly string _id;
+
+		public Test1Happened(string id)
 		{
-			// not used
+			_id = id;
 		}
 	}
 }

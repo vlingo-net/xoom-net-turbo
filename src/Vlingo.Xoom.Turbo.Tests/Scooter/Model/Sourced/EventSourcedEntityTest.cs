@@ -12,110 +12,133 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 {
-  public class EventSourcedEntityTest
-  {
-    [Fact(Skip = "WIP")]
-    public void TestProductDefinedEventKept()
-    {
-      var product = new Product("dice", "fuz", "dice-fuz-1", "Fuzzy dice", 999);
+	public class EventSourcedEntityTest
+	{
+		[Fact(Skip = "WIP")]
+		public void TestProductDefinedEventKept()
+		{
+			var product = new Product("dice", "fuz", "dice-fuz-1", "Fuzzy dice", 999);
 
-      Assert.Equal(3, product.Applied().Size());
-    }
+			Assert.Equal(3, product.Applied().Size());
+		}
 
-    public class Product : ProductParent
-    {
-      public string Name { get; set; }
-      public string Description { get; set; }
-      public long Price { get; set; }
+		public class Product : ProductParent
+		{
+			public string Name { get; set; }
+			public string Description { get; set; }
+			public long Price { get; set; }
 
-      public Product(string type, string category, string name, string description, long price) : base(type, category)
-      {
-        Name = name;
-        Description = description;
-        Price = price;
+			public Product(string type, string category, string name, string description, long price) : base(type, category)
+			{
+				Name = name;
+				Description = description;
+				Price = price;
 
-        Apply(new ProductDefined(name, description, price));
-      }
+				Apply(new ProductDefined(name, description, price));
+			}
 
-      public class ProductDefined : DomainEvent
-      {
-        public string Name { get; }
-        public string Description { get; }
-        public long Price { get; }
-        public DateTime OccurredOn { get; }
-        public int Version { get; }
+			public class ProductDefined : DomainEvent
+			{
+				public string Name { get; }
+				public string Description { get; }
+				public long Price { get; }
+				public DateTime OccurredOn { get; }
+				public int Version { get; }
 
-        public ProductDefined(string name, string description, long price)
-        {
-          Name = name;
-          Description = description;
-          Price = price;
-          OccurredOn = DateTime.Now;
-          Version = 1;
-        }
-      }
+				public ProductDefined(string name, string description, long price)
+				{
+					Name = name;
+					Description = description;
+					Price = price;
+					OccurredOn = DateTime.Now;
+					Version = 1;
+				}
+			}
 
-      public override string Id()
-      {
-        throw new System.NotImplementedException();
-      }
+			public override string Id() => StreamName();
 
-      protected override string StreamName()
-      {
-        throw new System.NotImplementedException();
-      }
-    }
+			protected override string StreamName() => null;
 
-    public abstract class ProductParent : ProductGrandParent
-    {
-      public string Category { get; set; }
+			static Product()
+			{
+				RegisterConsumer<Product, ProductDefined>(typeof(Product), typeof(ProductDefined), WhenProductDefined);
+			}
 
-      protected ProductParent(string type, string category) : base(type)
-      {
-        Category = category;
+			static void WhenProductDefined(Product entity, ProductDefined @event)
+			{
+			}
+		}
 
-        Apply(new ProductParentCategorized(category));
-      }
+		public abstract class ProductParent : ProductGrandParent
+		{
+			public string Category { get; set; }
 
-      public class ProductParentCategorized : DomainEvent
-      {
-        public string Category { get; }
-        public DateTime OccurredOn { get; }
-        public int Version { get; }
+			protected ProductParent(string type, string category) : base(type)
+			{
+				Category = category;
 
-        public ProductParentCategorized(string category)
-        {
-          Category = category;
-          OccurredOn = DateTime.Now;
-          Version = 1;
-        }
-      }
-    }
+				Apply(new ProductParentCategorized(category));
+			}
 
-    public abstract class ProductGrandParent : EventSourcedEntity
-    {
-      public string Type { get; set; }
+			public class ProductParentCategorized : DomainEvent
+			{
+				public string Category { get; }
+				public DateTime OccurredOn { get; }
+				public int Version { get; }
 
-      protected ProductGrandParent(string type)
-      {
-        Type = type;
+				public ProductParentCategorized(string category)
+				{
+					Category = category;
+					OccurredOn = DateTime.Now;
+					Version = 1;
+				}
+			}
 
-        Apply(new ProductGrandParentTyped(type));
-      }
+			static ProductParent()
+			{
+				RegisterConsumer<ProductParent, ProductParentCategorized>(typeof(ProductParent),
+					typeof(ProductParentCategorized), WhenProductParentCategorized);
+			}
 
-      public class ProductGrandParentTyped : DomainEvent
-      {
-        public string Type { get; }
-        public DateTime OccurredOn { get; }
-        public int Version { get; }
+			static void WhenProductParentCategorized(ProductParent entity, ProductParentCategorized @event)
+			{
+			}
+		}
 
-        public ProductGrandParentTyped(string type)
-        {
-          Type = type;
-          OccurredOn = DateTime.Now;
-          Version = 1;
-        }
-      }
-    }
-  }
+		public abstract class ProductGrandParent : EventSourcedEntity
+		{
+			public string Type { get; set; }
+
+			protected ProductGrandParent(string type)
+			{
+				Type = type;
+
+				Apply(new ProductGrandParentTyped(type));
+			}
+
+			public class ProductGrandParentTyped : DomainEvent
+			{
+				public string Type { get; }
+				public DateTime OccurredOn { get; }
+				public int Version { get; }
+
+				public ProductGrandParentTyped(string type)
+				{
+					Type = type;
+					OccurredOn = DateTime.Now;
+					Version = 1;
+				}
+			}
+
+			static ProductGrandParent()
+			{
+				RegisterConsumer<ProductGrandParent, ProductGrandParentTyped>(typeof(ProductGrandParent),
+					typeof(ProductGrandParentTyped), WhenProductGrandParentTyped);
+			}
+
+			static void WhenProductGrandParentTyped(ProductGrandParent entity, ProductGrandParentTyped @event)
+			{
+			}
+		}
+	}
 }
