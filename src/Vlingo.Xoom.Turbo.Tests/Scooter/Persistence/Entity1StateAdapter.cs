@@ -15,15 +15,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		public object ToRawState<T>(T state, int stateVersion, Metadata metadata) =>
 			ToRawState(state, stateVersion, metadata);
 
-		public Entity1 FromRawState(State<string> raw)
-		{
-			throw new System.NotImplementedException();
-		}
+		public Entity1 FromRawState(State<string> raw) => JsonSerialization.Deserialized<Entity1>(raw.Data);
 
-		public TOtherState FromRawState<TOtherState>(State<string> raw)
-		{
-			throw new System.NotImplementedException();
-		}
+		public TOtherState FromRawState<TOtherState>(State<string> raw) =>
+			JsonSerialization.Deserialized<TOtherState>(raw.Data);
 
 		public State<string> ToRawState(string id, Entity1 state, int stateVersion, Metadata metadata)
 		{

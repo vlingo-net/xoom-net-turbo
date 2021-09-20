@@ -17,5 +17,12 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			Id = id;
 			Value = value;
 		}
+
+		public override bool Equals(object? obj)
+		{
+			if(obj ==  null || obj.GetType() != GetType())
+				return false;
+			return Id == ((Entity1)obj).Id;
+		}
 	}
 }

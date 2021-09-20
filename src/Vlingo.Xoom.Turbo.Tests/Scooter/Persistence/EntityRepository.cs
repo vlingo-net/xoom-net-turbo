@@ -28,7 +28,9 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 
 		public Entity1 Entity1Of(string id)
 		{
-			throw new System.NotImplementedException();
+			var interst = CreateReadInterest();
+			_store.Read<Entity1>(id, interst);
+			return Await<Entity1>(interst);
 		}
 	}
 }

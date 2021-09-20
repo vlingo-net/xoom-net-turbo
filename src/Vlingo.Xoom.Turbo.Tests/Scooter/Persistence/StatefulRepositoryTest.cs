@@ -35,17 +35,17 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_dispatcher = new MockStateStoreDispatcher(_interest);
 
 			var stateAdapterProvider = new StateAdapterProvider(_world);
-			new EntryAdapterProvider(_world);
+			_ = new EntryAdapterProvider(_world);
 
 			stateAdapterProvider.RegisterAdapter(new Entity1StateAdapter());
 
-			_store = _world.ActorFor<IStateStore>(typeof(InMemoryStateStoreActor<IState>), new[] { _dispatcher });
+			_store = _world.ActorFor<IStateStore>(typeof(InMemoryStateStoreActor<State<string>>), new[] { _dispatcher });
 
 			StateTypeStateStoreMap.StateTypeToStoreName(STORE_NAME_1, typeof(Entity1));
 			_repository = new EntityRepository(_store);
 		}
 
-		[Fact(Skip = "WIP")]
+		[Fact]
 		public void TestThatWriteReadAwaits()
 		{
 			_dispatcher.AfterCompleting(0);
