@@ -131,5 +131,12 @@ namespace Vlingo.Xoom.Turbo.Codegen
         public IReadOnlyList<ContentBase> Contents() => _contents;
 
         public CodeGenerationParameters Parameters() => _parameters;
+
+        public CodeGenerationContext AddContent(TemplateStandard standard, OutputFile file, string text)
+        {
+            _contents.Add(ContentBase.With(standard, file, _filer, _source, text));
+            return this;
+        }
+
     }
 }
