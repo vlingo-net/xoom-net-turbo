@@ -5,12 +5,21 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 {
 	public class AnnotationBasedTemplateStandard : TemplateStandard
 	{
-		public static TemplateStandard StoreProvider => null;
+		public static TemplateStandard StoreProvider => new TemplateStandard((parameters) =>
+		{
+			var storageType = parameters.Find<StorageType>(TemplateParameter.StorageType);
+			return Configuration.CommandModelStoreTemplates[storageType];
+		});
+
+		public static TemplateStandard AutoDispatchResourceHandler => new TemplateStandard((parameters) => "RestResource");
+		public static TemplateStandard AggregateState => new TemplateStandard((parameters) => null);
+
 	}
 }
