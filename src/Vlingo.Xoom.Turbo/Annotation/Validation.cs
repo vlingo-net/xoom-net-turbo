@@ -31,13 +31,23 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			}
 		};
 
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> ClassVisibilityValidation()=> (
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> ClassVisibilityValidation() => (
 			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
 		{
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
 				if (rootElement.IsNotPublic)
 					throw new ProcessingAnnotationException($"The class {annotation.FullName} is not public");
+			}
+		};
+
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> IsInterface() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				if (!rootElement.IsInterface)
+					throw new ProcessingAnnotationException($"The {annotation.FullName} annotation is only allowed at interface level");
 			}
 		};
 	}
