@@ -37,7 +37,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
 
         public bool HasElementsWith(object annotation) => _elements.ContainsKey(annotation) && ElementsWith(annotation) != null && ElementsWith(annotation).Count != 0;
 
-        public HashSet<Type> ElementsWith(params object[] annotations) => new HashSet<Type>(annotations.Where(annotation => _elements.ContainsKey(annotation)).SelectMany(annotation => _elements[annotation]));
+        public virtual HashSet<Type> ElementsWith(params object[] annotations) => new HashSet<Type>(annotations.Where(annotation => _elements.ContainsKey(annotation)).SelectMany(annotation => _elements[annotation]));
 
         public Type ElementWith(object annotation) => ElementsWith(annotation).FirstOrDefault();
 

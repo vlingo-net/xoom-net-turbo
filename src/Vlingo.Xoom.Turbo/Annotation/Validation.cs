@@ -14,18 +14,38 @@ namespace Vlingo.Xoom.Turbo.Annotation
 		public abstract void Validate(ProcessingEnvironment processingEnvironment, Type annotation,
 			AnnotatedElements annotatedElements);
 
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> SingularityValidation() => (ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> SingularityValidation() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
 		{
 			if (annotatedElements.Count(annotation) > 1)
 				throw new ProcessingAnnotationException($"Only one class should be annotated with {annotation.FullName}");
 		};
-	};
+
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> TargetValidation() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				if (!rootElement.IsClass)
+					throw new ProcessingAnnotationException($"The {annotation.FullName}");
+			}
+		};
+
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> ClassVisibilityValidation()=> (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				if (rootElement.IsNotPublic)
+					throw new ProcessingAnnotationException($"The class {annotation.FullName} is not public");
+			}
+		};
+	}
 }
 
 public class ProcessingAnnotationException : Exception
 {
-	public ProcessingAnnotationException(string message)
+	public ProcessingAnnotationException(string message) : base(message)
 	{
-		throw new NotImplementedException();
 	}
 }
