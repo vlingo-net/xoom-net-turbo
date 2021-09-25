@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Turbo.Codegen
@@ -49,6 +50,6 @@ namespace Vlingo.Xoom.Turbo.Codegen
         (StorageType.StateStore, Template.Template.StateStoreProvider.ToString()),
         (StorageType.Journal, Template.Template.StateStoreProvider.ToString())}.ToDictionary(x => x.Item1, x => x.Item2);
 
-        public static IReadOnlyDictionary<StorageType, string> StoreProviderTemplatesFrom(Template.Storage.Model model) => model.IsQueryModel() ? _queryModelStoreTemplates : _commandModelStoreTemplates;
+        public static IReadOnlyDictionary<StorageType, string> StoreProviderTemplatesFrom(Model model) => model.IsQueryModel() ? _queryModelStoreTemplates : _commandModelStoreTemplates;
     }
 }

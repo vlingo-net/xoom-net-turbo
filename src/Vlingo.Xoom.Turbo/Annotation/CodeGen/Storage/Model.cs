@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Storage
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 {
     public enum ModelType
     {

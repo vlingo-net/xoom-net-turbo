@@ -7,6 +7,7 @@
 
 using System;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Storage
@@ -28,9 +29,9 @@ namespace Vlingo.Xoom.Turbo.Tests.Storage
       //   StorageType.Journal, DefaultDatabaseProperties(Codegen.Template.Storage.ModelType.Command), false);
     }
 
-    private Properties DefaultDatabaseProperties(Codegen.Template.Storage.ModelType modelType)
+    private Properties DefaultDatabaseProperties(ModelType modelType)
     {
-      var prefix = Codegen.Template.Storage.ModelType.Query.Equals(modelType) ? "query." : "";
+      var prefix = ModelType.Query.Equals(modelType) ? "query." : "";
       var properties = new Properties();
       properties.SetProperty(prefix + "database", "MYSQL");
       properties.SetProperty(prefix + "database.name", "STORAGE_TEST");
