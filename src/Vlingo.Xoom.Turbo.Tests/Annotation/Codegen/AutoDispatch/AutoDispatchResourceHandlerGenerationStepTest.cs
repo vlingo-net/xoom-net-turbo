@@ -15,11 +15,11 @@ using Vlingo.Xoom.Turbo.Codegen.Template;
 using Xunit;
 using static Vlingo.Xoom.Turbo.Codegen.Dialect.Dialect;
 
-namespace Vlingo.Xoom.Turbo.Tests.AnnotatIOn.Codegen.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch
 {
-	public class AutoDispatchResourceHandlerGeneratIOnStepTest
+	public class AutoDispatchResourceHandlerGenerationStepTest
 	{
-		public AutoDispatchResourceHandlerGeneratIOnStepTest()
+		public AutoDispatchResourceHandlerGenerationStepTest()
 		{
 			ComponentRegistry.Register(typeof(CodeElementFormatter),
 				CodeElementFormatter.With(C_SHARP));

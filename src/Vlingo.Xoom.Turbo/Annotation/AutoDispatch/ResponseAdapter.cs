@@ -9,8 +9,24 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Struct)]
-    public class Body : Attribute
-    {
-    }
+	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Struct)]
+	public class ResponseAdapter : Attribute
+	{
+		private int _handler;
+
+		public ResponseAdapter()
+		{
+		}
+		
+		public ResponseAdapter(int handler)
+		{
+			_handler = handler;
+		}
+
+		public int Handler
+		{
+			get => _handler;
+			set => _handler = value;
+		}
+	}
 }

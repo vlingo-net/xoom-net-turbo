@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using Vlingo.Xoom.Turbo.Annotation;
-using Vlingo.Xoom.Turbo.Annotation.CodeGen.Storage;
+using Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch

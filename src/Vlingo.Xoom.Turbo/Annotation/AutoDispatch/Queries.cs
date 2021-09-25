@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.CodeGen.Storage
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {	
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
 	public class Queries : Attribute

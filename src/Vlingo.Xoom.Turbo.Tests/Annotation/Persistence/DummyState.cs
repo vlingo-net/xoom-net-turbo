@@ -5,11 +5,12 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Symbio.Store.Object;
+
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
 {
-	public class DummyData
+	public class DummyState : StateObject
 	{
-		public string Name { get; set; }
-
+		
 	}
 }
