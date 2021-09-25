@@ -10,14 +10,12 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class Xoom : Attribute
+	public class ResourceHandlers : Attribute
 	{
-		private string _name;
-
-		public string Name
+		public string Packages
 		{
-			get => _name;
-			set => _name = value;
+			get { throw new NotImplementedException(); }
+			set { throw new NotImplementedException(); }
 		}
 	}
 }

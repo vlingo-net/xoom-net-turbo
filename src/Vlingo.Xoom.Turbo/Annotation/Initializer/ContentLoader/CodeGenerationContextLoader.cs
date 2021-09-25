@@ -5,19 +5,13 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
+using System.IO;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
-	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class Xoom : Attribute
+	public class CodeGenerationContextLoader
 	{
-		private string _name;
-
-		public string Name
-		{
-			get => _name;
-			set => _name = value;
-		}
+		public static CodeGenerationContextLoader From(FileStream filers, string basePackage,
+			AnnotatedElements annotatedElements, ProcessingEnvironment environment) => new CodeGenerationContextLoader();
 	}
 }

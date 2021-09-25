@@ -7,6 +7,7 @@
 
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
+using Vlingo.Xoom.Turbo.Storage;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 {
@@ -15,11 +16,14 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 		public static TemplateStandard StoreProvider => new TemplateStandard((parameters) =>
 		{
 			var storageType = parameters.Find<StorageType>(TemplateParameter.StorageType);
+			if(parameters.Find<Model>(TemplateParameter.Model).IsQueryModel)
+				return Configuration.QueryModelStoreTemplates[storageType];
 			return Configuration.CommandModelStoreTemplates[storageType];
 		});
 
 		public static TemplateStandard AutoDispatchResourceHandler => new TemplateStandard((parameters) => "RestResource");
 		public static TemplateStandard AggregateState => new TemplateStandard((parameters) => null);
-
+		public static TemplateStandard XoomInitializer  => new TemplateStandard((parameters) => "", (name, parameters)
+			=> "XoomInitializer");
 	}
 }

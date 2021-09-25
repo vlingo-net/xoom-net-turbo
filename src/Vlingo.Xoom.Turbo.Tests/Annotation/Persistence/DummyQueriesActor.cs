@@ -5,11 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
 {
-	[Turbo.Annotation.Initializer.Xoom(Name ="annotated-boot")]
-	[Turbo.Annotation.Initializer.ResourceHandlers(Packages ="Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources")]
-	public class AnnotatedBootTest
+	public class DummyQueriesActor
 	{
+		
 	}
 }

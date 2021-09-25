@@ -22,9 +22,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 				context.registerTemplateProcessing(templateData, code);
 			});
 		}
-
+		
 		private Dialect.Dialect ResolveDialect(CodeGenerationContext context) => DialectExtensions.FindDefault();
 
 		protected abstract List<TemplateData> BuildTemplatesData(CodeGenerationContext context);
+		
+		public abstract bool ShouldProcess(CodeGenerationContext context);
 	}
 }

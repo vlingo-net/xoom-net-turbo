@@ -66,7 +66,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
         {
         }
 
-        TemplateStandard(Func<TemplateParameters, string> templateFileRetriever, Func<string, TemplateParameters, string> nameResolver)
+        public TemplateStandard(Func<TemplateParameters, string> templateFileRetriever, Func<string, TemplateParameters, string> nameResolver)
         {
             _templateFileRetriever = templateFileRetriever;
             _nameResolver = nameResolver;

@@ -1,4 +1,4 @@
-// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+﻿// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -7,23 +7,24 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.CodeGen.Storage
-{	
-	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
-	public class Queries : Attribute
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+{
+	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
+	public class Model : Attribute
 	{
 		private Type _protocols;
 		private Type _actor;
+		private Type _data;
 
-		public Queries()
+		public Model()
 		{
-			
 		}
-
-		public Queries(Type protocols, Type actor)
+		
+		public Model(Type protocols, Type actor, Type data)
 		{
 			_protocols = protocols;
 			_actor = actor;
+			_data = data;
 		}
 
 		public Type Protocols
@@ -36,6 +37,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.CodeGen.Storage
 		{
 			get => _actor;
 			set => _actor = value;
+		}
+
+		public Type Data
+		{
+			get => _data;
+			set => _data = value;
 		}
 	}
 }

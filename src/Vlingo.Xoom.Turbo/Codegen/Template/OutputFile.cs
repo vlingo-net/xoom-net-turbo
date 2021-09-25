@@ -28,7 +28,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 			_placeholder = placeholder;
 		}
 
-		public FileStream ToFile() => System.IO.File.Create(FilePath());
+		public FileStream ToFile()
+		{
+			System.IO.Directory.CreateDirectory(Path.GetDirectoryName(FilePath())!);
+			return new FileStream(FilePath(), FileMode.Create);
+		}
 
 		private string FilePath() => Path.Combine(_absolutePath, _filename);
 	}

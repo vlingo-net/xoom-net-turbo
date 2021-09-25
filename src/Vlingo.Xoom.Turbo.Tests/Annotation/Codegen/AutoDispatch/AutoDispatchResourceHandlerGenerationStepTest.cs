@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System.IO;
 using Vlingo.Xoom.Turbo.Annotation.Codegen;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen;
@@ -14,13 +15,13 @@ using Vlingo.Xoom.Turbo.Codegen.Template;
 using Xunit;
 using static Vlingo.Xoom.Turbo.Codegen.Dialect.Dialect;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Tests.AnnotatIOn.Codegen.AutoDispatch
 {
-	public class AutoDispatchResourceHandlerGenerationStepTest
+	public class AutoDispatchResourceHandlerGeneratIOnStepTest
 	{
-		public AutoDispatchResourceHandlerGenerationStepTest()
+		public AutoDispatchResourceHandlerGeneratIOnStepTest()
 		{
-			ComponentRegistry.Register(typeof(CodeElementFormatter), 
+			ComponentRegistry.Register(typeof(CodeElementFormatter),
 				CodeElementFormatter.With(C_SHARP));
 		}
 		
@@ -30,23 +31,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch
 			var context = CodeGenerationContext
 				.With(LoadParameters())
 				.AddContent(AnnotationBasedTemplateStandard.StoreProvider,
-					new OutputFile(PERSISTENCE_PACKAGE_PATH, "QueryModelStateStoreProvider.cs"),
-					QUERY_MODEL_STORE_PROVIDER_CONTENT);
+					new OutputFile(PersistencePackagePath, "QueryModelStateStoreProvider.cs"),
+					QueryModelStoreProviderContent);
 
 			new AutoDispatchResourceHandlerGenerationStep().Process(context);
-			
+
 			Assert.Equal(3, context.Contents().Count);
 		}
-
-		private const string QUERY_MODEL_STORE_PROVIDER_CONTENT = "namespace Io.Vlingo.XoomApp.Infrastructure.Persistence " +
-		                                                          "{" +
-		                                                          "public class QueryModelStateStoreProvider " +
-		                                                          "{" +
-		                                                          "... " +
-		                                                          "}" +
-		                                                          "}";
-
-		private const string PERSISTENCE_PACKAGE_PATH = "Io.Vlingo.XoomApp.Infrastructure.Persistence";
 
 		private CodeGenerationParameters LoadParameters()
 		{
@@ -63,22 +54,37 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch
 				.Relate(Label.Id, "authorId")
 				.Relate(Label.IdType, "string")
 				.Relate(Label.Body, "authorData")
-				.Relate(Label.BodyType, "Io.Vlingo.XoomApp.Infrastructure.AuthorData")
+				.Relate(Label.BodyType, "IO.Vlingo.XoomApp.Infrastructure.AuthorData")
 				.Relate(Label.AdapterHandlerInvocation, "AdapterStateHandler.Handler.Handle")
 				.Relate(Label.UseCustomAdapterHandlerParam, "false");
 
 			var authorResourceParameter = CodeGenerationParameter
-				.Of(Label.AutoDispatchName, "Io.Vlingo.XoomApp.Resources.AuthorResource")
-				.Relate(Label.HandlersConfigName, "io.vlingo.xoomapp.resources.AuthorHandlers")
+				.Of(Label.AutoDispatchName, "IO.Vlingo.XoomApp.Resources.AuthorResource")
+				.Relate(Label.HandlersConfigName, "IO.vlingo.xoomapp.resources.AuthorHandlers")
 				.Relate(Label.UriRoot, "/authers")
-				.Relate(Label.ModelProtocol, "Io.Vlingo.XoomApp.Model.Author")
-				.Relate(Label.ModelActor, "Io.Vlingo.XoomApp.Model.AuthorEntity")
-				.Relate(Label.ModelData, "Io.Vlingo.XoomApp.Model.AuthorData")
-				.Relate(Label.QueriesProtocol, "Io.Vlingo.XoomApp.Infrastructure.Persistence.AuthorQueries")
-				.Relate(Label.QueriesActor, "Io.Vlingo.XoomApp.Infrastructure.Persistence.AuthorQueriesActor")
+				.Relate(Label.ModelProtocol, "IO.Vlingo.XoomApp.Model.Author")
+				.Relate(Label.ModelActor, "IO.Vlingo.XoomApp.Model.AuthorEntity")
+				.Relate(Label.ModelData, "IO.Vlingo.XoomApp.Model.AuthorData")
+				.Relate(Label.QueriesProtocol, "IO.Vlingo.XoomApp.Infrastructure.Persistence.AuthorQueries")
+				.Relate(Label.QueriesActor, "IO.Vlingo.XoomApp.Infrastructure.Persistence.AuthorQueriesActor")
 				.Relate(firstAuthorRouteParameter);
-				
+
 			return CodeGenerationParameters.From(authorResourceParameter, useAutoDispatch, cqrs);
 		}
+
+		private static readonly string ProjectPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "xoom-app");
+
+		private static string InfrastructurePackagePath =
+			Path.Combine(ProjectPath, "src", "IO.Vlingo.XoomApp", "Infrastructure");
+
+		private static string PersistencePackagePath = Path.Combine(InfrastructurePackagePath, "Persistence");
+
+		private const string QueryModelStoreProviderContent = "namespace IO.Vlingo.XoomApp.Infrastructure.Persistence " +
+		                                                      "{ " +
+		                                                      "public class QueryModelStateStoreProvider " +
+		                                                      "{ " +
+		                                                      "... " +
+		                                                      "}" +
+		                                                      "}";
 	}
 }

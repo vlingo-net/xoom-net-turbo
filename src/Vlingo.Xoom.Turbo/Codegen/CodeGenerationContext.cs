@@ -122,7 +122,12 @@ namespace Vlingo.Xoom.Turbo.Codegen
             return databases;
         }
 
-        public bool IsInternalGeneration => CodeGenerationLocation.IsInternal(ParameterOf<CodeGenerationLocationType>(Label.GenerationLocation));
+        public bool IsInternalGeneration => CodeGenerationLocation.IsInternal(ParameterOf(Label.GenerationLocation,
+            x =>
+            {
+                CodeGenerationLocationType.TryParse(x, out CodeGenerationLocationType value);
+                return value;
+            }));
 
         public IEnumerable<CodeGenerationParameter> ParametersOf(Label label) => _parameters.RetrieveAll(label);
 
@@ -137,6 +142,9 @@ namespace Vlingo.Xoom.Turbo.Codegen
             _contents.Add(ContentBase.With(standard, file, _filer, _source, text));
             return this;
         }
+
+        public ContentBase? FindContent(TemplateStandard standard, string contentName) => _contents
+            .FirstOrDefault(content => content.Has(standard) && content.IsNamed(contentName));
 
     }
 }

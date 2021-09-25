@@ -7,8 +7,9 @@
 
 namespace Vlingo.Xoom.Turbo.Codegen
 {
-    public interface ICodeGenerationStep
-    {
-        public void Process(CodeGenerationContext context);
-    }
+	public interface ICodeGenerationStep
+	{
+		public void Process(CodeGenerationContext context);
+		public bool ShouldProcess(CodeGenerationContext context);
+	}
 }
