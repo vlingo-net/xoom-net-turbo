@@ -16,16 +16,16 @@ namespace Vlingo.Xoom.Turbo.Tests
     public void TestThatComponentsAreRegistered()
     {
       ComponentRegistry.Register("appName", "xoom-app");
-      ComponentRegistry.Register(typeof(bool), bool.TrueString);
+      ComponentRegistry.Register<string>(bool.TrueString);
 
       Assert.True(ComponentRegistry.Has("appName"));
-      Assert.True(ComponentRegistry.Has(typeof(bool)));
+      Assert.True(ComponentRegistry.Has<string>());
 
       Assert.False(ComponentRegistry.Has("component"));
-      Assert.False(ComponentRegistry.Has(typeof(int)));
+      Assert.False(ComponentRegistry.Has<int>());
 
       Assert.Equal("xoom-app", ComponentRegistry.WithName("appName"));
-      Assert.Equal(bool.TrueString, ComponentRegistry.WithType<string>(typeof(bool)));
+      Assert.Equal(bool.TrueString, ComponentRegistry.WithType<string>());
     }
 
     public void Dispose()

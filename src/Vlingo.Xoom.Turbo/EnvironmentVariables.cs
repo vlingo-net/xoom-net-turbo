@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Turbo
       RegisterDefaultRetrieverIfNotRegistered();
 
       return ComponentRegistry
-        .WithType<IEnvironmentVariablesRetriever>(typeof(IEnvironmentVariablesRetriever))
+        .WithType<IEnvironmentVariablesRetriever>()
         .Retrieve(key);
     }
 
@@ -25,14 +25,14 @@ namespace Vlingo.Xoom.Turbo
       RegisterDefaultRetrieverIfNotRegistered();
 
       return ComponentRegistry
-        .WithType<IEnvironmentVariablesRetriever>(typeof(IEnvironmentVariablesRetriever))
+        .WithType<IEnvironmentVariablesRetriever>()
         .ContainsKey(key);
     }
 
     private static void RegisterDefaultRetrieverIfNotRegistered()
     {
-      if (!ComponentRegistry.Has(typeof(IEnvironmentVariablesRetriever)))
-        ComponentRegistry.Register(typeof(IEnvironmentVariablesRetriever), new DefaultRetriever());
+      if (!ComponentRegistry.Has<IEnvironmentVariablesRetriever>())
+        ComponentRegistry.Register<IEnvironmentVariablesRetriever>(new DefaultRetriever());
     }
 
     public interface IEnvironmentVariablesRetriever

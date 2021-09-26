@@ -12,6 +12,8 @@ using Vlingo.Xoom.Turbo.Annotation.Codegen;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
 using Vlingo.Xoom.Turbo.Codegen;
+using Vlingo.Xoom.Turbo.Codegen.Content;
+using Vlingo.Xoom.Turbo.Codegen.Dialect;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 using Xunit;
@@ -20,7 +22,14 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.Initializer
 {
 	public class XoomInitializerGenerationStepTest : IDisposable
 	{
-		private readonly MockRepository _mockRepository = new MockRepository(MockBehavior.Default);
+		private readonly MockRepository _mockRepository;
+
+		public XoomInitializerGenerationStepTest()
+		{
+			ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.C_SHARP));
+			
+			_mockRepository = new MockRepository(MockBehavior.Default);
+		}
 		
 		[Fact(Skip = "WIP")]
 		public void TestThatXoomInitializerIsGenerated()

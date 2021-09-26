@@ -17,5 +17,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 		}
 
 		public static CodeElementFormatter With(Dialect.Dialect dialect) => new CodeElementFormatter(dialect);
+
+		public string SimpleNameToAttribute(string simpleName) => simpleName;
 	}
 }

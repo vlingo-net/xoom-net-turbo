@@ -32,7 +32,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Storage
       dict.Add("VLINGO_XOOM_QUERY_DATABASE_CONNECTION_ATTEMPTS", "2");
 
       _mockIEnvironmentVariables = new MockIEnvironmentVariables(dict);
-      ComponentRegistry.Register(typeof(IEnvironmentVariablesRetriever), _mockIEnvironmentVariables);
+      ComponentRegistry.Register<IEnvironmentVariablesRetriever>(_mockIEnvironmentVariables);
     }
 
     [Fact]

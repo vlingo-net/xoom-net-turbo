@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
@@ -40,7 +40,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 				!xoomInitializerClass.Equals(AnnotationBasedTemplateStandard.XoomInitializer.ResolveClassname());
 
 			_parameters = TemplateParameters.With(TemplateParameter.BlockingMessaging, blockingMessaging)
-				.And(TemplateParameter.ApplicationName, context.ParameterOf<string>(Label.ApplicationName));
+					.And(TemplateParameter.ApplicationName, context.ParameterOf<string>(Label.ApplicationName))
+					.And(TemplateParameter.Providers,
+						StoreProvider.From(storageType, useCqrs, projectionType.IsProjectionEnabled(), hasExchange))
+					.And(TemplateParameter.TypeRegistries, TypeRegistry.From(storageType, useCqrs))
+					.And(TemplateParameter.RestResources, RestResource.From(contents))
+				;
 		}
 
 		public override TemplateParameters Parameters() => _parameters;

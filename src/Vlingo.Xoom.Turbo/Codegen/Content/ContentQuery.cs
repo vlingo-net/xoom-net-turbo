@@ -17,9 +17,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
         //TODO: IsPresent will be added
         public static bool Exists(TemplateStandard standard, IReadOnlyList<ContentBase> contents) => FilterByStandard(standard, contents).ToList().Any();
 
-        public static HashSet<string> FindClassNames(TemplateStandard standard, List<ContentBase> contents) => new HashSet<string>(FilterByStandard(standard, contents).Select(x => x.RetrieveClassName()));
+        public static HashSet<string> FindClassNames(TemplateStandard standard, IReadOnlyList<ContentBase> contents) => new HashSet<string>(FilterByStandard(standard, contents).Select(x => x.RetrieveClassName()));
 
-        public static HashSet<string> FindClassNames(List<ContentBase> contents, params TemplateStandard[] standards) => new HashSet<string>(standards.SelectMany(standard => FindClassNames(standard, contents)));
+        public static HashSet<string> FindClassNames(IReadOnlyList<ContentBase> contents, params TemplateStandard[] standards) => new HashSet<string>(standards.SelectMany(standard => FindClassNames(standard, contents)));
 
         public static HashSet<string> FindClassNames(TemplateStandard standard, string packageName, List<ContentBase> contents) => new HashSet<string>(FilterByStandard(standard, contents).Where(content => content.RetrievePackage() == packageName).Select(x => x.RetrieveClassName()));
 
@@ -34,5 +34,6 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
         public static string FindPackage(TemplateStandard standard, string className, List<ContentBase> contents) => FilterByStandard(standard, contents).Where(content => content.RetrieveClassName() == className).Select(x => x.RetrievePackage()).FirstOrDefault() ?? string.Empty;
 
         public static IEnumerable<ContentBase> FilterByStandard(TemplateStandard standard, IReadOnlyList<ContentBase> contents) => contents.Where(content => content.Has(standard));
+
     }
 }

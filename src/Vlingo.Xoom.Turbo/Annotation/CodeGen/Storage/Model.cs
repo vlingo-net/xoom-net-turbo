@@ -16,16 +16,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
         Query
     }
 
-    public class Model
+    public static class ModelTypeExtensions
     {
-        public readonly string title;
-
-        public Model(string title)
-        {
-            this.title = title;
-        }
-
-        public static IEnumerable<ModelType> ApplicableFor(bool useCQRS)
+        public static IEnumerable<ModelType> ApplicableTo(bool useCQRS)
         {
             if (useCQRS)
             {
@@ -34,10 +27,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
             return new List<ModelType>() { ModelType.Domain };
         }
 
-        public bool IsCommandModel() => title == "CommandModel";
+        public static bool IsCommandModel(this ModelType modelType) => modelType.Equals(ModelType.Command);
 
-        public bool IsQueryModel() => title == "QueryModel";
+        public static bool IsQueryModel(this ModelType modelType) => modelType.Equals(ModelType.Query);
 
-        public bool IsDomainModel() => title == "DomainModel";
+        public static bool IsDomainModel(this ModelType modelType) => modelType.Equals(ModelType.Domain);
     }
 }

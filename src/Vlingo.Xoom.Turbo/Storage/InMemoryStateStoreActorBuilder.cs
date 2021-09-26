@@ -10,7 +10,7 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store.State;
 using Vlingo.Xoom.Symbio.Store.State.InMemory;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage

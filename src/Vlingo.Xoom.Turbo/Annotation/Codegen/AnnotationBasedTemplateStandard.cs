@@ -5,9 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
-using Vlingo.Xoom.Turbo.Storage;
+using Model = Vlingo.Xoom.Turbo.Storage.Model;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 {
@@ -23,7 +24,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 
 		public static TemplateStandard AutoDispatchResourceHandler => new TemplateStandard((parameters) => "RestResource");
 		public static TemplateStandard AggregateState => new TemplateStandard((parameters) => null);
-		public static TemplateStandard XoomInitializer  => new TemplateStandard((parameters) => "", (name, parameters)
+		public static TemplateStandard XoomInitializer => new TemplateStandard((parameters) => "", (name, parameters)
 			=> "XoomInitializer");
+
+		public static TemplateStandard ProjectionDispatcherProvider  => new TemplateStandard((parameters) => "ProjectionDispatcherProvider", (name, parameters)
+			=> "ProjectionDispatcherProvider");
 	}
 }
