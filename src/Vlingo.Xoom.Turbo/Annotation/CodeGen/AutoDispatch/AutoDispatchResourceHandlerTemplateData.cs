@@ -10,12 +10,13 @@ using System.Linq;
 using Vlingo.Xoom.Turbo.Annotation.Codegen;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
+using Vlingo.Xoom.Turbo.Codegen.Template;
 using Vlingo.Xoom.Turbo.Codegen.Template.Resource;
-using Vlingo.Xoom.Turbo.Codegen.Template.Storage;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
 	public class AutoDispatchResourceHandlerTemplateData : TemplateData
 	{
@@ -46,7 +47,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
 				.And(TemplateParameter.Queries, Queries.From(autoDispatchParameter))
 				.And(TemplateParameter.RestResourceName, Standard().ResolveClassname(_restResourceName))
 				.And(TemplateParameter.UriRoot, autoDispatchParameter.RetrieveRelatedValue(Label.UriRoot))
-				.And(TemplateParameter.RouteDeclarations, RouteDeclarationParameter.From(autoDispatchParameter))
+				.And(TemplateParameter.RouteDeclarations, RouteDeclaration.From(autoDispatchParameter))
 				.And(TemplateParameter.ModelProtocol, autoDispatchParameter.RetrieveRelatedValue(Label.ModelProtocol))
 				.And(TemplateParameter.ModelActor, autoDispatchParameter.RetrieveRelatedValue(Label.ModelActor))
 				.And(TemplateParameter.HandlersConfigName, autoDispatchParameter.RetrieveRelatedValue(Label.HandlersConfigName))

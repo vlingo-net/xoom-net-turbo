@@ -9,7 +9,7 @@ using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template.Resource;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
     public class AutoDispatchHandlerInvocationResolver : HandlerInvocationResolver, IHandlerInvocationResolver
     {

@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template.Model;
 

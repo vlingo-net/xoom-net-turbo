@@ -9,10 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Http;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
+using Vlingo.Xoom.Turbo.Codegen.Template;
 using Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
-using Vlingo.Xoom.Turbo.Codegen.Template.Model;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
     public class RouteDetail
     {

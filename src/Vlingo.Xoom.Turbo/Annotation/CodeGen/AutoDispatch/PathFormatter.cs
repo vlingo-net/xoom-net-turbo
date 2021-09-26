@@ -7,7 +7,7 @@
 
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
     public class PathFormatter
     {
@@ -40,14 +40,13 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
             {
                 return rootPath;
             }
-            else if (!routePath.StartsWith(rootPath))
+
+            if (!routePath.StartsWith(rootPath))
             {
                 return PrependRootPath(rootPath, routePath);
             }
-            else
-            {
-                return routePath;
-            }
+
+            return routePath;
         }
 
         private static string PrependRootPath(string rootPath, string routePath) => RemoveSurplusesSlashes(string.Format("{0}/{1}", rootPath, routePath));

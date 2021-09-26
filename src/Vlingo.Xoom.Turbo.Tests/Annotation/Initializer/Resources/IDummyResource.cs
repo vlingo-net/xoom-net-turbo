@@ -14,7 +14,7 @@ using Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources
 {
 	[Turbo.Annotation.AutoDispatch.AutoDispatch(Path = "/dummies", Handlers = typeof(DummyHandlers))]
-	[Queries(Protocols = typeof(IDummyQueries), Actor = typeof(DummyQueriesActor))]
+	[Queries(Protocol = typeof(IDummyQueries), Actor = typeof(DummyQueriesActor))]
 	[Turbo.Annotation.AutoDispatch.Model(Protocols = typeof(IDummy), Actor = typeof(DummyEntity), Data = typeof(DummyData))]
 	public interface IDummyResource
 	{

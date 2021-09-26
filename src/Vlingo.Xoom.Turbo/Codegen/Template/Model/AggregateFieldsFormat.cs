@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
 namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
@@ -29,7 +30,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
         {
             private static readonly string _pattern = "public final {0} {1};";
 
-            public IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, StateFieldDetail.TypeOf(aggregate, field.value), field.value));
+            public IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, FieldDetail.TypeOf(aggregate, field.value), field.value));
         }
 
         public class Constructor : AggregateFieldsFormat<List<string>>
@@ -56,7 +57,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
             public static AlternateReference HandlingSelfReferencedFields() => new AlternateReference(field => string.Concat("this.", field.value));
 
-            public static AlternateReference HandlingDefaultFieldsValue() => new AlternateReference(field => StateFieldDetail.ResolveDefaultValue(field.Parent(Label.Aggregate), field.value));
+            public static AlternateReference HandlingDefaultFieldsValue() => new AlternateReference(field => FieldDetail.ResolveDefaultValue(field.Parent(Label.Aggregate), field.value));
 
             public string Format(CodeGenerationParameter para, IEnumerable<CodeGenerationParameter> fields) => string.Join(", ", para.RetrieveAllRelated(Label.StateField).Select(field => IsPresent(field, fields.ToList()) ? field.value : _absenceHandler(field)));
 

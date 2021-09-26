@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Http;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template.Model;
 using Vlingo.Xoom.Turbo.Codegen.Template.Resource;
@@ -26,7 +27,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
             var aggregate = route.Parent(Label.Aggregate);
             _parameters =
                     TemplateParameters.With(TemplateParameter.RetrievalRoute, IsRetrievalRoute(route))
-                            .And(TemplateParameter.IdType, StateFieldDetail.TypeOf(aggregate, "id"))
+                            .And(TemplateParameter.IdType, FieldDetail.TypeOf(aggregate, "id"))
                             .And(TemplateParameter.RouteMethod, route.RetrieveRelatedValue(Label.RouteMethod))
                             .And(TemplateParameter.RoutePath, PathFormatter.FormatRelativeRoutePath(route))
                             .And(TemplateParameter.DataObjectName, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregate.value))

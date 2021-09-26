@@ -12,7 +12,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
 {
 	public class ProcessingEnvironment
 	{
-		public Type GetElementUtils() => throw new NotImplementedException();
+		public virtual Type GetElementUtils() => throw new NotImplementedException();
 		public virtual FileStream GetFiler() => throw new NotImplementedException();
 	}
 }

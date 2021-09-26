@@ -12,7 +12,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
 	public class Queries : Attribute
 	{
-		private Type _protocols;
+		private Type _protocol;
 		private Type _actor;
 
 		public Queries()
@@ -20,16 +20,16 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			
 		}
 
-		public Queries(Type protocols, Type actor)
+		public Queries(Type protocol, Type actor)
 		{
-			_protocols = protocols;
+			_protocol = protocol;
 			_actor = actor;
 		}
 
-		public Type Protocols
+		public Type Protocol
 		{
-			get => _protocols;
-			set => _protocols = value;
+			get => _protocol;
+			set => _protocol = value;
 		}
 
 		public Type Actor

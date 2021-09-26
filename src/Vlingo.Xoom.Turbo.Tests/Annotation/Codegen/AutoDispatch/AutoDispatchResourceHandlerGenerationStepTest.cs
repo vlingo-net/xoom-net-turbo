@@ -36,7 +36,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch
 
 			new AutoDispatchResourceHandlerGenerationStep().Process(context);
 
+			var authorResourceHandler = context.FindContent(AnnotationBasedTemplateStandard.AutoDispatchResourceHandler,
+				"AuthorResourceHandler");
 			Assert.Equal(3, context.Contents().Count);
+			Assert.True(authorResourceHandler!.Contains(TextExpectation.OnCSharp.Read("author-dispatch-resource-handler")));
 		}
 
 		private CodeGenerationParameters LoadParameters()

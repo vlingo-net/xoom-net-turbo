@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
-    public class StateFieldDetail
+    public class FieldDetail
     {
         private static string _unknownFieldMessage = "{0} is not a field in {1} state";
         private static readonly List<string> _numericTypes = new List<string>() { "byte", "short", "int", "integer", "long", "double", "float" };

@@ -8,11 +8,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Http.Resource;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
-    public class RouteDeclarationParameter
+    public class RouteDeclaration
     {
         private readonly bool _last;
         private readonly string _path;
@@ -22,13 +23,13 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
         private readonly string _signature;
         private readonly List<string> _parameterTypes = new List<string>();
 
-        public static List<RouteDeclarationParameter> From(CodeGenerationParameter mainParameter)
+        public static List<RouteDeclaration> From(CodeGenerationParameter mainParameter)
         {
             var routeSignatures = mainParameter.RetrieveAllRelated(Label.RouteSignature).ToList();
-            return Enumerable.Range(0, routeSignatures.Count()).Select(index => new RouteDeclarationParameter(index, routeSignatures.Count(), routeSignatures[index])).ToList();
+            return Enumerable.Range(0, routeSignatures.Count()).Select(index => new RouteDeclaration(index, routeSignatures.Count(), routeSignatures[index])).ToList();
         }
 
-        private RouteDeclarationParameter(int routeIndex, int numberOfRoutes, CodeGenerationParameter routeSignatureParameter)
+        private RouteDeclaration(int routeIndex, int numberOfRoutes, CodeGenerationParameter routeSignatureParameter)
         {
             _signature = RouteDetail.ResolveMethodSignature(routeSignatureParameter);
             _handlerName = ResolveHandlerName();
