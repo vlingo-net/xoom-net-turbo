@@ -36,7 +36,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 			return new List<StorageType> { storageType, StorageType.StateStore };
 		}
 
-		private static bool IsEnabled(this StorageType storageType) => !storageType.Equals(StorageType.None);
+		public static bool IsEnabled(this StorageType storageType) => !storageType.Equals(StorageType.None);
 		
 		private static bool IsStateful(this StorageType storageType) => storageType.Equals(StorageType.StateStore);
 

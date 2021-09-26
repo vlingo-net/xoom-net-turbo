@@ -11,7 +11,9 @@ using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 {
 	public class Configuration
-	{
+	{public static Dictionary<StorageType, string> AdapterTemplate =>
+			new Dictionary<StorageType, string>() { { StorageType.StateStore, "StateAdapter" }, { StorageType.Journal, "EntryAdapter" } };
+
 		public static Dictionary<StorageType, string> QueryModelStoreTemplates =>
 			new Dictionary<StorageType, string>() { { StorageType.StateStore, "StateStoreProvider" }, { StorageType.Journal, "StateStoreProvider" } };
 		public static Dictionary<StorageType, string> CommandModelStoreTemplates =>

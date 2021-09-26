@@ -22,8 +22,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
 	{
 		public static string? Name(this ProjectionType projectionType) =>
 			Enum.GetName(typeof(ProjectionType), projectionType);
-
+		
 		public static bool IsProjectionEnabled(this ProjectionType projectionType) =>
 			!projectionType.Equals(ProjectionType.None);
+		public static bool IsEventBased(this ProjectionType projectionType) =>
+			!projectionType.Equals(ProjectionType.EventBased);
 	}
 }

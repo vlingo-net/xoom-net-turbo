@@ -147,5 +147,9 @@ namespace Vlingo.Xoom.Turbo.Codegen
         public ContentBase? FindContent(TemplateStandard standard, string contentName) => _contents
             .FirstOrDefault(content => content.Has(standard) && content.IsNamed(contentName));
 
+        public CodeGenerationContext Contents(List<IContentLoader> resolveContentLoaders)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

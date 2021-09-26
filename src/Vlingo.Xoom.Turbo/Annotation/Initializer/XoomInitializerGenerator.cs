@@ -5,6 +5,14 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System.Linq;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using Vlingo.Xoom.Turbo.Codegen;
+using Vlingo.Xoom.Turbo.Codegen.Content;
+
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
 	public class XoomInitializerGenerator
@@ -28,6 +36,16 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 
 			var context =
 				CodeGenerationContextLoader.From(environment.GetFiler(), basePackage, annotatedElements, environment);
+
+			new ICodeGenerationStep[]
+				{
+					new ProjectionDispatcherProviderGenerationStep(), new StorageGenerationStep(),
+					new AutoDispatchResourceHandlerGenerationStep(), new XoomInitializerGenerationStep(),
+					new ContentCreationStep()
+				}
+				.Where(step => step.ShouldProcess(context))
+				.ToList()
+				.ForEach(step => step.Process(context));
 		}
 	}
 }

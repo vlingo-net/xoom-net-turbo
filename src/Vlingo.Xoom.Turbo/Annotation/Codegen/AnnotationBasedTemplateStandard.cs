@@ -29,5 +29,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 
 		public static TemplateStandard ProjectionDispatcherProvider  => new TemplateStandard((parameters) => "ProjectionDispatcherProvider", (name, parameters)
 			=> "ProjectionDispatcherProvider");
+		public static TemplateStandard Adapter  => new TemplateStandard((parameters) => Configuration.AdapterTemplate[parameters.Find<StorageType>(TemplateParameter.StorageType)], (name, parameters)
+			=> name + "Adapter");
 	}
 }
