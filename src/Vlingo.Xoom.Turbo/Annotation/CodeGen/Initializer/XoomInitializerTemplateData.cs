@@ -5,6 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Vlingo.Xoom.Turbo.Codegen;
@@ -43,9 +46,61 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 					.And(TemplateParameter.ApplicationName, context.ParameterOf<string>(Label.ApplicationName))
 					.And(TemplateParameter.Providers,
 						StoreProvider.From(storageType, useCqrs, projectionType.IsProjectionEnabled(), hasExchange))
+					.And(TemplateParameter.UseAnnotations,
+						context.ParameterOf(Label.UseAnnotations, x => bool.TrueString.ToLower() == x))
+					.AndResolve(TemplateParameter.ProjectionDispatcherProviderName,
+						AnnotationBasedTemplateStandard.ProjectionDispatcherProvider.ResolveClassname)
+					.And(TemplateParameter.XoomInitializerClass, context.ParameterOf<string>(Label.XoomInitializerName))
+					.And(TemplateParameter.ExchangeBootstrapName, ResolveExchangeBootstrapName(context))
 					.And(TemplateParameter.TypeRegistries, TypeRegistry.From(storageType, useCqrs))
+					.And(TemplateParameter.CustomInitialization, customInitialization)
 					.And(TemplateParameter.RestResources, RestResource.From(contents))
+					.AddImports(ResolveImports(context))
 				;
+		}
+
+		private string ResolveExchangeBootstrapName(CodeGenerationContext context)
+		{
+			var exchangeBootstrapQualifiedName =
+				ContentQuery
+					.FindFullyQualifiedClassNames(new TemplateStandard(TemplateStandardType.ExchangeBootstrap),
+						context.Contents())
+					.FirstOrDefault();
+
+			if (exchangeBootstrapQualifiedName == null)
+			{
+				return null;
+			}
+
+			return exchangeBootstrapQualifiedName;
+		}
+
+		private ISet<string> ResolveImports(CodeGenerationContext context)
+		{
+			var useCqrs =
+				context.ParameterOf(Label.Cqrs, x => bool.TrueString.ToLower() == x);
+
+			var storageType =
+				context.ParameterOf(Label.StorageType, x =>
+				{
+					StorageType.TryParse(x, out StorageType value);
+					return value;
+				});
+
+			var dependencies = new[]
+			{
+				AnnotationBasedTemplateStandard.StoreProvider, AnnotationBasedTemplateStandard.ProjectionDispatcherProvider,
+				new TemplateStandard(TemplateStandardType.RestResource),
+				AnnotationBasedTemplateStandard.AutoDispatchResourceHandler,
+				new TemplateStandard(TemplateStandardType.ExchangeBootstrap)
+			};
+
+			return new[]
+				{
+					ContentQuery.FindFullyQualifiedClassNames(context.Contents(), dependencies),
+					storageType.ResolveTypeRegistryQualifiedNames(useCqrs)
+				}.SelectMany(s => s.ToList())
+				.ToImmutableHashSet();
 		}
 
 		public override TemplateParameters Parameters() => _parameters;

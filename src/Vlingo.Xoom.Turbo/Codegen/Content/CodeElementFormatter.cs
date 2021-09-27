@@ -22,6 +22,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 
 		public string SimpleNameToAttribute(string simpleName) => simpleName;
 
-		public string SimpleNameOf(string qualifiedName) => qualifiedName.Substring(qualifiedName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+		public string SimpleNameOf(string qualifiedName) =>
+			qualifiedName.Substring(qualifiedName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+
+		public string QualifiedNameOf(string packageName, string className)
+		{
+			return packageName + "." + className;
+		}
 	}
 }

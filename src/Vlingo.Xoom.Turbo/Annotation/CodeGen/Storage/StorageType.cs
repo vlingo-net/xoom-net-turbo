@@ -6,6 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
@@ -22,11 +24,24 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 	public static class StorageTypeExtensions
 	{
 		public static bool IsSourced(this StorageType storageType) => storageType.Equals(StorageType.Journal);
+
 		public static string ResolveTypeRegistryObjectName(this StorageType storageType, ModelType modelType)
 		{
 			if (!modelType.IsQueryModel())
 				return storageType.TypeRegistryObjectName();
 			return "StatefulTypeRegistry";
+		}
+
+		public static ISet<string> ResolveTypeRegistryQualifiedNames(this StorageType storageType, bool useCqrs) =>
+			storageType.FindRelatedStorageTypes(useCqrs)
+				.Select(sType => sType.TypeRegistryQualifiedClassName())
+				.ToImmutableHashSet();
+
+
+		private static string TypeRegistryQualifiedClassName(this StorageType storageType)
+		{
+			return ComponentRegistry.WithType<CodeElementFormatter>()
+				.QualifiedNameOf(storageType.TypeRegistryPackage(), storageType.TypeRegistryClassName());
 		}
 
 		public static IEnumerable<StorageType> FindRelatedStorageTypes(this StorageType storageType, bool useCqrs)
@@ -48,6 +63,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 				? "StatefulTypeRegistry"
 				: "";
 
+		public static string TypeRegistryPackage(this StorageType storageType) => storageType.Equals(StorageType.Journal)
+			? "Vlingo.Xoom.Lattice.Model.Sourcing"
+			: storageType.Equals(StorageType.StateStore)
+				? "Vlingo.Xoom.Lattice.Model.Stateful"
+				: "";
+
 		public static TemplateStandard AdapterSourceClassStandard(this StorageType storageType) =>
 			storageType.Equals(StorageType.Journal)
 				? new TemplateStandard(TemplateStandardType.DomainEvent)
@@ -57,11 +78,11 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 			IReadOnlyList<ContentBase> contents)
 		{
 			if (!modelType.IsQueryModel() && !storageType.IsStateful()) return new HashSet<string>();
-			
+
 			var typeStandard = modelType.IsQueryModel()
 				? new TemplateStandard(TemplateStandardType.DataObject)
 				: new TemplateStandard(TemplateStandardType.AggregateState);
-			
+
 			return ContentQuery.FindFullyQualifiedClassNames(typeStandard, contents);
 		}
 
@@ -69,9 +90,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 			IReadOnlyList<ContentBase> contents)
 		{
 			if (!modelType.RequireAdapter()) return new HashSet<string>();
-			
+
 			return ContentQuery.FindFullyQualifiedClassNames(storageType.AdapterSourceClassStandard(), contents);
 		}
+
 		public static string TypeRegistryObjectName(this StorageType storageType) =>
 			ComponentRegistry.WithType<CodeElementFormatter>().SimpleNameToAttribute(storageType.TypeRegistryClassName());
 	}
