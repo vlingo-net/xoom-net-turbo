@@ -9,15 +9,15 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Persistence
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class Adapters : Attribute
-    {
-        Type[] _value;
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+	public class Projections : Attribute
+	{
+		Projection[] _value;
 
-        public Type[] Value
-        {
-            get => _value;
-            set => _value = value;
-        }
-    }
+		public Projection[] Value
+		{
+			get => _value;
+			set => _value = value;
+		}
+	}
 }

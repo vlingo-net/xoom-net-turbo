@@ -6,14 +6,33 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
 	public class ProjectionContentLoader : TypeBasedContentLoader
 	{
-		public ProjectionContentLoader(Type persistenceSetupClass, ProcessingEnvironment environment)
+		public ProjectionContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+			environment)
 		{
-			throw new NotImplementedException();
+		}
+
+		protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.Projection);
+
+		protected override List<Type> RetrieveContentSource()
+		{
+			var projections = AnnotatedClass!.GetCustomAttribute<Projections>();
+
+			if (projections == null)
+				return new List<Type>();
+
+			return new[] { projections.Value }
+				.Select(projection => TypeRetriever.From(projections, projection => (projection as Projection)!.Actor))
+				.ToList();
 		}
 	}
 }

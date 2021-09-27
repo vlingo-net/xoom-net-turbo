@@ -10,6 +10,7 @@ using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 

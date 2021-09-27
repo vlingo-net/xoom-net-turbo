@@ -14,7 +14,7 @@ using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
 	public class CodeGenerationContextLoader
 	{

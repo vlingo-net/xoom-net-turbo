@@ -7,21 +7,14 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Persistence
 {
-	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class ResourceHandlers : Attribute
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+	public class EnableQueries : Attribute
 	{
-		private string[] _package;
-		private Type[] _value;
+		QueriesEntry[] _value;
 
-		public string[] Packages
-		{
-			get => _package;
-			set => _package = value;
-		}
-
-		public Type[] Value
+		public QueriesEntry[] Value
 		{
 			get => _value;
 			set => _value = value;
