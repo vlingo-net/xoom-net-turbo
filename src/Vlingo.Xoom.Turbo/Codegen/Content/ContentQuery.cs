@@ -23,11 +23,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 
         public static HashSet<string> FindClassNames(TemplateStandard standard, string packageName, List<ContentBase> contents) => new HashSet<string>(FilterByStandard(standard, contents).Where(content => content.RetrievePackage() == packageName).Select(x => x.RetrieveClassName()));
 
-        public static HashSet<string> FindFullyQualifiedClassNames(List<ContentBase> contents, params TemplateStandard[] standards) => new HashSet<string>(standards.SelectMany(standard => FindFullyQualifiedClassNames(standard, contents)));
+        public static HashSet<string> FindFullyQualifiedClassNames(IReadOnlyList<ContentBase> contents, params TemplateStandard[] standards) => new HashSet<string>(standards.SelectMany(standard => FindFullyQualifiedClassNames(standard, contents)));
 
-        public static string FindFullyQualifiedClassName(TemplateStandard standard, string className, List<ContentBase> contents) => FindFullyQualifiedClassNames(standard, contents).Where(qualifiedClassName => qualifiedClassName.EndsWith(string.Concat(".", className))).FirstOrDefault() ?? throw new ArgumentException();
+        public static string FindFullyQualifiedClassName(TemplateStandard standard, string className, IReadOnlyList<ContentBase> contents) => FindFullyQualifiedClassNames(standard, contents).Where(qualifiedClassName => qualifiedClassName.EndsWith(string.Concat(".", className))).FirstOrDefault() ?? throw new ArgumentException();
 
-        public static HashSet<string> FindFullyQualifiedClassNames(TemplateStandard standard, List<ContentBase> contents) => new HashSet<string>(FilterByStandard(standard, contents).Select(x => x.RetrieveQualifiedName()));
+        public static HashSet<string> FindFullyQualifiedClassNames(TemplateStandard standard, IReadOnlyList<ContentBase> contents) => new HashSet<string>(FilterByStandard(standard, contents).Select(x => x.RetrieveQualifiedName()));
 
         public static string FindPackage(TemplateStandard standard, List<ContentBase> contents) => FilterByStandard(standard, contents).Select(x => x.RetrievePackage()).FirstOrDefault() ?? string.Empty;
 

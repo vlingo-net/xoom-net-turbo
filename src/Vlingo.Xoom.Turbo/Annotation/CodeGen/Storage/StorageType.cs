@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen.Content;
+using Vlingo.Xoom.Turbo.Codegen.Template;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 {
@@ -20,6 +21,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 
 	public static class StorageTypeExtensions
 	{
+		public static bool IsSourced(this StorageType storageType) => storageType.Equals(StorageType.Journal);
 		public static string ResolveTypeRegistryObjectName(this StorageType storageType, ModelType modelType)
 		{
 			if (!modelType.IsQueryModel())
@@ -37,7 +39,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 		}
 
 		public static bool IsEnabled(this StorageType storageType) => !storageType.Equals(StorageType.None);
-		
+
 		private static bool IsStateful(this StorageType storageType) => storageType.Equals(StorageType.StateStore);
 
 		public static string TypeRegistryClassName(this StorageType storageType) => storageType.Equals(StorageType.Journal)
@@ -46,6 +48,30 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 				? "StatefulTypeRegistry"
 				: "";
 
+		public static TemplateStandard AdapterSourceClassStandard(this StorageType storageType) =>
+			storageType.Equals(StorageType.Journal)
+				? new TemplateStandard(TemplateStandardType.DomainEvent)
+				: new TemplateStandard(TemplateStandardType.AggregateState);
+
+		public static ISet<string> FindPersistentQualifiedTypes(this StorageType storageType, ModelType modelType,
+			IReadOnlyList<ContentBase> contents)
+		{
+			if (!modelType.IsQueryModel() && !storageType.IsStateful()) return new HashSet<string>();
+			
+			var typeStandard = modelType.IsQueryModel()
+				? new TemplateStandard(TemplateStandardType.DataObject)
+				: new TemplateStandard(TemplateStandardType.AggregateState);
+			
+			return ContentQuery.FindFullyQualifiedClassNames(typeStandard, contents);
+		}
+
+		public static ISet<string> ResolveAdaptersQualifiedName(this StorageType storageType, ModelType modelType,
+			IReadOnlyList<ContentBase> contents)
+		{
+			if (!modelType.RequireAdapter()) return new HashSet<string>();
+			
+			return ContentQuery.FindFullyQualifiedClassNames(storageType.AdapterSourceClassStandard(), contents);
+		}
 		public static string TypeRegistryObjectName(this StorageType storageType) =>
 			ComponentRegistry.WithType<CodeElementFormatter>().SimpleNameToAttribute(storageType.TypeRegistryClassName());
 	}

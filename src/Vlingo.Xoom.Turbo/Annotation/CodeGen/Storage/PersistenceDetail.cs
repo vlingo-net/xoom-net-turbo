@@ -11,7 +11,14 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 	{
 		public static string ResolvePackage(string basePackage)
 		{
-			throw new System.NotImplementedException();
+			if (basePackage.EndsWith(".infrastructure"))
+				return $"{basePackage}.{PersistencePackageName}";
+			
+			return string.Format(PackagePattern, basePackage, PackagePattern, PersistencePackageName).ToLower();
 		}
+
+		private const string PackagePattern = "{0}.{1}.{2}";
+		private const string ParentPackageName = "infrastructure";
+		private const string PersistencePackageName = "persistence";
 	}
 }

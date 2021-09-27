@@ -18,8 +18,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 		{
 			var persistencePackage = PersistenceDetail.ResolvePackage(basePackage);
 			var templatesData = new List<TemplateData>();
-			templatesData.Add(AdapterTemplateData.From(persistencePackage, storageType, contents));
-			templatesData.Add(StorageProviderTemplateData.From(persistencePackage, storageType, projectionType, 
+			templatesData.AddRange(AdapterTemplateData.From(persistencePackage, storageType, contents));
+			templatesData.AddRange(StorageProviderTemplateData.From(persistencePackage, storageType, projectionType, 
 				templatesData, contents, ModelTypeExtensions.ApplicableTo(useCqrs)));
 
 			return templatesData;

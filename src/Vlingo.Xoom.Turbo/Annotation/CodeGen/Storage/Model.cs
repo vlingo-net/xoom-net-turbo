@@ -32,5 +32,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
         public static bool IsQueryModel(this ModelType modelType) => modelType.Equals(ModelType.Query);
 
         public static bool IsDomainModel(this ModelType modelType) => modelType.Equals(ModelType.Domain);
+        public static bool RequireAdapter(this ModelType modelType) => !modelType.IsQueryModel();
+        
     }
 }

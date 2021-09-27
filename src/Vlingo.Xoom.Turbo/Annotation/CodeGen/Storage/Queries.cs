@@ -101,5 +101,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
         public HashSet<string> GetQualifiedNames() => _qualifiedNames;
 
         public bool IsEmpty() => _protocolName == string.Empty && _actorName == string.Empty && _attributeName == string.Empty;
+
+        public static List<Queries> From(ModelType modelType, IReadOnlyList<ContentBase> contents, List<TemplateData> templatesData)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

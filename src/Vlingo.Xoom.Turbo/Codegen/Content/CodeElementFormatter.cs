@@ -5,6 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
+
 namespace Vlingo.Xoom.Turbo.Codegen.Content
 {
 	public class CodeElementFormatter
@@ -19,5 +21,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 		public static CodeElementFormatter With(Dialect.Dialect dialect) => new CodeElementFormatter(dialect);
 
 		public string SimpleNameToAttribute(string simpleName) => simpleName;
+
+		public string SimpleNameOf(string qualifiedName) => qualifiedName.Substring(qualifiedName.LastIndexOf(".", StringComparison.Ordinal) + 1);
 	}
 }
