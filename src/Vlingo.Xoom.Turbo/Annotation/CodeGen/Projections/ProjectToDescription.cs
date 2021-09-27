@@ -40,8 +40,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
 				.Select(mapper)
 				.ToList());
 		}
-
-
+		
 		public static IEnumerable<ProjectToDescription> From(ProjectionType projectionType,
 			List<CodeGenerationParameter> projectionActors) =>
 			Enumerable.Range(0, projectionActors.Count)

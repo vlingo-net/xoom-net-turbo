@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 			if (basePackage.EndsWith(".infrastructure"))
 				return $"{basePackage}.{PersistencePackageName}";
 			
-			return string.Format(PackagePattern, basePackage, PackagePattern, PersistencePackageName).ToLower();
+			return string.Format(PackagePattern, basePackage, ParentPackageName, PersistencePackageName).ToLower();
 		}
 
 		private const string PackagePattern = "{0}.{1}.{2}";
