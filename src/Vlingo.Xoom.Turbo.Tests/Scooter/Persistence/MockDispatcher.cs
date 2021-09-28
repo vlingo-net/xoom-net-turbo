@@ -15,11 +15,11 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 {
 	public class MockDispatcher<T, ST> : IDispatcher
 	{
-		private readonly AccessSafely _access;
+		private AccessSafely _access;
 		private readonly IConfirmDispatchedResultInterest _confirmDispatchedResultInterest;
 		private IDispatcherControl _control;
 		private AtomicBoolean _processDispatch = new AtomicBoolean(true);
-		private List<Dispatchable> _dispatched = new  List<Dispatchable>();
+		private List<Dispatchable> _dispatched = new List<Dispatchable>();
 		private int _dispatchAttemptCount = 0;
 
 		public MockDispatcher(IConfirmDispatchedResultInterest confirmDispatchedResultInterest)
@@ -28,12 +28,17 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_access = AfterCompleting(0);
 		}
 
-		private AccessSafely AfterCompleting(int times) => AccessSafely.AfterCompleting(times)
-			.WritingWith("dispatched", (Action<Dispatchable>)_dispatched.Add)
-			.ReadingWith("dispatched", () => _dispatched)
-			.WritingWith("processDispatch", (Action<bool>)_processDispatch.Set)
-			.ReadingWith("processDispatch", _processDispatch.Get)
-			.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount);
+		private AccessSafely AfterCompleting(int times)
+		{
+			_access = AccessSafely.AfterCompleting(times)
+				.WritingWith("dispatched", (Action<Dispatchable>)_dispatched.Add)
+				.ReadingWith("dispatched", () => _dispatched)
+				.WritingWith("processDispatch", (Action<bool>)_processDispatch.Set)
+				.ReadingWith("processDispatch", _processDispatch.Get)
+				.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount);
+
+			return _access;
+		}
 
 		public void ControlWith(IDispatcherControl control)
 		{
@@ -42,7 +47,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 
 		public void Dispatch(Dispatchable dispatchable)
 		{
-			throw new System.NotImplementedException();
+			_dispatchAttemptCount++;
+			if (_processDispatch.Get())
+			{
+				var dispatchId = dispatchable.Id;
+				_access.WriteUsing("dispatched", dispatchable);
+				_control.ConfirmDispatched(dispatchId, _confirmDispatchedResultInterest);
+			}
 		}
 	}
 }

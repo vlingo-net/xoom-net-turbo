@@ -9,6 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Vlingo.Xoom.Actors.TestKit;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Symbio;
@@ -30,6 +31,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		private readonly ConcurrentQueue<object> _sources = new ConcurrentQueue<object>();
 		private readonly AtomicReference<Metadata> _metadaHolder = new AtomicReference<Metadata>();
 		private readonly ConcurrentQueue<Exception> _errorCauses = new ConcurrentQueue<Exception>();
+		private readonly AtomicInteger _readObjectResultedIn = new AtomicInteger(0);
+		private readonly AtomicReference<object> _objectReadResult = new AtomicReference<object>();
 
 		public MockStateStoreResultInterest()
 		{
@@ -40,13 +43,24 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			int stateVersion, Metadata? metadata,
 			object? @object)
 		{
-			throw new System.NotImplementedException();
+			outcome
+				.AndThen(result =>
+				{
+					_access.WriteUsing("readStoreData",
+						new StoreData<TState>(1, result, state, new List<TState>(), metadata, null));
+					return result;
+				})
+				.Otherwise(cause =>
+				{
+					_access.WriteUsing("readStoreData",
+						new StoreData<TState>(1, cause.Result, state, new List<TState>(), metadata, cause));
+					return cause.Result;
+				});
 		}
 
 		public void ReadResultedIn<TState>(IOutcome<StorageException, Result> outcome,
 			IEnumerable<TypedStateBundle> bundles, object? @object)
 		{
-			throw new System.NotImplementedException();
 		}
 
 		public void WriteResultedIn<TState, TSource>(IOutcome<StorageException, Result> outcome, string id, TState state,
@@ -68,36 +82,66 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 
 		public void ConfirmDispatchedResultedIn(Result result, string dispatchId)
 		{
-			throw new System.NotImplementedException();
+			// not used
 		}
 
-		private AccessSafely AfterCompleting(int times) => AccessSafely.AfterCompleting(times)
-			.WritingWith<int>("confirmDispatchedResultedIn", (increment) => _confirmDispatchedResultedIn.AddAndGet(increment))
-			.ReadingWith("confirmDispatchedResultedIn", () => _confirmDispatchedResultedIn.Get())
-			.WritingWith<StoreData<object>>("writeStoreData", (data) =>
-			{
-				_writeObjectResultedIn.AddAndGet(data.ResultedIn);
-				_objectWriteResult.Set(data.Result);
-				_objectWithAccumulatedResults.Enqueue(data.Result);
-				_objectState.Set(data.State);
-				data.Sources.ToList().ForEach(_sources.Enqueue);
-				_metadaHolder.Set(data.Metadata);
+		private AccessSafely AfterCompleting(int times)
+		{
+			_access = AccessSafely.AfterCompleting(times);
 
-				if (data.ErrorCauses != null)
-					_errorCauses.Enqueue(data.ErrorCauses);
-			})
-			.ReadingWith<StoreData<object>>("readStoreData", (data) =>
-			{
-				_writeObjectResultedIn.AddAndGet(data.ResultedIn);
-				_objectWriteResult.Set(data.Result);
-				_objectWithAccumulatedResults.Enqueue(data.Result);
-				_objectState.Set(data.State);
-				data.Sources.ToList().ForEach(_sources.Enqueue);
-				_metadaHolder.Set(data.Metadata);
+			_access.WritingWith<int>("confirmDispatchedResultedIn",
+					(increment) => _confirmDispatchedResultedIn.AddAndGet(increment))
+				.ReadingWith("confirmDispatchedResultedIn", () => _confirmDispatchedResultedIn.Get())
+				.WritingWith<StoreData<object>>("writeStoreData", (data) =>
+				{
+					_writeObjectResultedIn.AddAndGet(data.ResultedIn);
+					_objectWriteResult.Set(data.Result);
+					_objectWithAccumulatedResults.Enqueue(data.Result);
+					_objectState.Set(data.State);
+					data.Sources.ToList().ForEach(_sources.Enqueue);
+					_metadaHolder.Set(data.Metadata);
+					if (data.ErrorCauses != null)
+						_errorCauses.Enqueue(data.ErrorCauses);
+				})
+				
+				.ReadingWith<StoreData<object>>("readStoreData", (data) =>
+				{
+					_readObjectResultedIn.AddAndGet(data.ResultedIn);
+					_objectReadResult.Set(data.Result);
+					_objectWithAccumulatedResults.Enqueue(data.Result);
+					_objectState.Set(data.State);
+					data.Sources.ToList().ForEach(_sources.Enqueue);
+					_metadaHolder.Set(data.Metadata);
+					if (data.ErrorCauses != null)
+						_errorCauses.Enqueue(data.ErrorCauses);
+				})
+				.ReadingWith("readObjectResultedIn", () => _readObjectResultedIn.Get())
+				.ReadingWith("objectReadResult", () => _objectReadResult.Get())
+				.ReadingWith("objectWriteResult", () => _objectWriteResult.Get())
+				.ReadingWith("objectWriteAccumulatedResults",
+					() =>
+					{
+						_objectWithAccumulatedResults.TryDequeue(out var result);
+						return result;
+					})
+				.ReadingWith("objectWriteAccumulatedResultsCount", () => _objectWithAccumulatedResults.Count)
+				.ReadingWith("metadataHolder", () => _metadaHolder.Get())
+				.ReadingWith("objectState", () => _objectState.Get())
+				.ReadingWith("sources", () =>
+				{
+					_sources.TryDequeue(out var sources);
+					return sources;
+				})
+				.ReadingWith("errorCauses", () =>
+				{
+					_errorCauses.TryDequeue(out var errorCauses);
+					return errorCauses;
+				})
+				.ReadingWith("errorCoursesCount", () => _errorCauses.Count)
+				.ReadingWith("writeObjectResultedIn", () => _writeObjectResultedIn.Get());
 
-				if (data.ErrorCauses != null)
-					_errorCauses.Enqueue(data.ErrorCauses);
-			});
+			return _access;
+		}
 	}
 
 	public class StoreData<ISource>

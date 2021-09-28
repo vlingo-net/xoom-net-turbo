@@ -13,7 +13,7 @@ using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store;
 using Vlingo.Xoom.Symbio.Store.State;
 
-namespace Vlingo.Xoom.Turbo.Scooter.Model.Persistence
+namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 {
 	public abstract class StatefulRepository
 	{

@@ -18,8 +18,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 	{
 		private AccessSafely _access;
 		private readonly Dictionary<string, object> _dispatched = new Dictionary<string, object>();
-		private ConcurrentQueue<IEntry<object>> _dispatchedEntries = new ConcurrentQueue<IEntry<object>>();
-		private AtomicBoolean _processDispatch = new AtomicBoolean(true);
+		private readonly ConcurrentQueue<IEntry> _dispatchedEntries = new ConcurrentQueue<IEntry>();
+		private readonly AtomicBoolean _processDispatch = new AtomicBoolean(true);
 		private int _dispatchAttemptCount = 0;
 		private readonly IConfirmDispatchedResultInterest _confirmDispatchedResultInterest;
 		private IDispatcherControl _control;
@@ -41,28 +41,42 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			if (_processDispatch.Get())
 			{
 				var dispatchId = dispatchable.Id;
-				// _access.WriteUsing("dispatched", dispatchId,
-				// 	new Dispatch<string, IEntry<object>>(dispatchable.TypedState<string>(), dispatchable.Entries));
+
+				_access.WriteUsing("dispatched", dispatchId,
+					new Dispatch<object, IEntry>(dispatchable.TypedState<IState>(), dispatchable.Entries));
+
+				_control.ConfirmDispatched(dispatchId, _confirmDispatchedResultInterest);
 			}
 		}
 
-		public AccessSafely AfterCompleting(int times) => AccessSafely.AfterCompleting(times)
-			.WritingWith<string, Dispatch<string, IEntry<object>>>("dispatched", (id, dispatch) =>
-			{
-				_dispatched.Add(id, dispatch.State);
-				dispatch.Entries.ForEach(_dispatchedEntries.Enqueue);
-			})
-			.ReadingWith<string>("dispatchedState", (id) => _dispatched.GetValueOrDefault(id))
-			.ReadingWith("dispatchedStateCount", () => _dispatched.Count)
-			.ReadingWith("dispatchedEntries", () => _dispatchedEntries)
-			.ReadingWith("dispatchedEntriesCount", () => _dispatchedEntries.Count)
-			.WritingWith<bool>("processDispatch", (flag) => _processDispatch.Set(flag))
-			.ReadingWith("processDispatch", () => _processDispatch.Get())
-			.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount)
-			.ReadingWith("dispatched", () => _dispatched);
+		public AccessSafely AfterCompleting(int times)
+		{
+			_access = AccessSafely
+				.AfterCompleting(times)
+				.WritingWith<string, Dispatch<string, IEntry>>("dispatched", (id, dispatch) =>
+				{
+					_dispatched.Add(id, dispatch.State);
+					dispatch.Entries.ForEach(_dispatchedEntries.Enqueue);
+				})
+				
+				.ReadingWith<string>("dispatchedState", (id) => _dispatched.GetValueOrDefault(id))
+				.ReadingWith("dispatchedStateCount", () => _dispatched.Count)
+				
+				.ReadingWith("dispatchedEntries", () => _dispatchedEntries)
+				.ReadingWith("dispatchedEntriesCount", () => _dispatchedEntries.Count)
+				
+				.WritingWith<bool>("processDispatch", (flag) => _processDispatch.Set(flag))
+				.ReadingWith("processDispatch", () => _processDispatch.Get())
+				
+				.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount)
+				
+				.ReadingWith("dispatched", () => _dispatched);
+
+			return _access;
+		}
 	}
 
-	public class Dispatch<S, E>
+	public class Dispatch<S, E> where E : IEntry
 	{
 		public List<E> Entries;
 		public S State;

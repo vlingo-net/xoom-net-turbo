@@ -7,7 +7,7 @@
 
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store.Journal;
-using Vlingo.Xoom.Turbo.Scooter.Model.Persistence;
+using Vlingo.Xoom.Turbo.Scooter.Persistence;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 {
