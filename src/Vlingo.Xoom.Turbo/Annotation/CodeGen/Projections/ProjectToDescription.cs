@@ -31,9 +31,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
 
 		private string JoinSourceTypes(ProjectionType projectionType, ISet<string> sourceNames)
 		{
-			Func<string, string> mapper = (Func<string, string>) (projectionType.IsEventBased()
-					? sourceName => sourceName + DefaultSourceNameInvocation
-					: sourceName => $"\"{sourceName}\"");
+			Func<string, string> mapper = projectionType.IsEventBased()
+					? (Func<string, string>) (sourceName => sourceName + DefaultSourceNameInvocation)
+					: (Func<string, string>) (sourceName => $"\"{sourceName}\"");
 			
 			return string.Join(", ", sourceNames
 				.Select(mapper)
