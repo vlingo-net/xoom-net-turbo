@@ -5,6 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System.Collections.Generic;
+using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
@@ -32,6 +34,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		static TestEntity()
 		{
 			RegisterConsumer<TestEntity, Test1Happened>(typeof(TestEntity), typeof(Test1Happened), WhenDoTest1);
+		}
+
+		public TestEntity(IEnumerable<ISource> sources, int streamStreamVersion) : base()
+		{
 		}
 
 		static void WhenDoTest1(TestEntity entity, Test1Happened @event)

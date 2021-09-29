@@ -37,12 +37,13 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		{
 			IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>> sourcedTypeMap;
 			if (!_registeredConsumers.TryGetValue(sourcedType, out sourcedTypeMap))
-			{
+			{ 
 				sourcedTypeMap = new Dictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>();
 				_registeredConsumers.TryAdd(sourcedType, sourcedTypeMap);
 			}
 
 			sourcedTypeMap.Add(sourceType, consumer as Action<SourcedEntity<Type>, Source<Type>>);
+				Console.WriteLine($"{typeof(SourcedEntity<T>)}: {nameof(RegisterConsumer)}: {sourcedType}, {sourceType}");
 		}
 
 		public int CurrentVersion() => _currentVersion;

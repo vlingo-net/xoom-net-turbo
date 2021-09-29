@@ -29,7 +29,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 		/// Answer an <see cref="JournalRepository.AppendInterest"/> for each new
 		/// <see cref="Append()"/> and <see cref="AppendAll()"/>.
 		/// </summary>
-		AppendInterest CreateAppendInterest() => new AppendInterest();
+		protected AppendInterest CreateAppendInterest() => new AppendInterest();
 
 		/// <summary>
 		/// Await on the append to be completed. The <see cref="interest"/> must be

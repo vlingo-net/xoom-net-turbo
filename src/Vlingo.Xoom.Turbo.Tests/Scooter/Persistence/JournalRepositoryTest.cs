@@ -7,6 +7,7 @@
 
 using System;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store.Journal;
 using Vlingo.Xoom.Symbio.Store.Journal.InMemory;
@@ -32,6 +33,12 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_dispatcher = new MockDispatcher<string, SnapshotState>(new MockConfirmDispatchedResultInterest());
 
 			_journal = Journal<string>.Using<InMemoryJournalActor<string>>(_world.Stage, _dispatcher);
+			
+			_adapter = new DefaultTextEntryAdapter<DomainEvent>();
+
+			_adapterProvider = EntryAdapterProvider.Instance(_world);
+
+			_adapterProvider.RegisterAdapter(_adapter);
 		}
 
 		[Fact(Skip = "WIP")]
@@ -48,6 +55,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			Assert.True(typeof(Test1Happened) == entity1.Applied().SourceTypeAt(0));
 			Assert.True(entity1.Test1);
 			Assert.False(entity1.Test2);
+			
+			repository.Save(entity1);
+
+			var entity2 = repository.TestOf(id);
 		}
 	}
 }
