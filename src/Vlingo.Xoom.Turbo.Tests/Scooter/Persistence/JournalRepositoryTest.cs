@@ -24,24 +24,24 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		private readonly MockDispatcher<string, SnapshotState> _dispatcher;
 		private readonly IJournal<string> _journal;
 
-		public JournalRepositoryTest(ITestOutputHelper outputHelper)
+		public JournalRepositoryTest()//ITestOutputHelper outputHelper)
 		{
-			var converter = new Converter(outputHelper);
-			Console.SetOut(converter);
+			// var converter = new Converter(outputHelper);
+			// Console.SetOut(converter);
 			
 			_world = World.StartWithDefaults("repo-test");
 			_dispatcher = new MockDispatcher<string, SnapshotState>(new MockConfirmDispatchedResultInterest());
 
 			_journal = Journal<string>.Using<InMemoryJournalActor<string>>(_world.Stage, _dispatcher);
 			
-			_adapter = new DefaultTextEntryAdapter<DomainEvent>();
+			_adapter = new DefaultTextEntryAdapter<Test1Happened>();
 
 			_adapterProvider = EntryAdapterProvider.Instance(_world);
 
 			_adapterProvider.RegisterAdapter(_adapter);
 		}
 
-		[Fact(Skip = "WIP")]
+		[Fact(Skip = "WIP Fixing C# return type covariance")]
 		public void TestThatAppendWaits()
 		{
 			var repository = new TestEntityRepository(_journal, _adapterProvider);

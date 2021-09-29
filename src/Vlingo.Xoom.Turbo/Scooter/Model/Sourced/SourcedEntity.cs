@@ -16,9 +16,8 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 {
 	public abstract class SourcedEntity<T> : Entity<object, T> where T : class
 	{
-		private static readonly ConcurrentDictionary<Type, IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>>
-			_registeredConsumers =
-				new ConcurrentDictionary<Type, IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>>();
+		private static readonly ConcurrentDictionary<Type?, IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>> _registeredConsumers =
+				new ConcurrentDictionary<Type?, IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>>();
 
 		private readonly int _currentVersion;
 
@@ -32,7 +31,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// <param name="SOURCED"> the type <see cref="Type"/> of the sourced entity to apply to</param>
 		/// <param name="SOURCE"> the type <see cref="Type"/> of the sourced entity to apply to</param>
 		/// <returns><see cref="World"/></returns>
-		public static void RegisterConsumer<SOURCED, SOURCE>(Type sourcedType, Type sourceType,
+		public static void RegisterConsumer<SOURCED, SOURCE>(Type? sourcedType, Type sourceType,
 			Action<SOURCED, SOURCE> consumer)
 		{
 			IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>> sourcedTypeMap;
@@ -43,7 +42,6 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 			}
 
 			sourcedTypeMap.Add(sourceType, consumer as Action<SourcedEntity<Type>, Source<Type>>);
-				Console.WriteLine($"{typeof(SourcedEntity<T>)}: {nameof(RegisterConsumer)}: {sourcedType}, {sourceType}");
 		}
 
 		public int CurrentVersion() => _currentVersion;
@@ -53,6 +51,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// </summary>
 		/// <returns><see cref="string<S,C>"/></returns>
 		public string Type() => GetType().Name;
+		public virtual object? ObjectContainer => null;
 
 		/// <summary>
 		/// Construct my default state.
@@ -158,9 +157,11 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		{
 			foreach (var source in stream)
 			{
-				Type type = GetType();
+				Type? type = ObjectContainer?.GetType();
+				Console.WriteLine($"{type}");
+
 				Action<SourcedEntity<T>, Source<T>>? consumer = null;
-				while (type != typeof(SourcedEntity<>))
+				while (type != typeof(SourcedEntity<>) && type != null)
 				{
 					var sourcedTypeMap = _registeredConsumers[type];
 					if (sourcedTypeMap != null)
@@ -173,7 +174,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 						}
 					}
 
-					type = type.BaseType;
+					type = null;//type.BaseType;
 				}
 
 				if (consumer == null)

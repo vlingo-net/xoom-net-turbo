@@ -43,5 +43,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		static void WhenDoTest1(TestEntity entity, Test1Happened @event)
 		{
 		}
+
+		public override object? ObjectContainer => this;
 	}
 }
