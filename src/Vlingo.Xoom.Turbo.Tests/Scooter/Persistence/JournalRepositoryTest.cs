@@ -24,10 +24,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		private readonly MockDispatcher<string, SnapshotState> _dispatcher;
 		private readonly IJournal<string> _journal;
 
-		public JournalRepositoryTest()//ITestOutputHelper outputHelper)
+		public JournalRepositoryTest(ITestOutputHelper outputHelper)
 		{
-			// var converter = new Converter(outputHelper);
-			// Console.SetOut(converter);
+			var converter = new Converter(outputHelper);
+			Console.SetOut(converter);
 			
 			_world = World.StartWithDefaults("repo-test");
 			_dispatcher = new MockDispatcher<string, SnapshotState>(new MockConfirmDispatchedResultInterest());
