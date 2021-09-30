@@ -20,7 +20,5 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
     public EventSourcedEntity(List<Source<DomainEvent>> stream, int currentVersion) : base(stream, currentVersion)
     {
     }
-
-    public override object? ObjectContainer => null;
   }
 }

@@ -36,10 +36,10 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 			if (!_registeredConsumers.TryGetValue(typeof(SOURCED), out IDictionary<Type, Action<Source<T>>?> sourcedTypeMap))
 			{
 				sourcedTypeMap = new Dictionary<Type, Action<Source<T>>?>();
+				_registeredConsumers.TryAdd(typeof(SOURCED), sourcedTypeMap);
 			}
 
 			sourcedTypeMap.Add(typeof(SOURCE), consumer);
-			_registeredConsumers.TryAdd(typeof(SOURCED), sourcedTypeMap);
 		}
 
 		public int CurrentVersion() => _currentVersion;
@@ -49,9 +49,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// </summary>
 		/// <returns><see cref="string<S,C>"/></returns>
 		public string Type() => GetType().Name;
-
-		public virtual object? ObjectContainer => null;
-
+		
 		/// <summary>
 		/// Construct my default state.
 		/// </summary>
@@ -156,10 +154,10 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		{
 			foreach (var source in stream)
 			{
-				Type? type = ObjectContainer?.GetType();
+				Type? type = GetType();
 
 				Action<Source<T>> consumer = null;
-				while (type != typeof(SourcedEntity<>) && type != null)
+				while (type != typeof(SourcedEntity<>))
 				{
 					_registeredConsumers.TryGetValue(type, out var sourcedTypeMap);
 					if (sourcedTypeMap != null)
@@ -172,7 +170,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 						}
 					}
 
-					type = type.DeclaringType;
+					type = type.BaseType;
 				}
 
 				if (consumer == null)

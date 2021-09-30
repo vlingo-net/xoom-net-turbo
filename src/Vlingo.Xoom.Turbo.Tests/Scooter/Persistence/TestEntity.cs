@@ -56,7 +56,5 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_id = @event.Id;
 			_test1 = true;
 		}
-
-		public override object? ObjectContainer => this;
 	}
 }
