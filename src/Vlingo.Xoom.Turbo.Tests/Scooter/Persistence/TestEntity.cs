@@ -21,9 +21,15 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			set => _test1 = value;
 		}
 
-		public bool Test2 { get; set; }
+		public bool Test2
+		{
+			get => _test2;
+			set => _test2 = value;
+		}
+
 		private static string _id;
 		private static bool _test1;
+		private static bool _test2;
 
 		public TestEntity(string id)
 		{
@@ -49,12 +55,26 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			{
 				WhenDoTest1(source as Test1Happened);
 			});
+			RegisterConsumer<TestEntity, Test2Happened>(delegate(Source<DomainEvent> source)
+			{
+				WhenDoTest2(source as Test2Happened);
+			});
 		}
 
 		static void WhenDoTest1(Test1Happened @event)
 		{
 			_id = @event.Id;
 			_test1 = true;
+		}
+		static void WhenDoTest2(Test2Happened @event)
+		{
+			_id = @event.Id;
+			_test2 = true;
+		}
+
+		public void DoTest2()
+		{
+			Apply(new Test2Happened(_id));
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 	public class Entity1StateAdapter : IStateAdapter<Entity1, State<string>>
 	{
 		public object ToRawState<T>(T state, int stateVersion, Metadata metadata) =>
-			ToRawState(state, stateVersion, metadata);
+			ToRawState((state as Entity1)?.Id, stateVersion, metadata);
 
 		public Entity1 FromRawState(State<string> raw) => JsonSerialization.Deserialized<Entity1>(raw.Data);
 

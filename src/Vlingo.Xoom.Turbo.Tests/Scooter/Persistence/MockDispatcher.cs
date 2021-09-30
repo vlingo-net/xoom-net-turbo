@@ -33,6 +33,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_access = AccessSafely.AfterCompleting(times)
 				.WritingWith("dispatched", (Action<Dispatchable>)_dispatched.Add)
 				.ReadingWith("dispatched", () => _dispatched)
+				
 				.WritingWith("processDispatch", (Action<bool>)_processDispatch.Set)
 				.ReadingWith("processDispatch", _processDispatch.Get)
 				.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount);

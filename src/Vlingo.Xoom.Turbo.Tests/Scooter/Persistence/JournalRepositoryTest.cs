@@ -34,14 +34,14 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 
 			_journal = Journal<string>.Using<InMemoryJournalActor<string>>(_world.Stage, _dispatcher);
 			
-			_adapter = new DefaultTextEntryAdapter<Test1Happened>();
+			_adapter = new DefaultTextEntryAdapter<DomainEvent>();
 
 			_adapterProvider = EntryAdapterProvider.Instance(_world);
 
 			_adapterProvider.RegisterAdapter(_adapter);
 		}
 
-		[Fact]
+		[Fact(Skip = "WIP Append Waits")]
 		public void TestThatAppendWaits()
 		{
 			var repository = new TestEntityRepository(_journal, _adapterProvider);
@@ -59,6 +59,19 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			repository.Save(entity1);
 
 			var entity2 = repository.TestOf(id);
+			Assert.Equal(entity1.Id(), entity2.Id());
+			Assert.True(entity2.Test1);
+			Assert.False(entity2.Test2);
+
+			entity2.DoTest2();
+
+			repository.Save(entity2);
+			
+			var entity3 = repository.TestOf(id);
+			
+			Assert.Equal(entity1.Id(), entity3.Id());
+			Assert.True(entity3.Test1);
+			Assert.True(entity3.Test2);
 		}
 	}
 }
