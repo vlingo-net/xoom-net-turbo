@@ -7,6 +7,7 @@
 
 using System;
 using Vlingo.Xoom.Lattice.Model;
+using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 using Xunit;
 
@@ -61,10 +62,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 
 			static Product()
 			{
-				RegisterConsumer<Product, ProductDefined>(typeof(Product), typeof(ProductDefined), WhenProductDefined);
+				RegisterConsumer<Product, ProductDefined>(delegate(Source<DomainEvent> source)
+				{
+					WhenProductDefined(source as ProductDefined);
+				});
 			}
 
-			static void WhenProductDefined(Product entity, ProductDefined @event)
+			static void WhenProductDefined(ProductDefined @event)
 			{
 			}
 		}
@@ -96,11 +100,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 
 			static ProductParent()
 			{
-				RegisterConsumer<ProductParent, ProductParentCategorized>(typeof(ProductParent),
-					typeof(ProductParentCategorized), WhenProductParentCategorized);
+				RegisterConsumer<ProductParent, ProductParentCategorized>(delegate(Source<DomainEvent> source)
+				{
+					WhenProductParentCategorized(source as ProductParentCategorized);
+				});
 			}
 
-			static void WhenProductParentCategorized(ProductParent entity, ProductParentCategorized @event)
+			static void WhenProductParentCategorized(ProductParentCategorized @event)
 			{
 			}
 		}
@@ -132,11 +138,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 
 			static ProductGrandParent()
 			{
-				RegisterConsumer<ProductGrandParent, ProductGrandParentTyped>(typeof(ProductGrandParent),
-					typeof(ProductGrandParentTyped), WhenProductGrandParentTyped);
+				RegisterConsumer<ProductGrandParent, ProductGrandParentTyped>(delegate(Source<DomainEvent> source)
+				{
+					WhenProductGrandParentTyped(source as ProductGrandParentTyped);
+				});
 			}
 
-			static void WhenProductGrandParentTyped(ProductGrandParent entity, ProductGrandParentTyped @event)
+			static void WhenProductGrandParentTyped(ProductGrandParentTyped @event)
 			{
 			}
 		}

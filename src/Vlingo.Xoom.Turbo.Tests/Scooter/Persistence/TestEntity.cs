@@ -5,7 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Collections.Generic;
+using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 
@@ -13,13 +15,23 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 {
 	public class TestEntity : EventSourcedEntity
 	{
-		public bool Test1 { get; set; }
+		public bool Test1
+		{
+			get => _test1;
+			set => _test1 = value;
+		}
+
 		public bool Test2 { get; set; }
-		private readonly string _id;
+		private static string _id;
+		private static bool _test1;
 
 		public TestEntity(string id)
 		{
 			_id = id;
+		}
+
+		public TestEntity(IEnumerable<ISource> sources, int streamStreamVersion) : base()
+		{
 		}
 
 		public override string Id() => StreamName();
@@ -33,15 +45,16 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 
 		static TestEntity()
 		{
-			RegisterConsumer<TestEntity, Test1Happened>(typeof(TestEntity), typeof(Test1Happened), WhenDoTest1);
+			RegisterConsumer<TestEntity, Test1Happened>(delegate(Source<DomainEvent> source)
+			{
+				WhenDoTest1(source as Test1Happened);
+			});
 		}
 
-		public TestEntity(IEnumerable<ISource> sources, int streamStreamVersion) : base()
+		static void WhenDoTest1(Test1Happened @event)
 		{
-		}
-
-		static void WhenDoTest1(TestEntity entity, Test1Happened @event)
-		{
+			_id = @event.Id;
+			_test1 = true;
 		}
 
 		public override object? ObjectContainer => this;

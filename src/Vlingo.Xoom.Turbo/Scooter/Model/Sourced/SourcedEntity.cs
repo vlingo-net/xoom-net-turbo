@@ -16,8 +16,8 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 {
 	public abstract class SourcedEntity<T> : Entity<object, T> where T : class
 	{
-		private static readonly ConcurrentDictionary<Type?, IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>> _registeredConsumers =
-				new ConcurrentDictionary<Type?, IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>>();
+		private static readonly ConcurrentDictionary<Type?, IDictionary<Type, Action<Source<T>>?>> _registeredConsumers =
+			new ConcurrentDictionary<Type?, IDictionary<Type, Action<Source<T>>?>>();
 
 		private readonly int _currentVersion;
 
@@ -31,17 +31,15 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// <param name="SOURCED"> the type <see cref="Type"/> of the sourced entity to apply to</param>
 		/// <param name="SOURCE"> the type <see cref="Type"/> of the sourced entity to apply to</param>
 		/// <returns><see cref="World"/></returns>
-		public static void RegisterConsumer<SOURCED, SOURCE>(Type? sourcedType, Type sourceType,
-			Action<SOURCED, SOURCE> consumer)
+		public static void RegisterConsumer<SOURCED, SOURCE>(Action<Source<T>> consumer)
 		{
-			IDictionary<Type, Action<SourcedEntity<Type>, Source<Type>>> sourcedTypeMap;
-			if (!_registeredConsumers.TryGetValue(sourcedType, out sourcedTypeMap))
-			{ 
-				sourcedTypeMap = new Dictionary<Type, Action<SourcedEntity<Type>, Source<Type>>>();
-				_registeredConsumers.TryAdd(sourcedType, sourcedTypeMap);
+			if (!_registeredConsumers.TryGetValue(typeof(SOURCED), out IDictionary<Type, Action<Source<T>>?> sourcedTypeMap))
+			{
+				sourcedTypeMap = new Dictionary<Type, Action<Source<T>>?>();
 			}
 
-			sourcedTypeMap.Add(sourceType, consumer as Action<SourcedEntity<Type>, Source<Type>>);
+			sourcedTypeMap.Add(typeof(SOURCE), consumer);
+			_registeredConsumers.TryAdd(typeof(SOURCED), sourcedTypeMap);
 		}
 
 		public int CurrentVersion() => _currentVersion;
@@ -51,6 +49,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// </summary>
 		/// <returns><see cref="string<S,C>"/></returns>
 		public string Type() => GetType().Name;
+
 		public virtual object? ObjectContainer => null;
 
 		/// <summary>
@@ -158,23 +157,22 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 			foreach (var source in stream)
 			{
 				Type? type = ObjectContainer?.GetType();
-				Console.WriteLine($"{type}");
 
-				Action<SourcedEntity<T>, Source<T>>? consumer = null;
+				Action<Source<T>> consumer = null;
 				while (type != typeof(SourcedEntity<>) && type != null)
 				{
-					var sourcedTypeMap = _registeredConsumers[type];
+					_registeredConsumers.TryGetValue(type, out var sourcedTypeMap);
 					if (sourcedTypeMap != null)
 					{
-						consumer = sourcedTypeMap[source.GetType()] as Action<SourcedEntity<T>, Source<T>>;
+						consumer = sourcedTypeMap[source.GetType()];
 						if (consumer != null)
 						{
-							consumer(this, source);
+							consumer(source);
 							break;
 						}
 					}
 
-					type = null;//type.BaseType;
+					type = type.DeclaringType;
 				}
 
 				if (consumer == null)

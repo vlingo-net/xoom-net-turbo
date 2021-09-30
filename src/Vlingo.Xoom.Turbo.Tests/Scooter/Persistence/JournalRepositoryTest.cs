@@ -41,7 +41,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_adapterProvider.RegisterAdapter(_adapter);
 		}
 
-		[Fact(Skip = "WIP Fixing C# return type covariance")]
+		[Fact]
 		public void TestThatAppendWaits()
 		{
 			var repository = new TestEntityRepository(_journal, _adapterProvider);
