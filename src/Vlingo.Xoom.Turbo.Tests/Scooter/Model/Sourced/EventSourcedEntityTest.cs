@@ -66,8 +66,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 		public void TestReconstitution()
 		{
 			var sources = new List<Source<DomainEvent>>();
-
 			var product = new Product("dice", "fuz", "dice-fuz-1", "Fuzzy dice.", 999);
+			
 			sources.AddRange(product.Applied().Sources());
 			product.ChangeName("dice-fuzzy-1");
 			sources.AddRange(product.Applied().Sources());
