@@ -38,7 +38,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_adapterProvider.RegisterAdapter(adapter);
 		}
 
-		[Fact(Skip = "WIP")]
+		[Fact]
 		public void TestThatAppendWaits()
 		{
 			var repository = new TestEntityRepository(_journal, _adapterProvider);
@@ -63,12 +63,12 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			entity2.DoTest2();
 
 			repository.Save(entity2);
-			//
-			// var entity3 = repository.TestOf(id);
-			//
-			// Assert.Equal(entity1.Id(), entity3.Id());
-			// Assert.True(entity3.Test1);
-			// Assert.True(entity3.Test2);
+			
+			var entity3 = repository.TestOf(id);
+			
+			Assert.Equal(entity1.Id(), entity3.Id());
+			Assert.True(entity3.Test1);
+			Assert.True(entity3.Test2);
 		}
 	}
 }

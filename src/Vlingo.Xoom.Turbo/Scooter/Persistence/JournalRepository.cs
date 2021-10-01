@@ -38,7 +38,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 		/// <param name="interest"> the AppendInterest on which the await is based.</param>
 		protected void Await(AppendInterest interest)
 		{
-			while (!interest.IsAppended())
+			while (!interest.IsAppended() && interest.Exception() != null)
 			{
 				interest.ThrowIfException();
 			}
@@ -48,7 +48,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 		{
 			private readonly AtomicBoolean _appended;
 			private readonly AtomicReference<StorageException> _exception;
-
+			
 			public void AppendResultedIn<TSource, TSnapshotState>(IOutcome<StorageException, Result> outcome,
 				string streamName, int streamVersion, TSource source, Optional<TSnapshotState> snapshot, object @object)
 				where TSource : ISource
@@ -82,6 +82,8 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			public bool IsAppended() => _appended.Get();
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			public StorageException? Exception() => _exception.Get();
 
 			public AppendInterest()
 			{
