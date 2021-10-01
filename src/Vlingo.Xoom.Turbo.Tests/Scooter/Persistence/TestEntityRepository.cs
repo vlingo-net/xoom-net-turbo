@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;

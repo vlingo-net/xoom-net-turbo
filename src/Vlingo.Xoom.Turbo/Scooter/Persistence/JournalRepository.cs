@@ -38,10 +38,8 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 		/// <param name="interest"> the AppendInterest on which the await is based.</param>
 		protected void Await(AppendInterest interest)
 		{
-			var i = 0;
 			while (!interest.IsAppended())
 			{
-				Console.WriteLine($"inside while (!interest.IsAppended()): {i++}");
 				interest.ThrowIfException();
 			}
 		}
