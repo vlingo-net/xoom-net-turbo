@@ -162,7 +162,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 					_registeredConsumers.TryGetValue(type, out var sourcedTypeMap);
 					if (sourcedTypeMap != null)
 					{
-						consumer = sourcedTypeMap[source.GetType()];
+						sourcedTypeMap.TryGetValue(source.GetType(), out consumer);
 						if (consumer != null)
 						{
 							consumer(source);

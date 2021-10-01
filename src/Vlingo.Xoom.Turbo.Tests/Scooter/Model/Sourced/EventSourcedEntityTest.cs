@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 {
 	public class EventSourcedEntityTest
 	{
-		[Fact(Skip = "WIP")]
+		[Fact]
 		public void TestProductDefinedEventKept()
 		{
 			var product = new Product("dice", "fuz", "dice-fuz-1", "Fuzzy dice", 999);
