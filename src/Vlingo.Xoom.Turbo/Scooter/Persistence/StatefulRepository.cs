@@ -33,7 +33,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 				interest.ThrowIfException();
 			}
 
-			return (T)interest.state.Get();
+			return (T)interest.State.Get();
 		}
 
 		/// <summary>
@@ -64,7 +64,9 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 		public class ReadInterest : Exceptional, IReadResultInterest
 		{
 			private readonly AtomicBoolean _read;
-			public AtomicReference<object> state = new AtomicReference<object>();
+			private readonly AtomicReference<object> _state;
+
+			public AtomicReference<object> State => _state;
 
 			public void ReadResultedIn<TState>(IOutcome<StorageException, Result> outcome, string? id, TState state,
 				int stateVersion, Metadata? metadata, object? @object) => ReadConsidering(outcome, state);
@@ -72,7 +74,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			private void Read(object state)
 			{
-				this.state.Set(state);
+				this.State.Set(state);
 				_read.Set(true);
 			}
 
@@ -104,7 +106,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 			public ReadInterest()
 			{
 				_read = new AtomicBoolean(false);
-				state = new AtomicReference<object>();
+				_state = new AtomicReference<object>();
 			}
 		}
 

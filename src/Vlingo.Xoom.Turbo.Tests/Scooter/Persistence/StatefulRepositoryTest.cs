@@ -51,7 +51,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_repository = new EntityRepository(_store);
 		}
 
-		[Fact(Skip = "WIP")]
+		[Fact]
 		public void TestThatWriteReadAwaits()
 		{
 			_dispatcher.AfterCompleting(0);

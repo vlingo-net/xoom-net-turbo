@@ -29,7 +29,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		private readonly ConcurrentQueue<Result> _objectWithAccumulatedResults = new ConcurrentQueue<Result>();
 		private readonly AtomicReference<object> _objectState = new AtomicReference<object>();
 		private readonly ConcurrentQueue<object> _sources = new ConcurrentQueue<object>();
-		private readonly AtomicReference<Metadata> _metadaHolder = new AtomicReference<Metadata>();
+		private readonly AtomicReference<Metadata> _metadataHolder = new AtomicReference<Metadata>();
 		private readonly ConcurrentQueue<Exception> _errorCauses = new ConcurrentQueue<Exception>();
 		private readonly AtomicInteger _readObjectResultedIn = new AtomicInteger(0);
 		private readonly AtomicReference<object> _objectReadResult = new AtomicReference<object>();
@@ -99,7 +99,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 					_objectWithAccumulatedResults.Enqueue(data.Result);
 					_objectState.Set(data.State);
 					data.Sources.ToList().ForEach(_sources.Enqueue);
-					_metadaHolder.Set(data.Metadata);
+					_metadataHolder.Set(data.Metadata);
 					if (data.ErrorCauses != null)
 						_errorCauses.Enqueue(data.ErrorCauses);
 				})
@@ -111,7 +111,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 					_objectWithAccumulatedResults.Enqueue(data.Result);
 					_objectState.Set(data.State);
 					data.Sources.ToList().ForEach(_sources.Enqueue);
-					_metadaHolder.Set(data.Metadata);
+					_metadataHolder.Set(data.Metadata);
 					if (data.ErrorCauses != null)
 						_errorCauses.Enqueue(data.ErrorCauses);
 				})
@@ -125,7 +125,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 						return result;
 					})
 				.ReadingWith("objectWriteAccumulatedResultsCount", () => _objectWithAccumulatedResults.Count)
-				.ReadingWith("metadataHolder", () => _metadaHolder.Get())
+				.ReadingWith("metadataHolder", () => _metadataHolder.Get())
 				.ReadingWith("objectState", () => _objectState.Get())
 				.ReadingWith("sources", () =>
 				{

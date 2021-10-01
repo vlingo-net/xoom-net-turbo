@@ -43,7 +43,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 				var dispatchId = dispatchable.Id;
 
 				_access.WriteUsing("dispatched", dispatchId,
-					new Dispatch<object, IEntry>(dispatchable.TypedState<IState>(), dispatchable.Entries));
+					new Dispatch<IState, IEntry>(dispatchable.TypedState<IState>(), dispatchable.Entries));
 
 				_control.ConfirmDispatched(dispatchId, _confirmDispatchedResultInterest);
 			}
@@ -53,23 +53,18 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		{
 			_access = AccessSafely
 				.AfterCompleting(times)
-				.WritingWith<string, Dispatch<string, IEntry>>("dispatched", (id, dispatch) =>
+				.WritingWith<string, Dispatch<IState, IEntry>>("dispatched", (id, dispatch) =>
 				{
 					_dispatched.Add(id, dispatch.State);
 					dispatch.Entries.ForEach(_dispatchedEntries.Enqueue);
 				})
-				
 				.ReadingWith<string>("dispatchedState", (id) => _dispatched.GetValueOrDefault(id))
 				.ReadingWith("dispatchedStateCount", () => _dispatched.Count)
-				
 				.ReadingWith("dispatchedEntries", () => _dispatchedEntries)
 				.ReadingWith("dispatchedEntriesCount", () => _dispatchedEntries.Count)
-				
 				.WritingWith<bool>("processDispatch", (flag) => _processDispatch.Set(flag))
 				.ReadingWith("processDispatch", () => _processDispatch.Get())
-				
 				.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount)
-				
 				.ReadingWith("dispatched", () => _dispatched);
 
 			return _access;

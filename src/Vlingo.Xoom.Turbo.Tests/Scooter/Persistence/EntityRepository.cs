@@ -43,7 +43,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		public Entity2 Entity2Of(string id)
 		{
 			var interest = CreateReadInterest();
-			_store.Read<Entity1>(id, interest);
+			_store.Read<Entity2>(id, interest);
 			return Await<Entity2>(interest);
 		}
 	}
