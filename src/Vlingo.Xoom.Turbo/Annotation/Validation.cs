@@ -47,7 +47,8 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
 				if (!rootElement.IsInterface)
-					throw new ProcessingAnnotationException($"The {annotation.FullName} annotation is only allowed at interface level");
+					throw new ProcessingAnnotationException(
+						$"The {annotation.FullName} annotation is only allowed at interface level");
 			}
 		};
 	}
@@ -56,6 +57,10 @@ namespace Vlingo.Xoom.Turbo.Annotation
 public class ProcessingAnnotationException : Exception
 {
 	public ProcessingAnnotationException(string message) : base(message)
+	{
+	}
+
+	public ProcessingAnnotationException(Exception exception) : base(exception.Message)
 	{
 	}
 }
