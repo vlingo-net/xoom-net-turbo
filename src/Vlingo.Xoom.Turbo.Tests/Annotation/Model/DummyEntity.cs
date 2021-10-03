@@ -9,18 +9,27 @@ using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Lattice.Model.Stateful;
 using Vlingo.Xoom.Turbo.Tests.Annotation.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
 {
 	public class DummyEntity : StatefulEntity<DummyState>, IDummy
 	{
+		private DummyState _state;
+
 		protected override void State(DummyState state)
 		{
-			throw new System.NotImplementedException();
+			_state = state;
 		}
 
 		public ICompletes<DummyState> DefineWith(string name)
 		{
-			throw new System.NotImplementedException();
+			if (_state == null)
+			{
+				return Apply(new DummyState(Id, name), () => _state);
+			}
+			else
+			{
+				return Completes().With(_state);
+			}
 		}
 	}
 }

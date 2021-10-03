@@ -13,12 +13,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Storage
   {
     public void ControlWith(IDispatcherControl control)
     {
-      throw new System.NotImplementedException();
-    }
+          }
 
     public void Dispatch(Dispatchable dispatchable)
     {
-      throw new System.NotImplementedException();
-    }
+          }
   }
 }

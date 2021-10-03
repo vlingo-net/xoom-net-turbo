@@ -102,9 +102,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 
         public bool IsEmpty() => _protocolName == string.Empty && _actorName == string.Empty && _attributeName == string.Empty;
 
-        public static List<Queries> From(ModelType modelType, IReadOnlyList<ContentBase> contents, List<TemplateData> templatesData)
-        {
-            throw new System.NotImplementedException();
-        }
+        public static List<Queries> From(ModelType modelType, IReadOnlyList<ContentBase> contents,
+            List<TemplateData> templatesData) => new List<Queries>();
     }
 }

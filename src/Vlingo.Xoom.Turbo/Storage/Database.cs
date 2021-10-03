@@ -9,33 +9,39 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-    public class Database
-    {
-        public static DatabaseCategory? From(string name)
-        {
-            if (name == null)
-            {
-                return null;
-            }
+	public class Database
+	{
+		public static DatabaseCategory? From(string name)
+		{
+			if (name == null)
+			{
+				return null;
+			}
 
-            try
-            {
-                var database = (DatabaseCategory)Enum.Parse(typeof(DatabaseCategory), name);
-                return database;
-            }
-            catch (Exception e)
-            {
-                throw new ArgumentException(e.Message, e);
-            }
-        }
-    }
+			try
+			{
+				var database = (DatabaseCategory)Enum.Parse(typeof(DatabaseCategory), name);
+				return database;
+			}
+			catch (Exception e)
+			{
+				throw new ArgumentException(e.Message, e);
+			}
+		}
+	}
 
-    public enum DatabaseCategory
-    {
-        InMemory,
-        Postgres,
-        Hsqldb,
-        Mysql,
-        YugaByte
-    }
+	public static class DatabaseCategoryExtensions
+	{
+		public static bool IsInMemory(this DatabaseCategory databaseCategory) =>
+			databaseCategory.Equals(DatabaseCategory.InMemory);
+	}
+
+	public enum DatabaseCategory
+	{
+		InMemory,
+		Postgres,
+		Hsqldb,
+		Mysql,
+		YugaByte
+	}
 }

@@ -11,14 +11,8 @@ namespace Vlingo.Xoom.Turbo.Annotation
 {
 	public class Context
 	{
-		public static string LocateBaseDirectory(FileStream getFiler)
-		{
-			throw new System.NotImplementedException();
-		}
+		public static string LocateBaseDirectory(FileStream getFiler) => default;
 
-		public static object LocateSourceFolder(FileStream filer)
-		{
-			throw new System.NotImplementedException();
-		}
+		public static object LocateSourceFolder(FileStream filer) => default;
 	}
 }

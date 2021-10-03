@@ -15,22 +15,14 @@ using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-    public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T>
-    {
-        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers) => 
-            stage.ActorFor<T>(typeof(IStateStore), typeof(InMemoryStateStoreActor<IState>), dispatchers);
+	public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T>
+	{
+		public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers) =>
+			stage.ActorFor<T>(typeof(IStateStore), typeof(InMemoryStateStoreActor<IState>), dispatchers);
 
-        public bool Support(DatabaseType databaseType)
-        {
-            throw new System.NotImplementedException();
-        }
+		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
+			storageType.IsStateStore() && databaseType.IsInMemory();
 
-        public bool Support(StorageType storageType, DatabaseCategory databaseType)
-        {
-            //databaseType.IsInMemory;
-            throw new System.NotImplementedException();
-        }
-
-        //public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
-    }
+		public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
+	}
 }
