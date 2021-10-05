@@ -29,10 +29,35 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 					foreach (var enclosed in rootElement.GetMembers())
 					{
 						var route = enclosed.GetCustomAttribute<Route>();
-						if (route != null && !route.GetType().IsInterface && route.GetType().IsClass &&
+						if (route != null && !route.GetType().IsInterface && !route.GetType().IsClass &&
 						    route.Method == Method.Get.ToString())
 							throw new ProcessingAnnotationException(
 								$"The class {annotation.FullName} with {route.Method} method for Route need to have Queries annotation.");
+					}
+				}
+			}
+		};
+
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> RouteWithoutResponseValidator() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				if (rootElement.GetCustomAttribute<Model>() == null)
+				{
+					foreach (var enclosed in rootElement.GetMembers())
+					{
+						var routeAnnotation = enclosed.GetCustomAttribute<Route>();
+						var hasMethods = !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
+						                 (routeAnnotation.Method == Method.Post.ToString() ||
+						                  routeAnnotation.Method == Method.Put.ToString()
+						                  || routeAnnotation.Method == Method.Patch.ToString() ||
+						                  routeAnnotation.Method == Method.Delete.ToString());
+						if (hasMethods && enclosed.GetCustomAttribute<ResponseAdapter>() == null)
+						{
+							throw new ProcessingAnnotationException(
+								$"The class {annotation.FullName} with {routeAnnotation.Method} method for Route need to have Response annotation.");
+						}
 					}
 				}
 			}

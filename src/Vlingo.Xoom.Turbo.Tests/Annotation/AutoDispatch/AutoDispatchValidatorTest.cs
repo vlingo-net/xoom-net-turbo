@@ -71,7 +71,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 		}
 
 		[Fact]
-		public void TestThatModelWithoutQueryValidator()
+		public void TestModelWithoutQueryValidator()
 		{
 			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
 			var mockAnnotatedElements = new Mock<AnnotatedElements>();
@@ -81,14 +81,31 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 			mockAnnotatedElements
 				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
 				.Returns(elements);
-
-			mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
 			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
 			ModelWithoutQueryValidator()
-				.Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+				.Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.Model),
+					mockAnnotatedElements.Object);
 		}
-		
+
+		[Fact]
+		public void TestRouteWithoutResponseValidator()
+		{
+			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+			var mockAnnotatedElements = new Mock<AnnotatedElements>();
+			var mockElementsUtil = new Mock<Type>();
+			var elements = new HashSet<Type> { typeof(IRouteResponseTest) };
+
+			mockAnnotatedElements
+				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+				.Returns(elements);
+			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+			RouteWithoutResponseValidator()
+				.Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.Model),
+					mockAnnotatedElements.Object);
+		}
+
 		[Queries(Protocol = typeof(IQueriesProtocolTest))]
 		public interface IQueriesTest
 		{
@@ -98,6 +115,12 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 
 		public interface IQueriesProtocolTest
 		{
+		}
+
+		public interface IRouteResponseTest
+		{
+			[Route(Method = "POST")]
+			public string TestPost(string body);
 		}
 	}
 }
