@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 				var retriever = TypeRetriever.With(processingEnvironment);
 				if (retriever.IsAnInterface(queries!, Void => queries!.Protocol))
 					throw new ProcessingAnnotationException(
-						$"The class {annotation.FullName}. Protocol value to Queries annotation must be an interface");
+						$"Class {annotation.FullName}. Protocol value to Queries annotation must be an interface");
 			}
 		};
 
@@ -32,7 +32,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 						if (route != null && !route.GetType().IsInterface && !route.GetType().IsClass &&
 						    route.Method == Method.Get.ToString())
 							throw new ProcessingAnnotationException(
-								$"The class {annotation.FullName} with {route.Method} method for Route need to have Queries annotation.");
+								$"Class {annotation.FullName}. The class with {route.Method} method for Route need to have Queries annotation.");
 					}
 				}
 			}
@@ -56,10 +56,24 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 						if (hasMethods && enclosed.GetCustomAttribute<ResponseAdapter>() == null)
 						{
 							throw new ProcessingAnnotationException(
-								$"The class {annotation.FullName} with {routeAnnotation.Method} method for Route need to have Response annotation.");
+								$"Class {annotation.FullName}. The class with {routeAnnotation.Method} method for Route need to have Response annotation.");
 						}
 					}
 				}
+			}
+		};
+
+
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> RouteHasQueryOrModel() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				var queriesAnnotation = rootElement.GetCustomAttribute<Queries>();
+				var modelAnnotation = rootElement.GetCustomAttribute<Model>();
+				if (queriesAnnotation == null && modelAnnotation == null)
+					throw new ProcessingAnnotationException(
+						$"Class {annotation.FullName}. To use Route annotation you need to use Queries or Model annotation on the Class level.");
 			}
 		};
 	}

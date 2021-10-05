@@ -106,6 +106,22 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 					mockAnnotatedElements.Object);
 		}
 
+		[Fact]
+		public void TestRouteHasQueryOrModelValidator()
+		{
+			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+			var mockAnnotatedElements = new Mock<AnnotatedElements>();
+			var mockElementsUtil = new Mock<Type>();
+			var elements = new HashSet<Type> { typeof(IQueriesTest) };
+
+			mockAnnotatedElements
+				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+				.Returns(elements);
+			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+			RouteHasQueryOrModel().Invoke(mockProcessingEnvironment.Object, typeof(Route), mockAnnotatedElements.Object);
+		}
+
 		[Queries(Protocol = typeof(IQueriesProtocolTest))]
 		public interface IQueriesTest
 		{
