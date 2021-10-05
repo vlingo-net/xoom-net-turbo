@@ -56,9 +56,8 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 		{
 			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
 			var mockAnnotatedElements = new Mock<AnnotatedElements>();
-			var mockRootElement = new Mock<QueriesTest>();
 			var mockElementsUtil = new Mock<Type>();
-			var elements = new HashSet<Type> { mockRootElement.Object.GetType() };
+			var elements = new HashSet<Type> { typeof(IQueriesTest) };
 
 			mockAnnotatedElements
 				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
@@ -71,9 +70,30 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 				.Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
 		}
 
-		[Queries(Protocol = typeof(IQueriesProtocolTest))]
-		public class QueriesTest
+		[Fact]
+		public void TestThatModelWithoutQueryValidator()
 		{
+			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+			var mockAnnotatedElements = new Mock<AnnotatedElements>();
+			var mockElementsUtil = new Mock<Type>();
+			var elements = new HashSet<Type> { typeof(IQueriesTest) };
+
+			mockAnnotatedElements
+				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+				.Returns(elements);
+
+			mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
+			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+			ModelWithoutQueryValidator()
+				.Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+		}
+		
+		[Queries(Protocol = typeof(IQueriesProtocolTest))]
+		public interface IQueriesTest
+		{
+			[Route(Method = "GET")]
+			public string TestGet();
 		}
 
 		public interface IQueriesProtocolTest
