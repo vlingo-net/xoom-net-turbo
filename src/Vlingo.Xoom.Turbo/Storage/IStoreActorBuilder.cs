@@ -7,14 +7,15 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-    public interface IStoreActorBuilder<out T>
-    {
-        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers);
+	public interface IStoreActorBuilder
+	{
+		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class;
 
-        public bool Support(DatabaseType databaseType);
-    }
+		public bool Support(StorageType storageType, DatabaseCategory databaseType);
+	}
 }

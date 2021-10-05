@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store.Journal;
 using Vlingo.Xoom.Symbio.Store.Journal.InMemory;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
@@ -14,13 +15,11 @@ using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-	public class InMemoryJournalActorBuilder<T> : IStoreActorBuilder<T>
+	public class InMemoryJournalActorBuilder : IStoreActorBuilder
 	{
-		public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers) =>
-			stage.ActorFor<T>(typeof(IJournal), typeof(InMemoryJournalActor<IJournal>), dispatchers);
+		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
+			stage.ActorFor<InMemoryJournalActor<IState>>(typeof(IJournal), dispatchers) as T;
 		
-		public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
-
 		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
 			storageType.IsJournal() && databaseType.IsInMemory();
 	}

@@ -5,14 +5,23 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
+using System.Collections.Generic;
+using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
+
 namespace Vlingo.Xoom.Turbo.Storage
 {
-    // class DefaultStateStoreActorBuilder : StoreActorBuilder, IStoreActorBuilder<>
-    // {
-    //     public T Build<T>(Stage stage, IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> dispatchers, Configuration configuration) => throw new NotImplementedException();
-    //
-    //     private IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>> Typed(List<Type> dispatchers) => (IEnumerable<IDispatcher<Dispatchable<IEntry, IState>>>)dispatchers;
-    //
-    //     public bool Support(StorageType storageType, DatabaseCategory databaseType) => storageType == StorageType.StateStore && databaseType != DatabaseCategory.InMemory;
-    // }
+	class DefaultStateStoreActorBuilder : IStoreActorBuilder
+	{
+		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class
+		{
+			// TODO: need symbio store implementation
+			return default;
+		}
+
+		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
+			storageType.IsStateStore() && !databaseType.IsInMemory();
+	}
 }

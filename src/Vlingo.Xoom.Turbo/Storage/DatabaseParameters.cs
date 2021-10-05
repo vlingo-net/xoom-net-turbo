@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
@@ -99,6 +100,10 @@ namespace Vlingo.Xoom.Turbo.Storage
         .Select(key => Model.IsQueryModel ? string.Format(_combinationPattern, _queryModelPrefix, key) : key)
         .ToList();
 
-    public void MapToConfiguration() => Validate();
+    public Configuration MapToConfiguration()
+    {
+      Validate();
+      return Configuration.Define();
+    }
   }
 }
