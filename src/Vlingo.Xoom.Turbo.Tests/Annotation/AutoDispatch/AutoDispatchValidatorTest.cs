@@ -56,7 +56,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 		{
 			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
 			var mockAnnotatedElements = new Mock<AnnotatedElements>();
-			var mockRootElement = new Mock<IQueriesTest>();
+			var mockRootElement = new Mock<QueriesTest>();
 			var mockElementsUtil = new Mock<Type>();
 			var elements = new HashSet<Type> { mockRootElement.Object.GetType() };
 
@@ -71,8 +71,12 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 				.Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
 		}
 
-		[Queries]
-		public interface IQueriesTest
+		[Queries(Protocol = typeof(IQueriesProtocolTest))]
+		public class QueriesTest
+		{
+		}
+
+		public interface IQueriesProtocolTest
 		{
 		}
 	}
