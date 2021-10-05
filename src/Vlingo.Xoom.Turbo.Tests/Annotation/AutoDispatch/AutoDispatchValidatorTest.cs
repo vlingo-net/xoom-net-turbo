@@ -47,25 +47,33 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 				.Returns(elements);
 			mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl").Returns(TypeAttributes.Public);
 
-			ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(Queries), mockAnnotatedElements.Object);
+			ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(Queries),
+				mockAnnotatedElements.Object);
 		}
 
-		[Fact(Skip = "Attributes WIP")]
+		[Fact]
 		public void TestIsQueriesProtocolAnInterface()
 		{
 			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
 			var mockAnnotatedElements = new Mock<AnnotatedElements>();
-			var mockRootElement = new Mock<Type>();
-			var elementsUtil = new Mock<Type>().Object;
-			var elements = new HashSet<Type> { mockRootElement.Object };
+			var mockRootElement = new Mock<IQueriesTest>();
+			var mockElementsUtil = new Mock<Type>();
+			var elements = new HashSet<Type> { mockRootElement.Object.GetType() };
 
 			mockAnnotatedElements
 				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
 				.Returns(elements);
-			mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl").Returns(TypeAttributes.Interface);
-			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(elementsUtil);
-			
-			IsQueriesProtocolAnInterface().Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+
+			mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
+			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+			IsQueriesProtocolAnInterface()
+				.Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+		}
+
+		[Queries]
+		public interface IQueriesTest
+		{
 		}
 	}
 }
