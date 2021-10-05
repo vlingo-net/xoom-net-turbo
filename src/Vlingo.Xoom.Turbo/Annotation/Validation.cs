@@ -9,7 +9,7 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation
 {
-	public abstract class Validation
+	public abstract class Validation : IValidation
 	{
 		public abstract void Validate(ProcessingEnvironment processingEnvironment, Type annotation,
 			AnnotatedElements annotatedElements);
@@ -51,16 +51,5 @@ namespace Vlingo.Xoom.Turbo.Annotation
 						$"The {annotation.FullName} annotation is only allowed at interface level");
 			}
 		};
-	}
-}
-
-public class ProcessingAnnotationException : Exception
-{
-	public ProcessingAnnotationException(string message) : base(message)
-	{
-	}
-
-	public ProcessingAnnotationException(Exception exception) : base(exception.Message)
-	{
 	}
 }

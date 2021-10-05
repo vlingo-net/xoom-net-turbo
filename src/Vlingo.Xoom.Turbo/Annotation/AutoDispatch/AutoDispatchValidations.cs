@@ -1,7 +1,13 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using System.Linq;
 using System.Reflection;
-using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Http;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
@@ -76,7 +82,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 					if (routeAnnotation != null && !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
 					    routeAnnotation.Method == Method.Get.ToString())
 					{
-						if (enclosed.GetParameters().Any(methodParams => methodParams.IsIn && methodParams.GetCustomAttribute<Body>() == null))
+						if (enclosed.GetParameters().Any(methodParams =>
+							methodParams.IsIn && methodParams.GetCustomAttribute<Body>() == null))
 						{
 							throw new ProcessingAnnotationException(
 								$"Class {annotation.FullName}. Body annotation is not allowed with {routeAnnotation.Method} as method parameter for Route annotation.");
