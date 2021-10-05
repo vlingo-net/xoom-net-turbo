@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Http;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
@@ -26,7 +28,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			{
 				if (rootElement.GetCustomAttribute<Queries>() == null)
 				{
-					foreach (var enclosed in rootElement.GetMembers())
+					foreach (var enclosed in rootElement.GetMethods())
 					{
 						var route = enclosed.GetCustomAttribute<Route>();
 						if (route != null && !route.GetType().IsInterface && !route.GetType().IsClass &&
@@ -45,7 +47,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			{
 				if (rootElement.GetCustomAttribute<Model>() == null)
 				{
-					foreach (var enclosed in rootElement.GetMembers())
+					foreach (var enclosed in rootElement.GetMethods())
 					{
 						var routeAnnotation = enclosed.GetCustomAttribute<Route>();
 						var hasMethods = !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
@@ -63,17 +65,46 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			}
 		};
 
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> BodyForRouteValidator() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				foreach (var enclosed in rootElement.GetMethods())
+				{
+					var routeAnnotation = enclosed.GetCustomAttribute<Route>();
+					if (routeAnnotation != null && !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
+					    routeAnnotation.Method == Method.Get.ToString())
+					{
+						if (enclosed.GetParameters().Any(methodParams => methodParams.IsIn && methodParams.GetCustomAttribute<Body>() == null))
+						{
+							throw new ProcessingAnnotationException(
+								$"Class {annotation.FullName}. Body annotation is not allowed with {routeAnnotation.Method} as method parameter for Route annotation.");
+						}
+					}
+				}
+			}
+		};
 
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> RouteHasQueryOrModel() => (
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> RouteHasQueryOrModelValidator() => (
 			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
 		{
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
 				var queriesAnnotation = rootElement.GetCustomAttribute<Queries>();
-				var modelAnnotation = rootElement.GetCustomAttribute<Model>();
+				var modelAnnotation = rootElement.GetCustomAttribute<Body>();
 				if (queriesAnnotation == null && modelAnnotation == null)
 					throw new ProcessingAnnotationException(
 						$"Class {annotation.FullName}. To use Route annotation you need to use Queries or Model annotation on the Class level.");
+			}
+		};
+
+		public static Action<ProcessingEnvironment, Type, AnnotatedElements> HandlerWithoutValidMethodValidator() => (
+			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		{
+			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			{
+				//TODO: Implement Handler Without Valid Method Validator 
 			}
 		};
 	}

@@ -89,6 +89,24 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 		}
 
 		[Fact]
+		public void TestBodyForRouteValidator()
+		{
+			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+			var mockAnnotatedElements = new Mock<AnnotatedElements>();
+			var mockElementsUtil = new Mock<Type>();
+			var elements = new HashSet<Type> { typeof(IQueriesTest) };
+
+			mockAnnotatedElements
+				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+				.Returns(elements);
+
+			mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
+			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+			BodyForRouteValidator().Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+		}
+
+		[Fact]
 		public void TestRouteWithoutResponseValidator()
 		{
 			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
@@ -119,7 +137,25 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 				.Returns(elements);
 			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
-			RouteHasQueryOrModel().Invoke(mockProcessingEnvironment.Object, typeof(Route), mockAnnotatedElements.Object);
+			RouteHasQueryOrModelValidator()
+				.Invoke(mockProcessingEnvironment.Object, typeof(Route), mockAnnotatedElements.Object);
+		}
+
+		[Fact]
+		public void TestHandlerWithoutValidMethodValidator()
+		{
+			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+			var mockAnnotatedElements = new Mock<AnnotatedElements>();
+			var mockElementsUtil = new Mock<Type>();
+			var elements = new HashSet<Type> { typeof(IQueriesTest) };
+
+			mockAnnotatedElements
+				.Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+				.Returns(elements);
+			mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+			HandlerWithoutValidMethodValidator().Invoke(mockProcessingEnvironment.Object,
+				typeof(Turbo.Annotation.AutoDispatch.Model), mockAnnotatedElements.Object);
 		}
 
 		[Queries(Protocol = typeof(IQueriesProtocolTest))]
