@@ -13,12 +13,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
 {
     public class AutoDispatchMappingGenerationStep : TemplateProcessingStep
     {
-        protected List<TemplateData> BuildTemplatesData(CodeGenerationContext context)
+        protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context)
         {
             var queriesTemplateData = context.TemplateParametersOf(TemplateStandardType.QueriesActor);
             return AutoDispatchMappingTemplateDataFactory.Build(context.Parameters(), queriesTemplateData.ToList(), context.Contents().ToList());
         }
 
-        public bool ShouldProcess(CodeGenerationContext context) => context.HasParameter(Label.UseAutoDispatch) && context.ParameterOf(Label.UseAutoDispatch, x => bool.TrueString.ToLower() == x);
+        public override bool ShouldProcess(CodeGenerationContext context) => context.HasParameter(Label.UseAutoDispatch) && context.ParameterOf(Label.UseAutoDispatch, x => bool.TrueString.ToLower() == x);
     }
 }

@@ -10,27 +10,17 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store.State;
 using Vlingo.Xoom.Symbio.Store.State.InMemory;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-    public class InMemoryStateStoreActorBuilder<T> : IStoreActorBuilder<T>
-    {
-        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers) => 
-            stage.ActorFor<T>(typeof(IStateStore), typeof(InMemoryStateStoreActor<IState>), dispatchers);
+	public class InMemoryStateStoreActorBuilder : IStoreActorBuilder
+	{
+		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
+			stage.World.Stage.ActorFor<InMemoryStateStoreActor<IState>>(typeof(IStateStore), dispatchers, 5000L, 5000L) as T;
 
-        public bool Support(DatabaseType databaseType)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Support(StorageType storageType, DatabaseCategory databaseType)
-        {
-            //databaseType.IsInMemory;
-            throw new System.NotImplementedException();
-        }
-
-        //public bool Support(DatabaseType databaseType) => databaseType.IsInMemory;
-    }
+		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
+			storageType.IsStateStore() && databaseType.IsInMemory();
+	}
 }

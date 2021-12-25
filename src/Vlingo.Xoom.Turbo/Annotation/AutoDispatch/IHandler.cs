@@ -7,26 +7,30 @@
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-    public interface IHandler
-    {
-        interface Two<A, B> where A : IHandler where B : IHandler
-        {
-            A Handle(B b);
-        }
+	public interface IHandler
+	{
+		interface Two<A, B> where A : IHandler where B : IHandler
+		{
+			A Handle(B b);
+		}
 
-        interface Three<A, B, C> where A : IHandler where B : IHandler where C : IHandler
-        {
-            A Handle(B b, C c);
-        }
+		interface Three<A, B, C> where A : IHandler where B : IHandler where C : IHandler
+		{
+			A Handle(B b, C c);
+		}
 
-        interface Four<A, B, C, D> where A : IHandler where B : IHandler where C : IHandler where D : IHandler
-        {
-            A Handle(B b, C c, D d);
-        }
+		interface Four<A, B, C, D> where A : IHandler where B : IHandler where C : IHandler where D : IHandler
+		{
+			A Handle(B b, C c, D d);
+		}
 
-        interface Five<A, B, C, D, E> where A : IHandler where B : IHandler where C : IHandler where D : IHandler where E : IHandler
-        {
-            A Handle(A a, B b, C c, D d, E e);
-        }
-    }
+		interface Five<A, B, C, D, E> where A : IHandler
+			where B : IHandler
+			where C : IHandler
+			where D : IHandler
+			where E : IHandler
+		{
+			A Handle(A a, B b, C c, D d, E e);
+		}
+	}
 }

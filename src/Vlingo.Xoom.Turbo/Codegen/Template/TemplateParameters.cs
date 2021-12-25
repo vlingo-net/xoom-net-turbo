@@ -63,7 +63,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
             return this;
         }
 
-        public TemplateParameters AddImports(HashSet<string> qualifiedClassNames)
+        public TemplateParameters AddImports(ISet<string> qualifiedClassNames)
         {
             qualifiedClassNames.ToList().ForEach(x => AddImport(x));
             return this;

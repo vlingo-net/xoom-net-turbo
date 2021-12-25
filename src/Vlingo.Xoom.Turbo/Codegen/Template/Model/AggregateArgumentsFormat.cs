@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
 namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
@@ -39,7 +40,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
             {
                 return parameter.RetrieveAllRelated(ResolveFieldsLabel(parameter)).Select(param =>
                 {
-                    var paramType = StateFieldDetail.TypeOf(param.Parent(Label.Aggregate), param.value);
+                    var paramType = FieldDetail.TypeOf(param.Parent(Label.Aggregate), param.value);
                     return string.Format(_signaturePatttern, paramType, param.value);
                 }).ToList();
             }

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
@@ -113,7 +114,7 @@ namespace Vlingo.Xoom.Turbo.Codegen
             var databases = new Dictionary<ModelType, Storage.DatabaseCategory>() { };
             if (ParameterOf<bool>(Label.Cqrs))
             {
-                databases.Add(ModelType.Ccommand, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
+                databases.Add(ModelType.Command, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
                 databases.Add(ModelType.Query, ParameterOf(Label.CommandModelDatabase, name => DatabaseType.GetOrDefault(name, Storage.DatabaseCategory.InMemory)));
                 return databases;
             }
@@ -122,7 +123,12 @@ namespace Vlingo.Xoom.Turbo.Codegen
             return databases;
         }
 
-        public bool IsInternalGeneration => CodeGenerationLocation.IsInternal(ParameterOf<CodeGenerationLocationType>(Label.GenerationLocation));
+        public bool IsInternalGeneration => CodeGenerationLocation.IsInternal(ParameterOf(Label.GenerationLocation,
+            x =>
+            {
+                CodeGenerationLocationType.TryParse(x, out CodeGenerationLocationType value);
+                return value;
+            }));
 
         public IEnumerable<CodeGenerationParameter> ParametersOf(Label label) => _parameters.RetrieveAll(label);
 
@@ -131,5 +137,19 @@ namespace Vlingo.Xoom.Turbo.Codegen
         public IReadOnlyList<ContentBase> Contents() => _contents;
 
         public CodeGenerationParameters Parameters() => _parameters;
+
+        public CodeGenerationContext AddContent(TemplateStandard standard, OutputFile file, string text)
+        {
+            _contents.Add(ContentBase.With(standard, file, _filer, _source, text));
+            return this;
+        }
+
+        public ContentBase? FindContent(TemplateStandard standard, string contentName) => _contents
+            .FirstOrDefault(content => content.Has(standard) && content.IsNamed(contentName));
+
+        public CodeGenerationContext Contents(List<IContentLoader> resolveContentLoaders)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

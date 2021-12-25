@@ -12,9 +12,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.Persistence
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class Adapters : Attribute
     {
-        Type[] types;
-        void Value()
+        Type[] _value;
+
+        public Type[] Value
         {
+            get => _value;
+            set => _value = value;
         }
     }
 }

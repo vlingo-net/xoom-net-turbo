@@ -40,5 +40,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
         public virtual bool IsProtocolBased => false;
 
         public bool Has(TemplateStandard standard) => standard.Equals(standard);
+
+        public static ContentBase With(TemplateStandard standard, OutputFile file, FileStream filer, Type source, string text) => new TextBasedContent(standard, file, source, filer, text);
+
+        public bool IsNamed(string name) => RetrieveClassName().Equals(name);
     }
 }

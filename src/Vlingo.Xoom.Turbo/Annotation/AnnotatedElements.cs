@@ -15,6 +15,10 @@ namespace Vlingo.Xoom.Turbo.Annotation
     {
         private readonly IDictionary<object, HashSet<Type>> _elements = new Dictionary<object, HashSet<Type>>();
 
+        public AnnotatedElements()
+        {
+            
+        }
         public static AnnotatedElements From(IEnumerable<object> supportedAnnotations)
         {
             //Func<object, AbstractMap.SimpleEntry<Class, Set<Element>>> mapper =
@@ -33,10 +37,10 @@ namespace Vlingo.Xoom.Turbo.Annotation
 
         public bool HasElementsWith(object annotation) => _elements.ContainsKey(annotation) && ElementsWith(annotation) != null && ElementsWith(annotation).Count != 0;
 
-        public HashSet<Type> ElementsWith(params object[] annotations) => new HashSet<Type>(annotations.Where(annotation => _elements.ContainsKey(annotation)).SelectMany(annotation => _elements[annotation]));
+        public virtual HashSet<Type> ElementsWith(params object[] annotations) => new HashSet<Type>(annotations.Where(annotation => _elements.ContainsKey(annotation)).SelectMany(annotation => _elements[annotation]));
 
         public Type ElementWith(object annotation) => ElementsWith(annotation).FirstOrDefault();
 
-        public int Count(object annotation) => HasElementsWith(annotation) ? 0 : ElementsWith(annotation).Count;
+        public virtual int Count(object annotation) => HasElementsWith(annotation) ? 0 : ElementsWith(annotation).Count;
     }
 }

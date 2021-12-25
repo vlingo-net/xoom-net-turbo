@@ -13,7 +13,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
     public class TemplateProcessor
     {
         private static TemplateProcessor _instance;
-        private static readonly string _templatePathPattern = "codegen/{0}.ftl";
+        private static readonly string _templatePathPattern = "Resources/Codegen/Csharp/{0}.tt";
 
         private TemplateProcessor()
         {
@@ -40,7 +40,6 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
             return Process(mainTemplateData.Standard(), mainTemplateData.Parameters());
         }
 
-        //TODO: Configuration and Template from freemarker is now visible.
         private string Process(TemplateStandard standard, TemplateParameters parameters)
         {
             try

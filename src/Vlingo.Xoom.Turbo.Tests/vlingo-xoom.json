@@ -1,0 +1,43 @@
+﻿{
+  "database": {
+    "category": "IN_MEMORY",
+    "name": "",
+    "driver": "",
+    "url": "",
+    "username": "",
+    "password": "",
+    "originator": ""
+  },
+  "query": {
+    "database": {
+      "category": "MYSQL",
+      "name": "STORAGE_TEST",
+      "driver": "com.mysql.cj.jdbc.Driver",
+      "url": "jdbc:mysql://localhost:2215/",
+      "username": "vlingo_test",
+      "password": "vlingo123",
+      "originator": "MAIN"
+    }
+  },
+  "exchange": {
+    "names": "first;second",
+    "first": {
+      "hostname": "first-exchange",
+      "username": "vlingo01",
+      "password": "vlingo-pass01",
+      "port": "1000",
+      "virtual": {
+        "host": "virtual-first-exchange"
+      }
+    },
+    "second": {
+      "hostname": "second-exchange",
+      "username": "vlingo02",
+      "password": "vlingo-pass02",
+      "port": "1001",
+      "virtual": {
+        "host": "virtual-second-exchange"
+      }
+    }
+  }
+}

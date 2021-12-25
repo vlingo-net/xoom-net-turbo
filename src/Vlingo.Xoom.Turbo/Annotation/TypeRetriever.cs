@@ -6,107 +6,58 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Turbo.Annotation
 {
-    public class TypeRetriever
-    {
+	public class TypeRetriever
+	{
+		private static TypeRetriever _instance;
+		private readonly Type _elements;
+		private readonly ProcessingEnvironment _environment;
 
-        private static TypeRetriever _instance;
-        private readonly Type _elements;
-        private readonly ProcessingEnvironment _environment;
+		private TypeRetriever(ProcessingEnvironment environment)
+		{
+			_environment = environment;
+			_elements = environment.GetElementUtils();
+		}
 
-        private TypeRetriever(ProcessingEnvironment environment)
-        {
-            _environment = environment;
-            _elements = environment.GetElementUtils();
-        }
+		public static TypeRetriever With(ProcessingEnvironment environment) => new TypeRetriever(environment);
 
-        //public IEnumerable<Type> SubclassesOf(object superclass, string[] packages)
-        //{
-        //    return Stream.of(packages).filter(this::isValidPackage)
-        //            .map(packageName->elements.getPackageElement(packageName))
-        //            .flatMap(packageElement->packageElement.getEnclosedElements().stream())
-        //            .filter(element->isSubclass(element, superclass))
-        //            .map(element->element.asType());
+		public bool IsValidPackage(string packageName) => _elements.Assembly.GetName().Name != null;
 
-        //    var a = packages.Where(x => IsValidPackage(x)).SelectMany(packageName => _elements.GetMembers()).Where(element => elem)
-        //}
+		public bool IsAnInterface(Attribute attribute, Func<object, Type> retriever) =>
+			GetTypeElement(attribute, retriever).IsInterface;
 
-        //private bool IsSubclass(Type typeElement, object superclass)
-        //{
-        //    Type type = _elementstyp((string)superclass)
-        //                    .asType();
+		private Type GetTypeElement(Attribute attribute, Func<object, Type> retriever) =>
+			From(attribute.GetType(), retriever);
 
-        //    return ((TypeElement)typeElement).getSuperclass()
-        //            .equals(type);
-        //}
+		public Type From(Attribute attribute, Func<object, Type> retriever)
+		{
+			var clazz = retriever.Invoke(attribute);
+			return _environment.GetElementUtils().GetElementType();
+		}
 
-        //public <T> TypeElement from(final T annotation, final Function<T, Class<?>> retriever)
-        //{
-        //    try
-        //    {
-        //        final Class<?> clazz =
-        //                retriever.apply(annotation);
+		public T From<T>(Attribute[] attribute, Func<object, Type> retriever) where T : Type
+		{
+			var clazz = retriever.Invoke(attribute);
+			return _environment.GetElementUtils().GetElementType() as T;
+		}
+		public T From<T>(T attribute, Func<object, Type> retriever) where T : Type
+		{
+			var clazz = retriever.Invoke(attribute);
+			return _environment.GetElementUtils().GetElementType() as T;
+		}
 
-        //        return environment.getElementUtils()
-        //                .getTypeElement(clazz.getCanonicalName());
-        //    }
-        //    catch (final MirroredTypeException exception) {
-        //        return (TypeElement)environment.getTypeUtils()
-        //                .asElement(exception.getTypeMirror());
-        //    }
-        //}
+		public T TypesFrom<T>(T attribute, Func<T, Type[]> retriever)
+		{
+			throw new NotImplementedException();
+		}
 
-        //public <T>  List<TypeElement> typesFrom(final T annotation, final Function< T, Class <?>[] > retriever) {
-        //        try
-        //        {
-        //            final Class<?>[] classes =
-        //            retriever.apply(annotation);
-
-        //            return Stream.of(classes).map(clazz->environment.getElementUtils()
-        //                    .getTypeElement(clazz.getCanonicalName())).collect(Collectors.toList());
-        //        }
-        //        catch (final MirroredTypesException exception) {
-        //            return exception.getTypeMirrors().stream()
-        //                    .map(typeMirror-> (TypeElement) environment.getTypeUtils()
-        //                            .asElement(typeMirror)).collect(Collectors.toList());
-        //        }
-        //}
-
-        public static TypeRetriever With(ProcessingEnvironment environment) => new TypeRetriever(environment);
-
-        //        public boolean isAnInterface(final Annotation annotation, final Function< Object, Class <?>> retriever) {
-        //            return getTypeElement(annotation, retriever).getKind().isInterface();
-        //        }
-
-        //        public String getClassName(final Annotation annotation, final Function< Object, Class <?>> retriever) {
-        //            return getTypeElement(annotation, retriever).getQualifiedName().toString();
-        //        }
-
-        //        public List<ExecutableElement> getMethods(final Annotation annotation, final Function< Object, Class <?>> retriever) {
-        //            return (List<ExecutableElement>)getTypeElement(annotation, retriever).getEnclosedElements();
-        //        }
-
-        //        public TypeElement getGenericType(final Annotation annotation, final Function< Object, Class <?>> retriever) {
-        //            final DeclaredType declaredType = (DeclaredType)getTypeElement(annotation, retriever).getSuperclass();
-        //            if (declaredType.getTypeArguments().isEmpty())
-        //            {
-        //                return null;
-        //            }
-        //            return (TypeElement)((DeclaredType)declaredType.getTypeArguments().get(0)).asElement();
-        //        }
-
-        //        public List<Element> getElements(final Annotation annotation, final Function< Object, Class <?>> retriever) {
-        //            return (List<Element>)getTypeElement(annotation, retriever).getEnclosedElements();
-        //        }
-
-        //        public TypeElement getTypeElement(final Annotation annotation,
-        //                                           final Function< Object, Class <?>> retriever) {
-        //            return from(annotation, retriever);
-        //        }
-
-        public bool IsValidPackage(string packageName) => _elements.Assembly.GetName().Name != null;
-
-    }
+		public List<Type> SubClassesOf<T>(string[] packages) => new List<Type>();
+	}
 }

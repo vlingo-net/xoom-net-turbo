@@ -5,8 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
-using Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
 
 namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
 {

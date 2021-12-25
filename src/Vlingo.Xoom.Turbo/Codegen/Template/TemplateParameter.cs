@@ -103,7 +103,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
         ExchangeReceiverHolderName,
         ExchangeRole,
         ExchangeReceivers,
-        InlineExchangNames,
+        InlineExchangeNames,
         ExchangeNames,
         SchemaGroupName,
         Exchanges,
@@ -117,6 +117,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
         ProducerOrganization,
         ProducerUnit,
         ProducerSchemas,
-        ConsumerSchemas
+        ConsumerSchemas,
+        ExchangeBootstrapName
     }
 }

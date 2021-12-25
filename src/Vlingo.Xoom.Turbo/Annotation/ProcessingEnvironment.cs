@@ -6,11 +6,13 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
+using System.IO;
 
 namespace Vlingo.Xoom.Turbo.Annotation
 {
-    public class ProcessingEnvironment
-    {
-        public Type GetElementUtils() => throw new NotImplementedException();
-    }
+	public class ProcessingEnvironment
+	{
+		public virtual Type GetElementUtils() => throw new NotImplementedException();
+		public virtual FileStream GetFiler() => throw new NotImplementedException();
+	}
 }

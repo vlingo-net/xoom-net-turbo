@@ -7,24 +7,20 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Vlingo.Xoom.Symbio;
+using Vlingo.Xoom.Symbio.Store.Journal;
+using Vlingo.Xoom.Symbio.Store.Journal.InMemory;
+using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-    public class InMemoryJournalActorBuilder<T> : IStoreActorBuilder<T>
-    {
-        public T Build(Stage stage, IEnumerable<IDispatcher> dispatchers)
-        {
-            // (T)Journal<T>.Using<Actor, IEntry<T>, IState>(stage, (IDispatcher<Dispatchable<IEntry<T>, IState>>)dispatchers, typeof(InMemoryJournalActor<T, IEntry<T>, IState>));
-            throw new System.NotImplementedException();
-        }
-
-        public bool Support(DatabaseType databaseType)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Support(StorageType storageType, DatabaseCategory databaseType) => databaseType == DatabaseCategory.InMemory;
-    }
+	public class InMemoryJournalActorBuilder : IStoreActorBuilder
+	{
+		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
+			stage.ActorFor<InMemoryJournalActor<IState>>(typeof(IJournal), dispatchers) as T;
+		
+		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
+			storageType.IsJournal() && databaseType.IsInMemory();
+	}
 }

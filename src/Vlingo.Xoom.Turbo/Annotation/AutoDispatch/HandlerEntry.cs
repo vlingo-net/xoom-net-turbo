@@ -5,6 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
+
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
     public class HandlerEntry<TState> where TState : IHandler
@@ -22,5 +24,6 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
             this.index = index;
             this.handler = handler;
         }
+
     }
 }
