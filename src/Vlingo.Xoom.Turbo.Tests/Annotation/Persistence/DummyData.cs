@@ -7,9 +7,8 @@
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
 {
-	public class DummyData
-	{
-		public string Name { get; set; }
-
-	}
+    public class DummyData
+    {
+        public string Name { get; set; }
+    }
 }

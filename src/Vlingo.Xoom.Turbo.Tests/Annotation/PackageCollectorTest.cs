@@ -10,16 +10,18 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation
 {
-	public class PackageCollectorTest
-	{
-		[Fact]
-		public void TestThatPackagesAreCollected()
-		{
-			var projectPath =System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()!).Parent!.Parent!.FullName;;
+    public class PackageCollectorTest
+    {
+        [Fact]
+        public void TestThatPackagesAreCollected()
+        {
+            var projectPath = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()!).Parent!.Parent!
+                .FullName;
+            ;
 
-			var packages = PackageCollector.From(projectPath, "Vlingo.Xoom.Turbo.Tests.Annotation").CollectAll();
-			
-			// Assert.Equal(10, packages.Count); WIP collect packages/namespaces from GetCurrentDirectory
-		}
-	}
+            var packages = PackageCollector.From(projectPath, "Vlingo.Xoom.Turbo.Tests.Annotation").CollectAll();
+
+            Assert.Equal(10, packages.Count); // WIP collect packages/namespaces from GetCurrentDirectory
+        }
+    }
 }

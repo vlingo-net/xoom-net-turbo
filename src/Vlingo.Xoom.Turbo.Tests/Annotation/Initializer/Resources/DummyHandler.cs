@@ -13,13 +13,12 @@ using Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources
 {
-	public class DummyHandlers
-	{
-		public static int DefineWith = 0;
-		public static int AdaptState = 3;
-		
-		// public static HandlerEntry<Three<ICompletes<DummyState>, Stage, DummyData>> DefineDummyHandler = 
-		// 	HandlerEntry<Three<ICompletes<DummyState>, Stage, DummyData>>.Of(DefineWith, (stage, dummyData) => Dummy.DefineWith(stage, dummyData.Name));
+    public class DummyHandlers
+    {
+        public static int DefineWith = 0;
+        public static int AdaptState = 3;
 
-	}
+        // public static HandlerEntry<Three<ICompletes<DummyState>, Stage, DummyData>> DefineDummyHandler = 
+        // 	HandlerEntry<Three<ICompletes<DummyState>, Stage, DummyData>>.Of(DefineWith, (stage, dummyData) => Dummy.DefineWith(stage, dummyData.Name));
+    }
 }

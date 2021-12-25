@@ -20,8 +20,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		
 		public override bool Equals(object? obj)
 		{
-			if(obj ==  null || obj.GetType() != GetType())
+			if (obj == null || obj.GetType() != GetType())
+			{
 				return false;
+			}
 			return Id == ((Entity2)obj).Id;
 		}
 	}

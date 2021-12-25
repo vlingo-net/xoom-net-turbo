@@ -10,40 +10,22 @@ using Vlingo.Xoom.Turbo.Scooter.Model.Object;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 {
-  public class EmployeeEntity : ObjectEntity<EmployeeState, DomainEvent>, IEmployee
-  {
-    private EmployeeState _employee;
-
-    public EmployeeEntity()
+    public class EmployeeEntity : ObjectEntity<EmployeeState, DomainEvent>, IEmployee
     {
-      _employee = new EmployeeState();
-    }
+        private EmployeeState _employee;
 
-    public EmployeeEntity(long id)
-    {
-      _employee = new EmployeeState(id, "", 0);
-    }
+        public EmployeeEntity() => _employee = new EmployeeState();
 
-    public void Assign(string number)
-    {
-      Apply(_employee.With(number), new EmployeeNumberAssigned());
-    }
+        public EmployeeEntity(long id) => _employee = new EmployeeState(id, "", 0);
 
-    public void Adjust(int salary)
-    {
-      Apply(_employee.With(salary), new EmployeeSalaryAdjusted());
-    }
+        public void Assign(string number) => Apply(_employee.With(number), new EmployeeNumberAssigned());
 
-    public void Hire(string number, int salary)
-    {
-      Apply(_employee.With(number).With(salary), new EmployeeHired());
-    }
+        public void Adjust(int salary) => Apply(_employee.With(salary), new EmployeeSalaryAdjusted());
 
-    public override string Id() => _employee.PersistenceId.ToString();
+        public void Hire(string number, int salary) => Apply(_employee.With(number).With(salary), new EmployeeHired());
 
-    protected override void StateObject(EmployeeState stateObject)
-    {
-      _employee = stateObject;
+        public override string Id() => _employee.PersistenceId.ToString();
+
+        protected override void StateObject(EmployeeState stateObject) => _employee = stateObject;
     }
-  }
 }

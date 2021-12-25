@@ -7,29 +7,23 @@
 
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Lattice.Model.Stateful;
-using Vlingo.Xoom.Turbo.Tests.Annotation.Model;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
 {
-	public class DummyEntity : StatefulEntity<DummyState>, IDummy
-	{
-		private DummyState _state;
+    public class DummyEntity : StatefulEntity<DummyState>, IDummy
+    {
+        private DummyState _state;
 
-		protected override void State(DummyState state)
-		{
-			_state = state;
-		}
+        protected override void State(DummyState state) => _state = state;
 
-		public ICompletes<DummyState> DefineWith(string name)
-		{
-			if (_state == null)
-			{
-				return Apply(new DummyState(Id, name), () => _state);
-			}
-			else
-			{
-				return Completes().With(_state);
-			}
-		}
-	}
+        public ICompletes<DummyState> DefineWith(string name)
+        {
+            if (_state == null)
+            {
+                return Apply(new DummyState(Id, name), () => _state);
+            }
+
+            return Completes().With(_state);
+        }
+    }
 }

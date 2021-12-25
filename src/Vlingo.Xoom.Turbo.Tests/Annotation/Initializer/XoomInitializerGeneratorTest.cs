@@ -14,22 +14,20 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
 {
-	public class XoomInitializerGeneratorTest
-	{
-		[Fact(Skip = "Work on MacOS, Windows need valid IntPtr handle")]
-		public void TestThatXoomInitializerGeneratorGenerates()
-		{
-			var mockAnnotatedElements = new Mock<AnnotatedElements>();
-			var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+    public class XoomInitializerGeneratorTest
+    {
+        [Fact(Skip = "Work on MacOS, Windows need valid IntPtr handle")]
+        public void TestThatXoomInitializerGeneratorGenerates()
+        {
+            var mockAnnotatedElements = new Mock<AnnotatedElements>();
+            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
 
-			mockProcessingEnvironment
-				.Setup(s => s.GetFiler())
-				.Returns(new Mock<FileStream>(It.IsAny<SafeFileHandle>(), FileAccess.Read, false).Object);
-			
-			XoomInitializerGenerator.Instance().GenerateForm(mockProcessingEnvironment.Object
-				, mockAnnotatedElements.Object);
-			
-			
-		}
-	}
+            mockProcessingEnvironment
+                .Setup(s => s.GetFiler())
+                .Returns(new Mock<FileStream>(It.IsAny<SafeFileHandle>(), FileAccess.Read, false).Object);
+
+            XoomInitializerGenerator.Instance().GenerateForm(mockProcessingEnvironment.Object
+                , mockAnnotatedElements.Object);
+        }
+    }
 }

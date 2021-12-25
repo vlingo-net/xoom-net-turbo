@@ -23,8 +23,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 			Apply(new ProductGrandParentTyped(type));
 		}
 
-		public ProductGrandParent(List<Source<DomainEvent>> eventStream, int streamVersion) : base(eventStream,
-			streamVersion)
+		public ProductGrandParent(List<Source<DomainEvent>> eventStream, int streamVersion) : base(eventStream, streamVersion)
 		{
 		}
 

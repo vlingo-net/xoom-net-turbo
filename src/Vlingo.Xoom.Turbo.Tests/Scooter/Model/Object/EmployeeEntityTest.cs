@@ -9,33 +9,33 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 {
-  public class EmployeeEntityTest
-  {
-    [Fact]
-    public void TestThatEmployeeIdentifiesModifiesRecovers()
+    public class EmployeeEntityTest
     {
-      var employee = new EmployeeEntity();
+        [Fact]
+        public void TestThatEmployeeIdentifiesModifiesRecovers()
+        {
+            var employee = new EmployeeEntity();
 
-      employee.Hire("12345", 50000);
+            employee.Hire("12345", 50000);
 
-      var state1 = employee.Applied().state;
-      Assert.True(state1.PersistenceId > 0);
-      Assert.Equal("12345", state1.Number);
-      Assert.Equal(50000, state1.Salary);
-      
-      employee.Assign("67890");
-      
-      var state2 = employee.Applied().state;
-      Assert.Equal(state1.PersistenceId, state2.PersistenceId);
-      Assert.Equal("67890", state2.Number);
-      Assert.Equal(50000, state2.Salary);
-      
-      employee.Adjust(55000);
+            var state1 = employee.Applied().state;
+            Assert.True(state1.PersistenceId > 0);
+            Assert.Equal("12345", state1.Number);
+            Assert.Equal(50000, state1.Salary);
 
-      var state3 = employee.Applied().state;
-      Assert.Equal(state1.PersistenceId, state3.PersistenceId);
-      Assert.Equal("67890", state3.Number);
-      Assert.Equal(55000, state3.Salary);
+            employee.Assign("67890");
+
+            var state2 = employee.Applied().state;
+            Assert.Equal(state1.PersistenceId, state2.PersistenceId);
+            Assert.Equal("67890", state2.Number);
+            Assert.Equal(50000, state2.Salary);
+
+            employee.Adjust(55000);
+
+            var state3 = employee.Applied().state;
+            Assert.Equal(state1.PersistenceId, state3.PersistenceId);
+            Assert.Equal("67890", state3.Number);
+            Assert.Equal(55000, state3.Salary);
+        }
     }
-  }
 }

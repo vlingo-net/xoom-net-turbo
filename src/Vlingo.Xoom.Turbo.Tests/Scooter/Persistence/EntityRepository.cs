@@ -14,10 +14,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 	{
 		private readonly IStateStore _store;
 
-		public EntityRepository(IStateStore store)
-		{
-			_store = store;
-		}
+		public EntityRepository(IStateStore store) => _store = store;
 
 		public void Save(Entity1 entity)
 		{

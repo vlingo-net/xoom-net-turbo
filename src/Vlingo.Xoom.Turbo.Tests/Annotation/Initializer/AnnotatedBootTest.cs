@@ -7,9 +7,10 @@
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
 {
-	[Turbo.Annotation.Initializer.Xoom(Name ="annotated-boot")]
-	[Turbo.Annotation.Initializer.ResourceHandlers(Packages =new[] { "Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources" })]
-	public class AnnotatedBootTest
-	{
-	}
+    [Turbo.Annotation.Initializer.Xoom(Name = "annotated-boot")]
+    [Turbo.Annotation.Initializer.ResourceHandlers(Packages =
+        new[] { "Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources" })]
+    public class AnnotatedBootTest
+    {
+    }
 }

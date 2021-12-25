@@ -9,15 +9,15 @@ using Vlingo.Xoom.Symbio.Store.Object;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
 {
-	public class DummyState : StateObject
-	{
-		public string Name { get; }
-		public string Id { get; }
+    public class DummyState : StateObject
+    {
+        public string Name { get; }
+        public string Id { get; }
 
-		public DummyState(string id, string name)
-		{
-			Id = id;
-			Name = name;
-		}
-	}
+        public DummyState(string id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+    }
 }

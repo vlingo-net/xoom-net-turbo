@@ -48,20 +48,11 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 		{
 		}
 
-		public void ChangeName(string newName)
-		{
-			Apply(new ProductNameChanged(newName));
-		}
+		public void ChangeName(string newName) => Apply(new ProductNameChanged(newName));
 
-		public void ChangeDescription(string newDescription)
-		{
-			Apply(new ProductDescriptionChanged(newDescription));
-		}
+		public void ChangeDescription(string newDescription) => Apply(new ProductDescriptionChanged(newDescription));
 
-		public void ChangePrice(int newPrice)
-		{
-			Apply(new ProductPriceChanged(newPrice));
-		}
+		public void ChangePrice(int newPrice) => Apply(new ProductPriceChanged(newPrice));
 
 		public override string Id() => StreamName();
 
@@ -91,22 +82,13 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 		{
 		}
 
-		static void WhenProductNameChanged(ProductNameChanged @event)
-		{
-			_name = @event.Name;
-		}
+		static void WhenProductNameChanged(ProductNameChanged @event) => _name = @event.Name;
 
-		static void WhenProductDescriptionChanged(ProductDescriptionChanged @event)
-		{
-			_description = @event.Description;
-		}
+		static void WhenProductDescriptionChanged(ProductDescriptionChanged @event) => _description = @event.Description;
 
-		static void WhenProductPriceChanged(ProductPriceChanged @event)
-		{
-			_price = @event.Price;
-		}
+		static void WhenProductPriceChanged(ProductPriceChanged @event) => _price = @event.Price;
 
-		public override bool Equals(object? obj)
+		public override bool Equals(object obj)
 		{
 			if (obj == null || obj.GetType() != typeof(Product))
 			{

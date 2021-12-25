@@ -9,12 +9,12 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
 {
-	public class XoomInitializerTest
-	{
-		[Fact]
-		public void TestInitialization()
-		{
-			// Need xoom-net-lattice..
-		}
-	}
+    public class XoomInitializerTest
+    {
+        [Fact]
+        public void TestInitialization()
+        {
+            // Need xoom-net-lattice..
+        }
+    }
 }

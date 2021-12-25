@@ -41,10 +41,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			return _access;
 		}
 
-		public void ControlWith(IDispatcherControl control)
-		{
-			_control = control;
-		}
+		public void ControlWith(IDispatcherControl control) => _control = control;
 
 		public void Dispatch(Dispatchable dispatchable)
 		{

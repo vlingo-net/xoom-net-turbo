@@ -7,8 +7,7 @@
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
 {
-	public interface IDummyQueries
-	{
-		
-	}
+    public interface IDummyQueries
+    {
+    }
 }
