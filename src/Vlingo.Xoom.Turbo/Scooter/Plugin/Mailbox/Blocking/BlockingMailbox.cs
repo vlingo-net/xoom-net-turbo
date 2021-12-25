@@ -9,6 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
@@ -39,6 +40,8 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 		{
 			_closed.Set(true);
 		}
+
+		public int ConcurrencyCapacity { get; }
 
 		public void Resume(string name)
 		{
@@ -127,6 +130,11 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 		}
 
 		public void Send<T>(Actor actor, Action<T> consumer, ICompletes? completes, string representation)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Send(Actor actor, Type protocol, LambdaExpression consumer, ICompletes? completes, string representation)
 		{
 			throw new NotImplementedException();
 		}
