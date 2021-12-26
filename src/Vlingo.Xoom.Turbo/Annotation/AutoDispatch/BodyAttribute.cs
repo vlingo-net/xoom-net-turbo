@@ -9,8 +9,8 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class Id : Attribute
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Struct)]
+    public class BodyAttribute : Attribute
     {
     }
 }

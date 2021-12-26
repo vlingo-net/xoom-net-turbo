@@ -11,22 +11,17 @@ using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 namespace Vlingo.Xoom.Turbo.Annotation.Persistence
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-	public class Persistence : Attribute
+	public class PersistenceAttribute : Attribute
 	{
-		private StorageType _storageType;
-		private string _basePackage;
+		private readonly StorageType _storageType;
 
-		public Persistence(StorageType storageType, string basePackage)
+		public PersistenceAttribute(StorageType storageType, string basePackage)
 		{
 			_storageType = storageType;
-			_basePackage = basePackage;
+			BasePackage = basePackage;
 		}
 
-		public string BasePackage
-		{
-			get => _basePackage;
-			set => _basePackage = value;
-		}
+		public string BasePackage { get; set; }
 
 		bool Cqrs() => false;
 

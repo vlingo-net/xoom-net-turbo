@@ -25,15 +25,18 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 		private readonly Type _persistenceSetupClass;
 		private readonly Type _autoDispatchResourceClasses;
 
-		private CodeGenerationContextLoader(FileStream filer, string basePackage, AnnotatedElements elements,
+		private CodeGenerationContextLoader(
+			FileStream filer,
+			string basePackage,
+			AnnotatedElements elements,
 			ProcessingEnvironment environment)
 		{
 			_filer = filer;
 			_basePackage = basePackage;
 			_environment = environment;
-			_bootStrapClass = ElementWith<Xoom>();
-			_persistenceSetupClass = ElementWith<Persistence.Persistence>();
-			_autoDispatchResourceClasses = ElementWith<AutoDispatch.AutoDispatch>();
+			_bootStrapClass = ElementWith<XoomAttribute>();
+			_persistenceSetupClass = ElementWith<PersistenceAttribute>();
+			_autoDispatchResourceClasses = ElementWith<AutoDispatchAttribute>();
 		}
 
 		private Type ElementWith<T>()
@@ -47,8 +50,11 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 			return typesWithMyAttribute.FirstOrDefault()!.Type;
 		}
 
-		public static CodeGenerationContext From(FileStream filer, string basePackage,
-			AnnotatedElements elements, ProcessingEnvironment environment) =>
+		public static CodeGenerationContext From(
+			FileStream filer,
+			string basePackage,
+			AnnotatedElements elements,
+			ProcessingEnvironment environment) =>
 			new CodeGenerationContextLoader(filer, basePackage, elements, environment).Load();
 
 		private CodeGenerationContext Load() => CodeGenerationContext

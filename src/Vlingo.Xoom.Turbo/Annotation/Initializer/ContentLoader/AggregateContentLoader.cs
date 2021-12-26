@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Vlingo.Xoom.Lattice.Model.Sourcing;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
@@ -25,9 +26,11 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var persistence = AnnotatedClass.GetCustomAttribute<Persistence.Persistence>();
+			var persistence = AnnotatedClass.GetCustomAttribute<PersistenceAttribute>();
 			if (!persistence.IsJournal())
+			{
 				return new List<Type>();
+			}
 
 			var baseDirectory = Context.LocateBaseDirectory(Environment.GetFiler());
 

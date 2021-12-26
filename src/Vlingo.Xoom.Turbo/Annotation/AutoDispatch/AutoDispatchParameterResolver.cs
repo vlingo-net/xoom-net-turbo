@@ -18,7 +18,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			throw new NotImplementedException();
 		}
 
-		public IReadOnlyDictionary<Label,string> Resolve()
+		public IReadOnlyDictionary<Label, string> Resolve()
 		{
 			throw new NotImplementedException();
 		}

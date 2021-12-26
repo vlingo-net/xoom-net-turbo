@@ -10,31 +10,12 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
-	public class AutoDispatch : Attribute
+	public class ModelAttribute : Attribute
 	{
-		private string _path;
-		private Type _handler;
+		public Type? Protocols { get; set; }
 
-		public AutoDispatch()
-		{
-		}
+		public Type? Actor { get; set; }
 
-		public AutoDispatch(string path, Type handler)
-		{
-			_path = path;
-			_handler = handler;
-		}
-
-		public string Path
-		{
-			get => _path;
-			set => _path = value;
-		}
-
-		public Type Handlers
-		{
-			get => _handler;
-			set => _handler = value;
-		}
+		public Type? Data { get; set; }
 	}
 }

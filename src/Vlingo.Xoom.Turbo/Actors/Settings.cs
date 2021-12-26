@@ -12,7 +12,7 @@ using System.Linq;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
 
-namespace Vlingo.Xoom.Turbo.actors
+namespace Vlingo.Xoom.Turbo.Actors
 {
     public class Settings : ConfigurationProperties
     {

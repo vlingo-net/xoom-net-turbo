@@ -19,7 +19,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		{
 			foreach (var element in annotatedElements.ElementsWith(annotation))
 			{
-				var queries = element.GetCustomAttribute<Queries>();
+				var queries = element.GetCustomAttribute<QueriesAttribute>();
 				var retriever = TypeRetriever.With(processingEnvironment);
 				if (retriever.IsAnInterface(queries!, Void => queries!.Protocol))
 					throw new ProcessingAnnotationException(
@@ -32,11 +32,11 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		{
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
-				if (rootElement.GetCustomAttribute<Queries>() == null)
+				if (rootElement.GetCustomAttribute<QueriesAttribute>() == null)
 				{
 					foreach (var enclosed in rootElement.GetMethods())
 					{
-						var route = enclosed.GetCustomAttribute<Route>();
+						var route = enclosed.GetCustomAttribute<RouteAttribute>();
 						if (route != null && !route.GetType().IsInterface && !route.GetType().IsClass &&
 						    route.Method == Method.Get.ToString())
 							throw new ProcessingAnnotationException(
@@ -51,17 +51,17 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		{
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
-				if (rootElement.GetCustomAttribute<Model>() == null)
+				if (rootElement.GetCustomAttribute<ModelAttribute>() == null)
 				{
 					foreach (var enclosed in rootElement.GetMethods())
 					{
-						var routeAnnotation = enclosed.GetCustomAttribute<Route>();
+						var routeAnnotation = enclosed.GetCustomAttribute<RouteAttribute>();
 						var hasMethods = !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
 						                 (routeAnnotation.Method == Method.Post.ToString() ||
 						                  routeAnnotation.Method == Method.Put.ToString()
 						                  || routeAnnotation.Method == Method.Patch.ToString() ||
 						                  routeAnnotation.Method == Method.Delete.ToString());
-						if (hasMethods && enclosed.GetCustomAttribute<ResponseAdapter>() == null)
+						if (hasMethods && enclosed.GetCustomAttribute<ResponseAdapterAttribute>() == null)
 						{
 							throw new ProcessingAnnotationException(
 								$"Class {annotation.FullName}. The class with {routeAnnotation.Method} method for Route need to have Response annotation.");
@@ -78,12 +78,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			{
 				foreach (var enclosed in rootElement.GetMethods())
 				{
-					var routeAnnotation = enclosed.GetCustomAttribute<Route>();
+					var routeAnnotation = enclosed.GetCustomAttribute<RouteAttribute>();
 					if (routeAnnotation != null && !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
 					    routeAnnotation.Method == Method.Get.ToString())
 					{
 						if (enclosed.GetParameters().Any(methodParams =>
-							methodParams.IsIn && methodParams.GetCustomAttribute<Body>() == null))
+							methodParams.IsIn && methodParams.GetCustomAttribute<BodyAttribute>() == null))
 						{
 							throw new ProcessingAnnotationException(
 								$"Class {annotation.FullName}. Body annotation is not allowed with {routeAnnotation.Method} as method parameter for Route annotation.");
@@ -98,8 +98,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		{
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
-				var queriesAnnotation = rootElement.GetCustomAttribute<Queries>();
-				var modelAnnotation = rootElement.GetCustomAttribute<Body>();
+				var queriesAnnotation = rootElement.GetCustomAttribute<QueriesAttribute>();
+				var modelAnnotation = rootElement.GetCustomAttribute<BodyAttribute>();
 				if (queriesAnnotation == null && modelAnnotation == null)
 					throw new ProcessingAnnotationException(
 						$"Class {annotation.FullName}. To use Route annotation you need to use Queries or Model annotation on the Class level.");

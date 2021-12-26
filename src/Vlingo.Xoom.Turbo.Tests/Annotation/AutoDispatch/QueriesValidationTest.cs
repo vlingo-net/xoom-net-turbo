@@ -18,10 +18,10 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
         public void TestThatSingularityValidationPasses()
         {
             var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            mockAnnotatedElements.Setup(s => s.Count(It.IsAny<Queries>())).Returns(1);
+            mockAnnotatedElements.Setup(s => s.Count(It.IsAny<QueriesAttribute>())).Returns(1);
 
             Validation.SingularityValidation().Invoke(new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object);
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object);
         }
     }
 }

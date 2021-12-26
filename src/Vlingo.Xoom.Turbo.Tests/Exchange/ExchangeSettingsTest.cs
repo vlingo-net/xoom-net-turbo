@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.ObjectModel;
-using Vlingo.Xoom.Turbo.actors;
+using Vlingo.Xoom.Turbo.Actors;
 using Vlingo.Xoom.Turbo.Exchange;
 using Xunit;
 

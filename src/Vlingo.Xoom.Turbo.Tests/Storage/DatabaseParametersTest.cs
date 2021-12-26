@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Vlingo.Xoom.Turbo.actors;
+using Vlingo.Xoom.Turbo.Actors;
 using Vlingo.Xoom.Turbo.Storage;
 using Xunit;
 using static Vlingo.Xoom.Turbo.EnvironmentVariables;

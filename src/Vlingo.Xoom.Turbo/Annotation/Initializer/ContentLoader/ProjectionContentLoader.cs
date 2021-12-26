@@ -16,8 +16,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
 	public class ProjectionContentLoader : TypeBasedContentLoader
 	{
-		public ProjectionContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-			environment)
+		public ProjectionContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass, environment)
 		{
 		}
 
@@ -25,13 +24,13 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var projections = AnnotatedClass!.GetCustomAttribute<Projections>();
+			var projections = AnnotatedClass!.GetCustomAttribute<ProjectionsAttribute>();
 
 			if (projections == null)
 				return new List<Type>();
 
 			return new[] { projections.Value }
-				.Select(projection => TypeRetriever.From(projections, projection => (projection as Projection)!.Actor))
+				.Select(projection => TypeRetriever.From(projections, projection => (projection as ProjectionAttribute)!.Actor))
 				.ToList();
 		}
 	}

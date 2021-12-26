@@ -22,7 +22,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override TemplateStandard Standard()
 		{
-			var persistence = AnnotatedClass.GetCustomAttribute<Persistence.Persistence>();
+			var persistence = AnnotatedClass.GetCustomAttribute<PersistenceAttribute>();
 
 			if (persistence.IsJournal())
 				return new TemplateStandard(TemplateStandardType.DomainEvent);
@@ -32,7 +32,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var adapters = AnnotatedClass.GetCustomAttribute<Adapters>();
+			var adapters = AnnotatedClass.GetCustomAttribute<AdaptersAttribute>();
 
 			if (adapters == null)
 				return new List<Type>();

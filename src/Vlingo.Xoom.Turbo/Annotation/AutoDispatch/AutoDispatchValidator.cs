@@ -23,7 +23,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		public static AutoDispatchValidator Instance()
 		{
 			if (_instance == null)
+			{
 				_instance = new AutoDispatchValidator();
+			}
+			
 			return _instance;
 		}
 
@@ -31,7 +34,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		{
 			new List<Action<ProcessingEnvironment, Type, AnnotatedElements>>
 					{ IsInterface(), ClassVisibilityValidation(), IsQueriesProtocolAnInterface() }
-				.ForEach(validator => validator.Invoke(processingEnvironment, typeof(Queries), annotatedElements));
+				.ForEach(validator => validator.Invoke(processingEnvironment, typeof(QueriesAttribute), annotatedElements));
 		}
 	}
 }

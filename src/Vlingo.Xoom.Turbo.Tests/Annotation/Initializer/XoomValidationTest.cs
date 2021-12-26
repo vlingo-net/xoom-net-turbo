@@ -21,21 +21,21 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
         public void TestThatSingularityValidationPasses()
         {
             var mockAnnotatedElements = _mockRepository.Create<AnnotatedElements>();
-            mockAnnotatedElements.Setup(s => s.Count(typeof(Turbo.Annotation.Initializer.Xoom))).Returns(1);
+            mockAnnotatedElements.Setup(s => s.Count(typeof(Turbo.Annotation.Initializer.XoomAttribute))).Returns(1);
 
             Validation.SingularityValidation().Invoke(new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object);
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object);
         }
 
         [Fact]
         public void TestThatSingularityValidationFails()
         {
             var mockAnnotatedElements = _mockRepository.Create<AnnotatedElements>();
-            mockAnnotatedElements.Setup(s => s.Count(typeof(Turbo.Annotation.Initializer.Xoom))).Returns(2);
+            mockAnnotatedElements.Setup(s => s.Count(typeof(Turbo.Annotation.Initializer.XoomAttribute))).Returns(2);
 
             Assert.Throws<ProcessingAnnotationException>(() => Validation.SingularityValidation().Invoke(
                 new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object));
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object));
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
             mockElement.SetReturnsDefault(false);
 
             Validation.TargetValidation().Invoke(new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object);
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object);
         }
 
         [Fact]
@@ -66,20 +66,20 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
 
             Assert.Throws<ProcessingAnnotationException>(() => Validation.TargetValidation().Invoke(
                 new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object));
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object));
         }
 
         [Fact]
         public void TestThatClassVisibilityValidationPasses()
         {
-            var elements = new HashSet<Type> { typeof(Turbo.Annotation.Initializer.Xoom) };
+            var elements = new HashSet<Type> { typeof(Turbo.Annotation.Initializer.XoomAttribute) };
             var mockAnnotatedElements = _mockRepository.Create<AnnotatedElements>();
 
-            mockAnnotatedElements.Setup(s => s.ElementsWith(new[] { typeof(Turbo.Annotation.Initializer.Xoom) }))
+            mockAnnotatedElements.Setup(s => s.ElementsWith(new[] { typeof(Turbo.Annotation.Initializer.XoomAttribute) }))
                 .Returns(elements);
 
             Validation.ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object);
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
 
             Assert.Throws<ProcessingAnnotationException>(() => Validation.ClassVisibilityValidation().Invoke(
                 new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.Xoom), mockAnnotatedElements.Object));
+                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object));
         }
 
         public void Dispose() => _mockRepository.VerifyAll();

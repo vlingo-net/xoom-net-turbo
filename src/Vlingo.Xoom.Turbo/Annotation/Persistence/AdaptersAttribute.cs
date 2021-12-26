@@ -10,14 +10,8 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.Persistence
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class Adapters : Attribute
+    public class AdaptersAttribute : System.Attribute
     {
-        Type[] _value;
-
-        public Type[] Value
-        {
-            get => _value;
-            set => _value = value;
-        }
+        public Type[]? Value { get; set; }
     }
 }

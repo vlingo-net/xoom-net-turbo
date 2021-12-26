@@ -17,9 +17,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 			var typesWithMyAttribute =
 				from a in AppDomain.CurrentDomain.GetAssemblies()
 				from t in a.GetTypes()
-				let attributes = t.GetCustomAttributes(typeof(Xoom), true)
+				let attributes = t.GetCustomAttributes(typeof(XoomAttribute), true)
 				where attributes != null && attributes.Length > 0
-				select new { Type = t, Attributes = attributes.Cast<Xoom>() };
+				select new { Type = t, Attributes = attributes.Cast<XoomAttribute>() };
 			return typesWithMyAttribute.FirstOrDefault()!.Type.Namespace;
 		}
 	}

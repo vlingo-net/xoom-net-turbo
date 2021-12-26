@@ -7,17 +7,10 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class DataObject : Attribute
+    public class IdAttribute : Attribute
     {
-        Type[] _value;
-
-        public Type[] Value
-        {
-            get => _value;
-            set => _value = value;
-        }
     }
 }

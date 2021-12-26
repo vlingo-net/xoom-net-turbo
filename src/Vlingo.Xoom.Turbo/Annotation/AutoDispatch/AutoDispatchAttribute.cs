@@ -9,24 +9,11 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Struct)]
-	public class ResponseAdapter : Attribute
+	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
+	public class AutoDispatchAttribute : Attribute
 	{
-		private int _handler;
+		public string? Path { get; set; }
 
-		public ResponseAdapter()
-		{
-		}
-		
-		public ResponseAdapter(int handler)
-		{
-			_handler = handler;
-		}
-
-		public int Handler
-		{
-			get => _handler;
-			set => _handler = value;
-		}
+		public Type? Handlers { get; set; }
 	}
 }

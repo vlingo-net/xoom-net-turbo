@@ -10,21 +10,10 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class ResourceHandlers : Attribute
+	public class ResourceHandlersAttribute : Attribute
 	{
-		private string[] _package;
-		private Type[] _value;
+		public string[]? Packages { get; set; }
 
-		public string[] Packages
-		{
-			get => _package;
-			set => _package = value;
-		}
-
-		public Type[] Value
-		{
-			get => _value;
-			set => _value = value;
-		}
+		public Type[]? Value { get; set; }
 	}
 }

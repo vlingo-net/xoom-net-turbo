@@ -18,8 +18,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
 	public class QueriesContentLoader : AnnotationBasedContentLoader<Dictionary<Type, Type>>
 	{
-		public QueriesContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-			environment)
+		public QueriesContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass, environment)
 		{
 		}
 
@@ -33,15 +32,15 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override Dictionary<Type, Type> RetrieveContentSource()
 		{
-			var queries = AnnotatedClass.GetCustomAttribute<EnableQueries>();
+			var queries = AnnotatedClass.GetCustomAttribute<EnableQueriesAttribute>();
 
 			if (queries == null)
 				return new Dictionary<Type, Type>();
 
 			return new[] { queries.Value }.SelectMany(queriesEntry =>
 			{
-				var protocolType = TypeRetriever.From<Type>(queriesEntry, entry => (entry as QueriesEntry)!.Protocol);
-				var actorType = TypeRetriever.From<Type>(queriesEntry, entry => (entry as QueriesEntry)!.Actor);
+				var protocolType = TypeRetriever.From<Type>(queriesEntry, entry => (entry as QueriesEntryAttribute)!.Protocol);
+				var actorType = TypeRetriever.From<Type>(queriesEntry, entry => (entry as QueriesEntryAttribute)!.Actor);
 				return new Dictionary<Type, Type> { { protocolType, actorType } };
 			}).ToDictionary(entry => entry.Key, entry => entry.Value);
 		}

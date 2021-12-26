@@ -10,32 +10,10 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {	
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
-	public class Queries : Attribute
+	public class QueriesAttribute : Attribute
 	{
-		private Type _protocol;
-		private Type _actor;
+		public Type? Protocol { get; set; }
 
-		public Queries()
-		{
-			
-		}
-
-		public Queries(Type protocol, Type actor)
-		{
-			_protocol = protocol;
-			_actor = actor;
-		}
-
-		public Type Protocol
-		{
-			get => _protocol;
-			set => _protocol = value;
-		}
-
-		public Type Actor
-		{
-			get => _actor;
-			set => _actor = value;
-		}
+		public Type? Actor { get; set; }
 	}
 }

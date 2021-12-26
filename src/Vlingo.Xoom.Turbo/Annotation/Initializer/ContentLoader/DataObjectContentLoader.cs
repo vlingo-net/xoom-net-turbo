@@ -24,7 +24,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var dataObjects = AnnotatedClass.GetCustomAttribute<DataObject>();
+			var dataObjects = AnnotatedClass.GetCustomAttribute<DataObjectAttribute>();
 			if (dataObjects == null)
 				return new List<Type>();
 

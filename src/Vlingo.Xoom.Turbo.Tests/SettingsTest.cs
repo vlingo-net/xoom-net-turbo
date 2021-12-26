@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Xoom.Turbo.actors;
+using Vlingo.Xoom.Turbo.Actors;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests

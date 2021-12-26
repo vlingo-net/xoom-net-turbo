@@ -25,20 +25,20 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var resourceHandlers = AnnotatedClass.GetCustomAttribute<ResourceHandlers>();
+			var resourceHandlers = AnnotatedClass.GetCustomAttribute<ResourceHandlersAttribute>();
 
 			if (ShouldIgnore(resourceHandlers))
 				return new List<Type>();
 			if (IsPackageBased(resourceHandlers))
 				return TypeRetriever.SubClassesOf<DynamicResourceHandler>(resourceHandlers.Packages).ToList();
 
-			return TypeRetriever.TypesFrom(new List<Type> { resourceHandlers.GetType() }, (types) => resourceHandlers.Value);
+			return TypeRetriever.TypesFrom(new List<Type> { resourceHandlers.GetType() }, _ => resourceHandlers.Value);
 		}
 
-		private bool ShouldIgnore(ResourceHandlers resourceHandlersAnnotation) =>
+		private bool ShouldIgnore(ResourceHandlersAttribute resourceHandlersAnnotation) =>
 			resourceHandlersAnnotation.Value.Length == 0 && !IsPackageBased(resourceHandlersAnnotation);
 
-		private bool IsPackageBased(ResourceHandlers resourceHandlersAnnotation)
+		private bool IsPackageBased(ResourceHandlersAttribute resourceHandlersAnnotation)
 		{
 			var packages = resourceHandlersAnnotation.Packages;
 			return packages.Length != 1 || !string.IsNullOrEmpty(packages[0]);

@@ -1,4 +1,4 @@
-// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+﻿// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -10,14 +10,8 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.Persistence
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-	public class EnableQueries : Attribute
+	public class ProjectionsAttribute : Attribute
 	{
-		QueriesEntry[] _value;
-
-		public QueriesEntry[] Value
-		{
-			get => _value;
-			set => _value = value;
-		}
+		public ProjectionAttribute[]? Value { get; set; }
 	}
 }

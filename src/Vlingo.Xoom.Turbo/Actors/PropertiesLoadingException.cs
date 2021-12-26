@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.actors
+namespace Vlingo.Xoom.Turbo.Actors
 {
     public class PropertiesLoadingException : SystemException
     {

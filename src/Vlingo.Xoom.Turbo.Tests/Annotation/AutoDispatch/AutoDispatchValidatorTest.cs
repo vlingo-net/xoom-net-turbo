@@ -33,7 +33,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl")
                 .Returns(TypeAttributes.Interface);
 
-            IsInterface().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(Queries),
+            IsInterface().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(QueriesAttribute),
                 mockAnnotatedElements.Object);
         }
 
@@ -49,7 +49,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
                 .Returns(elements);
             mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl").Returns(TypeAttributes.Public);
 
-            ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(Queries),
+            ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(QueriesAttribute),
                 mockAnnotatedElements.Object);
         }
 
@@ -69,7 +69,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
             IsQueriesProtocolAnInterface()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+                .Invoke(mockProcessingEnvironment.Object, typeof(QueriesAttribute), mockAnnotatedElements.Object);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
             ModelWithoutQueryValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.Model),
+                .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.ModelAttribute),
                     mockAnnotatedElements.Object);
         }
 
@@ -106,7 +106,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
             BodyForRouteValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Queries), mockAnnotatedElements.Object);
+                .Invoke(mockProcessingEnvironment.Object, typeof(QueriesAttribute), mockAnnotatedElements.Object);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
             RouteWithoutResponseValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.Model),
+                .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.ModelAttribute),
                     mockAnnotatedElements.Object);
         }
 
@@ -141,7 +141,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
             RouteHasQueryOrModelValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Route), mockAnnotatedElements.Object);
+                .Invoke(mockProcessingEnvironment.Object, typeof(RouteAttribute), mockAnnotatedElements.Object);
         }
 
         [Fact]
@@ -158,7 +158,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
             mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
             HandlerWithoutValidMethodValidator().Invoke(mockProcessingEnvironment.Object,
-                typeof(Turbo.Annotation.AutoDispatch.Model), mockAnnotatedElements.Object);
+                typeof(Turbo.Annotation.AutoDispatch.ModelAttribute), mockAnnotatedElements.Object);
         }
 
         [Queries(Protocol = typeof(IQueriesProtocolTest))]
