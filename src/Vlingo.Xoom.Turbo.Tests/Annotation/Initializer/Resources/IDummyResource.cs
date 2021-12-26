@@ -13,14 +13,13 @@ using Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources
 {
-    [Turbo.Annotation.AutoDispatch.AutoDispatch(Path = "/dummies", Handlers = typeof(DummyHandlers))]
+    [AutoDispatch(Path = "/dummies", Handlers = typeof(DummyHandlers))]
     [Queries(Protocol = typeof(IDummyQueries), Actor = typeof(DummyQueriesActor))]
-    [Turbo.Annotation.AutoDispatch.Model(Protocols = typeof(IDummy), Actor = typeof(DummyEntity),
-        Data = typeof(DummyData))]
+    [Model(Protocol = typeof(IDummy), Actor = typeof(DummyEntity), Data = typeof(DummyData))]
     public interface IDummyResource
     {
         [Route(Method = "POST", Handler = 1)]
         [ResponseAdapter(Handler = 3)]
-        ICompletes<Response> DefineDummy([Turbo.Annotation.AutoDispatch.Body] DummyData dummyData);
+        ICompletes<Response> DefineDummy([Body] DummyData dummyData);
     }
 }

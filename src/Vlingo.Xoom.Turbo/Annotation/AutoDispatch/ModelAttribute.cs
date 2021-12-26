@@ -12,7 +12,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
 	public class ModelAttribute : Attribute
 	{
-		public Type? Protocols { get; set; }
+		public Type? Protocol { get; set; }
 
 		public Type? Actor { get; set; }
 
