@@ -18,7 +18,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources
     [Model(Protocol = typeof(IDummy), Actor = typeof(DummyEntity), Data = typeof(DummyData))]
     public interface IDummyResource
     {
-        [Route(Method = "POST", Handler = 1)]
+        [Route(Method = Method.Post, Handler = 1)]
         [ResponseAdapter(Handler = 3)]
         ICompletes<Response> DefineDummy([Body] DummyData dummyData);
     }

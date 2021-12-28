@@ -6,14 +6,17 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
+using Vlingo.Xoom.Http;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Struct)]
+	[AttributeUsage(AttributeTargets.Method)]
 	public class RouteAttribute : Attribute
 	{
-		public string? Method { get; set; }
+		public Method Method { get; set; }
 
-		public int Handler { get; set; }
+		public string Path { get; set; } = string.Empty;
+
+		public int Handler { get; set; } = -1;
 	}
 }

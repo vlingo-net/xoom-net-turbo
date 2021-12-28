@@ -23,7 +23,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         public static string ResolveBodyName(CodeGenerationParameter route)
         {
-            var httpMethod = route.RetrieveRelatedValue(Label.RouteMethod, Method.From);
+            var httpMethod = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
 
             if (!_bodySupportedHttpMethods.Contains(httpMethod))
             {
@@ -40,7 +40,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         public static string ResolveBodyType(CodeGenerationParameter route)
         {
-            var httpMethod = route.RetrieveRelatedValue(Label.RouteMethod, Method.From);
+            var httpMethod = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
 
             if (!_bodySupportedHttpMethods.Contains(httpMethod))
             {
@@ -57,7 +57,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         public static bool RequireEntityLoad(CodeGenerationParameter aggregateParameter) => aggregateParameter.RetrieveAllRelated(Label.RouteSignature).Where(route => route.HasAny(Label.RequireEntityLoading)).Any(route => route.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x));
 
-        public static bool requireModelFactory(CodeGenerationParameter aggregateParameter) => aggregateParameter.RetrieveAllRelated(Label.RouteSignature).Select(methodSignature => AggregateDetail.MethodWithName(aggregateParameter, methodSignature.value)).Any(method => method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower() == x));
+        public static bool RequireModelFactory(CodeGenerationParameter aggregateParameter) => aggregateParameter.RetrieveAllRelated(Label.RouteSignature).Select(methodSignature => AggregateDetail.MethodWithName(aggregateParameter, methodSignature.value)).Any(method => method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower() == x));
 
         public static string ResolveMethodSignature(CodeGenerationParameter routeSignature)
         {
@@ -66,7 +66,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
                 return routeSignature.value;
             }
 
-            if (routeSignature.RetrieveRelatedValue(Label.RouteMethod, Method.From).IsGet())
+            if (routeSignature.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod).IsGet())
             {
                 return string.Format(_methodSignaturePattern, routeSignature.value, string.Empty);
             }

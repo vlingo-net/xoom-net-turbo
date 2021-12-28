@@ -21,7 +21,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
 
         public string ResolveRouteHandlerInvocation(CodeGenerationParameter aggregateParameter, CodeGenerationParameter routeParameter)
         {
-            if (routeParameter.RetrieveRelatedValue(Label.RouteMethod, Method.From).IsGet())
+            if (routeParameter.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod).IsGet())
             {
                 return ResolveQueryMethodInvocation(routeParameter.value);
             }

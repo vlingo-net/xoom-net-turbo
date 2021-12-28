@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Moq;
 using Moq.Protected;
+using Vlingo.Xoom.Http;
 using Vlingo.Xoom.Turbo.Annotation;
 using Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 using static Vlingo.Xoom.Turbo.Annotation.Validation;
@@ -164,7 +165,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
         [Queries(Protocol = typeof(IQueriesProtocolTest))]
         public interface IQueriesTest
         {
-            [Route(Method = "GET")]
+            [Route(Method = Method.Get)]
             public string TestGet();
         }
 
@@ -174,7 +175,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
 
         public interface IRouteResponseTest
         {
-            [Route(Method = "POST")]
+            [Route(Method = Method.Post)]
             public string TestPost(string body);
         }
     }

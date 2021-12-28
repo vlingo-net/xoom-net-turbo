@@ -38,7 +38,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 					{
 						var route = enclosed.GetCustomAttribute<RouteAttribute>();
 						if (route != null && !route.GetType().IsInterface && !route.GetType().IsClass &&
-						    route.Method == Method.Get.ToString())
+						    route.Method == Method.Get)
 							throw new ProcessingAnnotationException(
 								$"Class {annotation.FullName}. The class with {route.Method} method for Route need to have Queries annotation.");
 					}
@@ -57,10 +57,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 					{
 						var routeAnnotation = enclosed.GetCustomAttribute<RouteAttribute>();
 						var hasMethods = !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
-						                 (routeAnnotation.Method == Method.Post.ToString() ||
-						                  routeAnnotation.Method == Method.Put.ToString()
-						                  || routeAnnotation.Method == Method.Patch.ToString() ||
-						                  routeAnnotation.Method == Method.Delete.ToString());
+						                 (routeAnnotation.Method == Method.Post ||
+						                  routeAnnotation.Method == Method.Put ||
+						                  routeAnnotation.Method == Method.Patch ||
+						                  routeAnnotation.Method == Method.Delete);
 						if (hasMethods && enclosed.GetCustomAttribute<ResponseAdapterAttribute>() == null)
 						{
 							throw new ProcessingAnnotationException(
@@ -80,7 +80,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 				{
 					var routeAnnotation = enclosed.GetCustomAttribute<RouteAttribute>();
 					if (routeAnnotation != null && !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
-					    routeAnnotation.Method == Method.Get.ToString())
+					    routeAnnotation.Method == Method.Get)
 					{
 						if (enclosed.GetParameters().Any(methodParams =>
 							methodParams.IsIn && methodParams.GetCustomAttribute<BodyAttribute>() == null))

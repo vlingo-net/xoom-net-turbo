@@ -39,7 +39,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
 
         private bool IsRetrievalRoute(CodeGenerationParameter route)
         {
-            var method = route.RetrieveRelatedValue(Label.RouteMethod, Method.From);
+            var method = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
             return method.IsGet() || method.IsOptions();
         }
 
