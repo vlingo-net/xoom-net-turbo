@@ -5,9 +5,12 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Common;
+
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
 {
     public interface IDummyQueries
     {
+        ICompletes<DummyData> AllDummies();
     }
 }

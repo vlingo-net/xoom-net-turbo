@@ -5,9 +5,19 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Common;
+using Vlingo.Xoom.Lattice.Query;
+using Vlingo.Xoom.Symbio.Store.State;
+using Vlingo.Xoom.Turbo.Tests.Annotation.Model;
+
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
 {
-    public class DummyQueriesActor
+    public class DummyQueriesActor : StateStoreQueryActor<DummyState>, IDummyQueries
     {
+        public DummyQueriesActor(IStateStore stateStore) : base(stateStore)
+        {
+        }
+
+        public ICompletes<DummyData> AllDummies() => Completes().With<DummyData>(null);
     }
 }

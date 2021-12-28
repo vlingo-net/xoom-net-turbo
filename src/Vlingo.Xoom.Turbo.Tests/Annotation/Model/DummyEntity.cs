@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Lattice.Model.Stateful;
 
@@ -14,7 +15,17 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
     {
         private DummyState _state;
 
+        public DummyEntity()
+        {
+        }
+
+        public DummyEntity(string id) : base(id)
+        {
+        }
+
         protected override void State(DummyState state) => _state = state;
+
+        public ICompletes<DummyState> DefineWith(Stage stage, string name) => Dummy.DefineWith(stage, name);
 
         public ICompletes<DummyState> DefineWith(string name)
         {
@@ -25,5 +36,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
 
             return Completes().With(_state);
         }
+
+        public ICompletes<DummyState> WithName(string name) => null;
     }
 }

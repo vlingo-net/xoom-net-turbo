@@ -12,10 +12,14 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
 {
     public interface IDummy
     {
+        ICompletes<DummyState> DefineWith(Stage stage, string name);
+
         ICompletes<DummyState> DefineWith(string name);
+        
+        ICompletes<DummyState> WithName(string name);
     }
 
-    public abstract class Dummy : IDummy
+    public static class Dummy
     {
         public static ICompletes<DummyState> DefineWith(Stage stage, string name)
         {
@@ -24,7 +28,5 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
             var dummy = stage.ActorFor<IDummy>(Definition.Has<DummyEntity>(Definition.Parameters(address.IdString)));
             return dummy.DefineWith(name);
         }
-
-        public abstract ICompletes<DummyState> DefineWith(string name);
     }
 }
