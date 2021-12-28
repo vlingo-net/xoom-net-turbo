@@ -9,21 +9,20 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-    public class HandlerEntry<TState> where TState : IHandler
+    public class HandlerEntry
     {
-        public readonly int index;
-        public readonly TState handler;
+        public int Index { get; }
+        public Delegate Handler { get; }
 
-        public static HandlerEntry<TState> Of(int index, TState handler)
+        public static HandlerEntry Of<TB, TResult>(int index, Func<TB, TResult> handler) => new HandlerEntry(index, handler);
+        public static HandlerEntry Of<TB, TC, TResult>(int index, Func<TB, TC, TResult> handler) => new HandlerEntry(index, handler);
+        public static HandlerEntry Of<TB, TC, TD, TResult>(int index, Func<TB, TC, TD, TResult> handler) => new HandlerEntry(index, handler);
+        public static HandlerEntry Of<TB, TC, TD, TE, TResult>(int index, Func<TB, TC, TD, TE, TResult> handler) => new HandlerEntry(index, handler);
+
+        private HandlerEntry(int index, Delegate handler)
         {
-            return new HandlerEntry<TState>(index, handler);
+            Index = index;
+            Handler = handler;
         }
-
-        private HandlerEntry(int index, TState handler)
-        {
-            this.index = index;
-            this.handler = handler;
-        }
-
     }
 }

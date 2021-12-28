@@ -8,14 +8,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Xoom.Turbo.Annotation;
-using Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+using Vlingo.Xoom.Annotation.AutoDispatch;
 
-namespace Vlingo.Xoom.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
 	public class HandlerResolver
 	{
-		private static string _handlerEntryClassName = typeof(HandlerEntry<>).Name;
+		private static string _handlerEntryClassName = nameof(HandlerEntry);
 
 		private readonly TypeReader _handlersConfigReader;
 		private readonly List<HandlerInvocation> _handlerInvocations = new List<HandlerInvocation>();
