@@ -9,7 +9,7 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Struct)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public class BodyAttribute : Attribute
     {
     }

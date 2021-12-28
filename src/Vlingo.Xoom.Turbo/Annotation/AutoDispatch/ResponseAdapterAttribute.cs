@@ -9,7 +9,7 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
-	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Struct)]
+	[AttributeUsage(AttributeTargets.Method)]
 	public class ResponseAdapterAttribute : Attribute
 	{
 		public int Handler { get; set; }
