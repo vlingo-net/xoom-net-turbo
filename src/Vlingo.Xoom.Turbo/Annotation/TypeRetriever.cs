@@ -7,53 +7,73 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Vlingo.Xoom.Turbo.Annotation
 {
 	public class TypeRetriever
 	{
-		private static TypeRetriever _instance;
-		private readonly Type _elements;
-		private readonly ProcessingEnvironment _environment;
+		private readonly AppDomain _appDomain;
 
-		private TypeRetriever(ProcessingEnvironment environment)
+		private TypeRetriever(AppDomain appDomain) => _appDomain = appDomain;
+
+		public static TypeRetriever With(AppDomain appDomain) => new TypeRetriever(appDomain);
+
+		public IEnumerable<Type> SubClassesOf<T>(IEnumerable<string> assemblies) =>
+			assemblies
+				.Where(IsValidPackage)
+				.Select(p => _appDomain.GetAssemblies().SingleOrDefault(a => a.GetName().Name == p || a.FullName == p))
+				.SelectMany(a => a?.GetTypes())
+				.Where(t => IsSubclass(t, typeof(T)));
+
+		public Type? From(Attribute attribute, Func<object, Type> retriever)
 		{
-			_environment = environment;
-			_elements = environment.GetElementUtils();
+			var clazz = retriever.Invoke(attribute);
+			return _appDomain
+				.GetAssemblies()
+				.SelectMany(a => a.GetTypes())
+				.SingleOrDefault(t => t.AssemblyQualifiedName == clazz.AssemblyQualifiedName);
 		}
 
-		public static TypeRetriever With(ProcessingEnvironment environment) => new TypeRetriever(environment);
-
-		public bool IsValidPackage(string packageName) => _elements.Assembly.GetName().Name != null;
-
+		public Type? GetTypeElement(Attribute attribute, Func<object, Type> retriever) => From(attribute, retriever);
+		
+		public IEnumerable<Type> TypesFrom<T>(T attribute, Func<T, Type[]> retriever) where T : Attribute
+		{
+			var types = retriever(attribute);
+			return types
+				.SelectMany(t => _appDomain.GetAssemblies().Select(a =>
+					a.GetTypes().SingleOrDefault(at => at.AssemblyQualifiedName == t.AssemblyQualifiedName)));
+		}
+		
 		public bool IsAnInterface(Attribute attribute, Func<object, Type> retriever) =>
-			GetTypeElement(attribute, retriever).IsInterface;
-
-		private Type GetTypeElement(Attribute attribute, Func<object, Type> retriever) =>
-			From(attribute.GetType(), retriever);
-
-		public Type From(Attribute attribute, Func<object, Type> retriever)
+			GetTypeElement(attribute, retriever)?.IsInterface ?? false;
+		
+		public string? TypeName(Attribute annotation, Func<object, Type> retriever) => 
+			GetTypeElement(annotation, retriever)?.AssemblyQualifiedName;
+		
+		public IEnumerable<MethodInfo>? GetMethods(Attribute annotation, Func<object, Type> retriever) => 
+			GetTypeElement(annotation, retriever)?.GetMethods();
+		
+		public Type? GetGenericType(Attribute annotation, Func<object, Type> retriever)
 		{
-			var clazz = retriever.Invoke(attribute);
-			return _environment.GetElementUtils().GetElementType();
+			var declaredType = GetTypeElement(annotation, retriever)?.BaseType;
+			if (declaredType?.GenericTypeArguments.Length == 0)
+			{
+				return null;
+			}
+			
+			return declaredType?.GenericTypeArguments[0];
 		}
+		
+		public IEnumerable<Type> GetElements(Attribute attribute, Func<object, Type> retriever) => 
+			GetTypeElement(attribute, retriever)?.Assembly.GetTypes() ?? Enumerable.Empty<Type>();
 
-		public T From<T>(Attribute[] attribute, Func<object, Type> retriever) where T : Type
-		{
-			var clazz = retriever.Invoke(attribute);
-			return _environment.GetElementUtils().GetElementType() as T;
-		}
-		public T From<T>(T attribute, Func<object, Type> retriever) where T : Type
-		{
-			var clazz = retriever.Invoke(attribute);
-			return _environment.GetElementUtils().GetElementType() as T;
-		}
+		public bool IsValidPackage(string assemblyName) => 
+			_appDomain
+				.GetAssemblies()
+				.SingleOrDefault(a => a.GetName().Name == assemblyName || a.FullName == assemblyName) != null;
 
-		public T TypesFrom<T>(T attribute, Func<T, Type[]> retriever)
-		{
-			throw new NotImplementedException();
-		}
-
-		public List<Type> SubClassesOf<T>(string[] packages) => new List<Type>();
+		private bool IsSubclass(Type typeElement, Type superclass) => superclass.IsAssignableFrom(typeElement);
 	}
 }
