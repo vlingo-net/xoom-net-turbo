@@ -49,15 +49,15 @@ namespace Vlingo.Xoom.Turbo.Annotation
 		public bool IsAnInterface(Attribute attribute, Func<object, Type> retriever) =>
 			GetTypeElement(attribute, retriever)?.IsInterface ?? false;
 		
-		public string? TypeName(Attribute annotation, Func<object, Type> retriever) => 
-			GetTypeElement(annotation, retriever)?.AssemblyQualifiedName;
+		public string? TypeName(Attribute attribute, Func<object, Type> retriever) => 
+			GetTypeElement(attribute, retriever)?.AssemblyQualifiedName;
 		
-		public IEnumerable<MethodInfo>? GetMethods(Attribute annotation, Func<object, Type> retriever) => 
-			GetTypeElement(annotation, retriever)?.GetMethods();
+		public IEnumerable<MethodInfo>? GetMethods(Attribute attribute, Func<object, Type> retriever) => 
+			GetTypeElement(attribute, retriever)?.GetMethods();
 		
-		public Type? GetGenericType(Attribute annotation, Func<object, Type> retriever)
+		public Type? GetGenericType(Attribute attribute, Func<object, Type> retriever)
 		{
-			var declaredType = GetTypeElement(annotation, retriever)?.BaseType;
+			var declaredType = GetTypeElement(attribute, retriever)?.BaseType;
 			if (declaredType?.GenericTypeArguments.Length == 0)
 			{
 				return null;
