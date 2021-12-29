@@ -22,15 +22,12 @@ namespace Vlingo.Xoom.Turbo.Annotation
 		private readonly Type _type;
 		private readonly string _sourceCode;
 
-		public static TypeReader From(ProcessingEnvironment environment, Type typeElement)
-		{
-			return new TypeReader(environment, typeElement);
-		}
+		public static TypeReader From(Type typeElement) => new TypeReader(typeElement);
 
-		private TypeReader(ProcessingEnvironment environment, Type type)
+		private TypeReader(Type type)
 		{
-			this._type = type;
-			this._sourceCode = ReadSourceCode(environment.GetFiler(), type);
+			_type = type;
+			_sourceCode = ReadSourceCode(type);
 		}
 
 		public string FindMemberValue(MemberInfo member)
@@ -44,34 +41,28 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			return ExtractMemberValue(memberName);
 		}
 
-		public string FindMemberValue(string memberName)
-		{
-			return FindMembers().Select(member => member.Name)
+		public string FindMemberValue(string memberName) =>
+			FindMembers().Select(member => member.Name)
 				.Where(name => name == memberName)
 				.Select(member => ExtractMemberValue(memberName))
 				.FirstOrDefault() ?? throw InvalidMemberArgumentException(memberName);
-		}
 
-		public List<MemberInfo> FindMembers()
-		{
-			return _type
-				.GetMembers()
-				.OfType<MemberInfo>()
-				.ToList();
-		}
+		public IEnumerable<MemberInfo> FindMembers() => _type.GetMembers();
 
 		private string ExtractMemberValue(string memberName)
 		{
 			var elementIndex = CodeElementIndex(memberName, new[] { DefaultMatchPattern, VariableMatchPattern });
 			var valueIndex = elementIndex + memberName.Count() + 1;
 			var codeSlice = _sourceCode.Substring(valueIndex).Replace("=", "").Trim();
-			return codeSlice.Substring(0, codeSlice.IndexOf(";")).Trim();
+			return codeSlice.Substring(0, codeSlice.IndexOf(";", StringComparison.Ordinal)).Trim();
 		}
 
-		private string ReadSourceCode(FileStream filer, Type typeElement)
+		private string ReadSourceCode(Type typeElement)
 		{
 			try
 			{
+				var location = typeElement.Assembly.Location;
+				using var filer = File.OpenRead(location);
 				var stream = ClassFile.From(filer, typeElement).OpenInputStream();
 
 				return File.ReadAllText(new StreamReader(stream).ReadLine(), Encoding.UTF8).Replace("\r\n", " ");
@@ -82,25 +73,18 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			}
 		}
 
-		private ArgumentException InvalidMemberArgumentException(string memberName)
-		{
-			return new ArgumentException("Member " + memberName + " not found in " + _type.AssemblyQualifiedName);
-		}
+		private ArgumentException InvalidMemberArgumentException(string memberName) => 
+			new ArgumentException($"Member {memberName} not found in {_type.AssemblyQualifiedName}");
 
-		private bool HasMember(string memberName)
-		{
-			return _type.GetMembers()
-				.Where(element => element is MemberInfo)
+		private bool HasMember(string memberName) =>
+			_type.GetMembers()
 				.Select(element => element.Name)
 				.Any(name => name == memberName);
-		}
 
-		private int CodeElementIndex(string elementName, string[] patterns)
-		{
-			return patterns.Select(pattern => String.Format(pattern, elementName))
+		private int CodeElementIndex(string elementName, string[] patterns) =>
+			patterns.Select(pattern => string.Format(pattern, elementName))
 				.Where(term => _sourceCode.Contains(term))
-				.Select(term => _sourceCode.IndexOf(term))
+				.Select(term => _sourceCode.IndexOf(term, StringComparison.Ordinal))
 				.FirstOrDefault();
-		}
 	}
 }
