@@ -1,3 +1,10 @@
+// Copyright © 2012-2021 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,12 +17,12 @@ namespace Vlingo.Xoom.Turbo.Annotation
 {
 	public abstract class AnnotationProcessor
 	{
-		protected ProcessingEnvironment Environment;
+		protected AppDomain AppDomain;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public void Init(ProcessingEnvironment environment)
+		public void Init(AppDomain appDomain)
 		{
-			this.Environment = environment;
+			AppDomain = appDomain;
 			ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.C_SHARP));
 		}
 
@@ -40,18 +47,13 @@ namespace Vlingo.Xoom.Turbo.Annotation
 
 		protected abstract void Generate(AnnotatedElements annotatedElements);
 
-		public abstract List<Type> SupportedAnnotationClasses();
+		public abstract IEnumerable<Type> SupportedAnnotationClasses();
 
-		private void PrintError(ProcessingAnnotationException exception)
-		{
-			Console.WriteLine($"ERROR: {exception.Message}");
-		}
+		private void PrintError(ProcessingAnnotationException exception) => Console.WriteLine($"ERROR: {exception.Message}");
 
-		public ISet<string> GetSupportedAnnotationTypes()
-		{
-			return SupportedAnnotationClasses()
+		public ISet<string> GetSupportedAnnotationTypes() =>
+			SupportedAnnotationClasses()
 				.Select(type => type.Name)
 				.ToImmutableHashSet();
-		}
 	}
 }
