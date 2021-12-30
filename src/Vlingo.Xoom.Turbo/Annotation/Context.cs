@@ -25,7 +25,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			return ancestral.FullName;
 		}
 
-		public static object LocateSourceFolder(string path)
+		public static string LocateSourceFolder(string path)
 		{
 			var baseDirectory = LocateBaseDirectory(path);
 			var parentFolder = IsRunningTests(path) ? "test" : "main";
