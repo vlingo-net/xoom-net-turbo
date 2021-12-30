@@ -14,31 +14,24 @@ namespace Vlingo.Xoom.Turbo.Annotation
 	{
 		private readonly FileStream _file;
 
-		public static ClassFile From(FileStream filer, Type typeElement)
-		{
-			return new ClassFile(filer, typeElement);
-		}
+		public static ClassFile From(string path, Type typeElement) => new ClassFile(path, typeElement);
 
-		private ClassFile(FileStream filer, Type typeElement)
+		private ClassFile(string path, Type typeElement)
 		{
-			var className = typeElement.Name + ".cs";
+			var className = $"{typeElement.Name}.cs";
 
 			var packageName = typeElement.Namespace;
 
-			this._file = FindFile(filer, packageName, className);
+			_file = FindFile(path, packageName, className);
 		}
 
-		private FileStream FindFile(FileStream filer, string packageName,
-			string className)
+		private FileStream FindFile(string path, string? packageName, string className)
 		{
-			var sourceFolder = Context.LocateSourceFolder(filer);
-			var packagePath = packageName.Replace("\\.", "/");
-			return new FileStream(Path.Combine(className, "src"), FileMode.Create);
+			var sourceFolder = Context.LocateSourceFolder(path);
+			var packagePath = packageName?.Replace("\\.", "/") ?? string.Empty;
+			return new FileStream(Path.Combine(sourceFolder, packagePath, className), FileMode.Create);
 		}
 
-		public FileStream OpenInputStream()
-		{
-			return _file;
-		}
+		public FileStream OpenInputStream() => _file;
 	}
 }
