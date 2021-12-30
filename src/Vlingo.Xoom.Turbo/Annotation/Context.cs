@@ -5,14 +5,50 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using System.IO;
 
 namespace Vlingo.Xoom.Turbo.Annotation
 {
 	public class Context
 	{
-		public static string LocateBaseDirectory(FileStream getFiler) => default;
+		private static readonly string TestOutputDirectory = "test-classes";
+		
+		public static string LocateBaseDirectory(string path)
+		{
+			var ancestral = LocateOutputFolder(path);
+			while (!ancestral.Name.Equals("target"))
+			{
+				ancestral = ancestral.Parent;
+			}
+			
+			return ancestral.FullName;
+		}
 
-		public static object LocateSourceFolder(FileStream filer) => default;
+		public static object LocateSourceFolder(string path)
+		{
+			var baseDirectory = LocateBaseDirectory(path);
+			var parentFolder = IsRunningTests(path) ? "test" : "main";
+			return Path.Combine(baseDirectory, "src", parentFolder, "cs");
+		}
+		
+		internal static bool IsRunningTests(string path)
+		{
+            var directoryName = LocateOutputFolder(path);
+            return directoryName.Name.Equals(TestOutputDirectory);
+		}
+		
+		private static DirectoryInfo LocateOutputFolder(string path)
+		{
+			try
+			{
+				return Directory.GetParent(path);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.StackTrace);
+				throw new ProcessingAnnotationException("Unable to locate the output folder");
+			}
+		}
 	}
 }
