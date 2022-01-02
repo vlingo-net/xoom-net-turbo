@@ -62,9 +62,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			try
 			{
 				var location = typeElement.Assembly.Location;
-				using var filer = File.OpenRead(location);
-				var stream = ClassFile.From(filer, typeElement).OpenInputStream();
-
+				using var stream = ClassFile.From(location, typeElement).OpenInputStream();
 				return File.ReadAllText(new StreamReader(stream).ReadLine(), Encoding.UTF8).Replace("\r\n", " ");
 			}
 			catch (IOException e)
