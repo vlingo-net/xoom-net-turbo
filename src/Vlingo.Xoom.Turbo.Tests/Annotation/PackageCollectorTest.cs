@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System.IO;
 using Vlingo.Xoom.Turbo.Annotation;
 using Xunit;
 
@@ -15,13 +16,11 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation
         [Fact]
         public void TestThatPackagesAreCollected()
         {
-            var projectPath = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()!).Parent!.Parent!
-                .FullName;
-            ;
+            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()!).Parent!.Parent!.FullName;
 
             var packages = PackageCollector.From(projectPath, "Vlingo.Xoom.Turbo.Tests.Annotation").CollectAll();
 
-            Assert.Equal(10, packages.Count); // WIP collect packages/namespaces from GetCurrentDirectory
+            Assert.Equal(17, packages.Count); // WIP collect packages/namespaces from GetCurrentDirectory
         }
     }
 }
