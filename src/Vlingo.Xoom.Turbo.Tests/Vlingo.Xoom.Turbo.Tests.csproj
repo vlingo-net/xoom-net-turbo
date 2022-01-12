@@ -33,6 +33,9 @@
     <ItemGroup>
       <None Remove="vlingo-xoom.json" />
       <None Remove="Exchange\" />
+      <None Update="xoom-turbo.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Exchange\" />
