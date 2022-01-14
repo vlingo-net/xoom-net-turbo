@@ -8,41 +8,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Xoom.Turbo.Annotation.Initializer;
 
 namespace Vlingo.Xoom.Turbo.Annotation
 {
     public class AnnotatedElements
     {
-        private readonly IDictionary<Type, ISet<Type>> _elements = new Dictionary<Type, ISet<Type>>();
-        
-        public static AnnotatedElements From(AppDomain appDomain, IEnumerable<Type> supportedAnnotations)
-        {
-            Func<Type, KeyValuePair<Type, ISet<Type>>> mapper
-                = annotationClass => new KeyValuePair<Type, ISet<Type>>(annotationClass,
-                    new HashSet<Type>(appDomain.GetAssemblies()
-                        .SelectMany(a => a.GetTypes()
-                            .Where(t => t.GetCustomAttributes(typeof(XoomAttribute), true).Length > 0))));
+        private readonly IDictionary<object, HashSet<Type>> _elements = new Dictionary<object, HashSet<Type>>();
 
-            return new AnnotatedElements(supportedAnnotations.Select(mapper)
-                .ToDictionary(k => k.Key, pair => pair.Value));
+        public AnnotatedElements()
+        {
+            
+        }
+        public static AnnotatedElements From(IEnumerable<object> supportedAnnotations)
+        {
+            //Func<object, AbstractMap.SimpleEntry<Class, Set<Element>>> mapper =
+            //        annotationClass->
+            //                new AbstractMap.SimpleEntry<Class, Set<Element>>(
+            //                    annotationClass, environment.getElementsAnnotatedWith(annotationClass));
+
+            //return new AnnotatedElements(supportedAnnotations.map(mapper)
+            //        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+            return null;
         }
 
-        public bool Exists => _elements.Count > 0;
+        private AnnotatedElements(IReadOnlyDictionary<object, HashSet<Type>> elements) => elements.ToList().ForEach(element => _elements.Add(element));
 
-        public bool HasElementsWith(Type annotation) 
-            => _elements.ContainsKey(annotation) && ElementsWith(annotation).Count > 0;
+        public bool Exists => _elements != null && _elements.Count != 0;
 
-        public virtual ISet<Type> ElementsWith(params Type[] annotations)
-            => new HashSet<Type>(annotations
-                .Where(annotation => _elements.ContainsKey(annotation))
-                .SelectMany(annotation => _elements[annotation]));
+        public bool HasElementsWith(object annotation) => _elements.ContainsKey(annotation) && ElementsWith(annotation) != null && ElementsWith(annotation).Count != 0;
 
-        public Type? ElementWith(Type annotation) => ElementsWith(annotation).FirstOrDefault();
+        public virtual HashSet<Type> ElementsWith(params object[] annotations) => new HashSet<Type>(annotations.Where(annotation => _elements.ContainsKey(annotation)).SelectMany(annotation => _elements[annotation]));
 
-        public virtual int Count(Type annotation) => HasElementsWith(annotation) ? 0 : ElementsWith(annotation).Count;
-        
-        private AnnotatedElements(IReadOnlyDictionary<Type, ISet<Type>> elements) 
-            => elements.ToList().ForEach(element => _elements.Add(element));
+        public Type ElementWith(object annotation) => ElementsWith(annotation).FirstOrDefault();
+
+        public virtual int Count(object annotation) => HasElementsWith(annotation) ? 0 : ElementsWith(annotation).Count;
     }
 }
