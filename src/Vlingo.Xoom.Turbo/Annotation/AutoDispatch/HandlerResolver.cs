@@ -24,7 +24,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 
 		private HandlerResolver(Type handlersConfig, ProcessingEnvironment environment)
 		{
-			_handlersConfigReader = TypeReader.From(environment, handlersConfig);
+			_handlersConfigReader = TypeReader.From(handlersConfig);
 			_handlerInvocations.AddRange(ResolveInvocations());
 		}
 
