@@ -29,12 +29,12 @@ namespace Vlingo.Xoom.Turbo.Annotation
 		public ImmutableHashSet<string> CollectAll()
 		{
 			var basePackageDirectory = ResolvePackagePath(_basePackage);
-			return System.IO.Directory
+			return Directory
 				.GetDirectories(basePackageDirectory, "*", SearchOption.AllDirectories)
-				.Where(path => !path.Contains(@"" + Path.PathSeparator + "bin"))
-				.Where(path => !path.Contains(@"" + Path.PathSeparator + "bin"+ Path.PathSeparator))
-				.Where(path => !path.Contains(@"" + Path.PathSeparator + "obj"))
-				.Where(path => !path.Contains(@"" + Path.PathSeparator + "obj"+ Path.PathSeparator))
+				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}bin"))
+				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"))
+				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}obj"))
+				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
 				.ToImmutableHashSet();
 		}
 
