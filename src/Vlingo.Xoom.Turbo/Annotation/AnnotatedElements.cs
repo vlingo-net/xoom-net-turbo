@@ -28,7 +28,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
 
             //return new AnnotatedElements(supportedAnnotations.map(mapper)
             //        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-            return null;
+            return null!;
         }
 
         private AnnotatedElements(IReadOnlyDictionary<object, HashSet<Type>> elements) => elements.ToList().ForEach(element => _elements.Add(element));
