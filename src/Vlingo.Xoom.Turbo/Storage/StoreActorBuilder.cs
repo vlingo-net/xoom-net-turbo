@@ -45,7 +45,7 @@ namespace Vlingo.Xoom.Turbo.Storage
 					.First(resolver => resolver.Support(storageType, databaseType))
 					.Build<T>(stage, dispatcher, configuration);
 			}
-			catch (StorageException exception)
+			catch (StorageException)
 			{
 				return storageType.ResolveNoOpStore<T>(stage)!;
 			}
