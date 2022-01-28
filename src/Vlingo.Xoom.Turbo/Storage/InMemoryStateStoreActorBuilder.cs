@@ -18,7 +18,7 @@ namespace Vlingo.Xoom.Turbo.Storage
 	public class InMemoryStateStoreActorBuilder : IStoreActorBuilder
 	{
 		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
-			stage.World.Stage.ActorFor<InMemoryStateStoreActor<IState>>(typeof(IStateStore), dispatchers, 5000L, 5000L) as T;
+			(stage.World.Stage.ActorFor<InMemoryStateStoreActor<IState>>(typeof(IStateStore), dispatchers, 5000L, 5000L) as T)!;
 
 		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
 			storageType.IsStateStore() && databaseType.IsInMemory();
