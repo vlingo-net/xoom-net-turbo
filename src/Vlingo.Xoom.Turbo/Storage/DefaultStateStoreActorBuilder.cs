@@ -17,7 +17,7 @@ namespace Vlingo.Xoom.Turbo.Storage
 		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class
 		{
 			// TODO: need symbio store implementation
-			return default;
+			return default!;
 		}
 
 		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
