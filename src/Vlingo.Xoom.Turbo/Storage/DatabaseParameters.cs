@@ -12,98 +12,98 @@ using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-  public class DatabaseParameters
-  {
-    private static string _xoomPrefix = "VLINGO_XOOM";
-    private static string _queryModelPrefix = "query";
-    private static string _combinationPattern = "{0}.{1}";
-
-    private static readonly List<string> PropertiesKeys = new List<string>
+    public class DatabaseParameters
     {
-      "database", "database.category", "database.name", "database.driver", "database.url",
-      "database.username", "database.password", "database.originator"
-    };
+        //private static string _xoomPrefix = "VLINGO_XOOM";
+        private static string _queryModelPrefix = "query";
+        private static string _combinationPattern = "{0}.{1}";
 
-    public Model Model { get; }
-    public string? Database { get; }
-    public string? Name { get; }
-    public string? Driver { get; }
-    public string? Url { get; }
-    public string? Username { get; }
-    public string? Password { get; }
-    public string? Originator { get; }
-    public List<string> Keys { get; }
-    public bool AutoCreate { get; }
-
-    public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties) : this(model, properties,
-      true)
-    {
-    }
-
-    public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties, bool autoCreate)
-    {
-      Model = model;
-      Keys = PrepareKeys();
-      Database = ValueFromIndex(1, properties);
-      Name = ValueFromIndex(2, properties);
-      Driver = ValueFromIndex(3, properties);
-      Url = ValueFromIndex(4, properties);
-      Username = ValueFromIndex(5, properties);
-      Password = ValueFromIndex(6, properties);
-      Originator = ValueFromIndex(7, properties);
-      AutoCreate = autoCreate;
-    }
-
-    private string? ValueFromIndex(int index, IReadOnlyDictionary<string, string> properties)
-    {
-      return ApplicationProperty.ReadValue(Keys[index], properties);
-    }
-
-    private void Validate()
-    {
-      if (Database == null)
-      {
-        throw new DatabaseParameterNotFoundException(Model);
-      }
-
-      if (!string.Equals(Database, DatabaseCategory.InMemory.ToString(), StringComparison.OrdinalIgnoreCase))
-      {
-        if (Name == null)
+        private static readonly List<string> PropertiesKeys = new List<string>
         {
-          throw new DatabaseParameterNotFoundException(Model, "name");
+            "database", "database.category", "database.name", "database.driver", "database.url",
+            "database.username", "database.password", "database.originator"
+        };
+
+        public Model Model { get; }
+        public string? Database { get; }
+        public string? Name { get; }
+        public string? Driver { get; }
+        public string? Url { get; }
+        public string? Username { get; }
+        public string? Password { get; }
+        public string? Originator { get; }
+        public List<string> Keys { get; }
+        public bool AutoCreate { get; }
+
+        public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties) : this(model, properties,
+            true)
+        {
         }
 
-        if (Driver == null)
+        public DatabaseParameters(Model model, IReadOnlyDictionary<string, string> properties, bool autoCreate)
         {
-          throw new DatabaseParameterNotFoundException(Model, "driver");
+            Model = model;
+            Keys = PrepareKeys();
+            Database = ValueFromIndex(1, properties);
+            Name = ValueFromIndex(2, properties);
+            Driver = ValueFromIndex(3, properties);
+            Url = ValueFromIndex(4, properties);
+            Username = ValueFromIndex(5, properties);
+            Password = ValueFromIndex(6, properties);
+            Originator = ValueFromIndex(7, properties);
+            AutoCreate = autoCreate;
         }
 
-        if (Url == null)
+        private string? ValueFromIndex(int index, IReadOnlyDictionary<string, string> properties)
         {
-          throw new DatabaseParameterNotFoundException(Model, "url");
+            return ApplicationProperty.ReadValue(Keys[index], properties);
         }
 
-        if (Username == null)
+        private void Validate()
         {
-          throw new DatabaseParameterNotFoundException(Model, "username");
+            if (Database == null)
+            {
+                throw new DatabaseParameterNotFoundException(Model);
+            }
+
+            if (!string.Equals(Database, DatabaseCategory.InMemory.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                if (Name == null)
+                {
+                    throw new DatabaseParameterNotFoundException(Model, "name");
+                }
+
+                if (Driver == null)
+                {
+                    throw new DatabaseParameterNotFoundException(Model, "driver");
+                }
+
+                if (Url == null)
+                {
+                    throw new DatabaseParameterNotFoundException(Model, "url");
+                }
+
+                if (Username == null)
+                {
+                    throw new DatabaseParameterNotFoundException(Model, "username");
+                }
+
+                if (Originator == null)
+                {
+                    throw new DatabaseParameterNotFoundException(Model, "originator");
+                }
+            }
         }
 
-        if (Originator == null)
+        private List<string> PrepareKeys() =>
+            PropertiesKeys
+                .Select(key => Model.IsQueryModel ? string.Format(_combinationPattern, _queryModelPrefix, key) : key)
+                .ToList();
+
+        public Configuration MapToConfiguration()
         {
-          throw new DatabaseParameterNotFoundException(Model, "originator");
+            Validate();
+            return Configuration.Define();
         }
-      }
     }
-
-    private List<string> PrepareKeys() =>
-      PropertiesKeys
-        .Select(key => Model.IsQueryModel ? string.Format(_combinationPattern, _queryModelPrefix, key) : key)
-        .ToList();
-
-    public Configuration MapToConfiguration()
-    {
-      Validate();
-      return Configuration.Define();
-    }
-  }
 }
