@@ -13,7 +13,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
     public class TransitionBuilder<TState, TRawState, TA> where TState : State<object> where TRawState : State<object> where TA : Type
     {
         private TState _source;
-        private TRawState _target;
+        private TRawState? _target;
         private List<Action<TState, TRawState>> actions = new List<Action<TState, TRawState>>();
 
         private TransitionBuilder(TState source) => _source = source;
@@ -54,7 +54,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
             public TState1 source;
             public TRawState1 target;
             private Type _aggregateType;
-            public Func<TA1, TA1> action;
+            public Func<TA1, TA1>? action;
 
             public TransitionBuilder3(TState1 source, TRawState1 target, Type aggregateType)
             {
@@ -88,7 +88,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
             public StateTransition<TState1, TRawState1, TA1> Then(Action<TState1, TRawState1> consumer)
             {
                 StateTransition<TState1, TRawState1, TA1> transition = new StateTransition<TState1, TRawState1, TA1>(_transitionBuilder3.source, _transitionBuilder3.target);
-                transition.SetAggregateConsumer(_transitionBuilder3.action);
+                transition.SetAggregateConsumer(_transitionBuilder3.action!);
                 transition.SetActionHandler(consumer);
                 return transition;
             }
