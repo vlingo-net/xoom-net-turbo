@@ -73,7 +73,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
             catch (Exception ex)
             {
                 Logger.Debug(ex.Message, ex);
-                return Completes().With<StateTransition<TState, TRawState, TTypeState>>(null);
+                return Completes().With<StateTransition<TState, TRawState, TTypeState>>(null!);
             }
         }
 
