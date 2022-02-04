@@ -20,7 +20,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
     public abstract class FlowActor<TState, TRawState, TTypeState> : Actor, IStepFlow<TState, TRawState, TTypeState>, IScheduled<IMessage> where TState : State<object> where TRawState : State<object> where TTypeState : Type
     {
         private readonly List<IState> _states;
-        private IKernel<TState, TRawState, TTypeState> _kernel;
+        private IKernel<TState, TRawState, TTypeState>? _kernel;
 
         public FlowActor() => _states = new List<IState>();
 
@@ -52,7 +52,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
         }
 
         public ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TEventState>(TEventState @event) where TEventState : Event => 
-            Completes().With(_kernel.ApplyEvent(@event).Await());
+            Completes().With(_kernel!.ApplyEvent(@event).Await());
 
         public ICompletes<string> GetName() => 
             Completes().With("Default Processor");
