@@ -41,7 +41,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 
 	public class BlockingMailboxPluginConfiguration : IPluginConfiguration
 	{
-		private string _name;
+		private string? _name = null;
 
 		public BlockingMailboxPluginConfiguration()
 		{
@@ -55,6 +55,6 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 		{
 		}
 
-		string IPluginConfiguration.Name => _name;
+		string IPluginConfiguration.Name => _name!;
 	}
 }
