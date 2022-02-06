@@ -25,6 +25,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 
 		public BlockingMailbox()
 		{
+			TaskScheduler = null!;
 			_closed = new AtomicBoolean(false);
 			_delivering = new AtomicBoolean(false);
 			_queue = new ConcurrentQueue<IMessage>();
@@ -46,7 +47,9 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 		public void Resume(string name)
 		{
 			if (_suspendedOverrides.Get()!.Any())
+			{
 				_suspendedOverrides.Get()!.Pop();
+			}
 
 			DeliverAll();
 		}
@@ -124,7 +127,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 			throw new NotImplementedException();
 		}
 
-		public IMessage? Receive()
+		public IMessage Receive()
 		{
 			throw new InvalidOperationException("BlockingMailbox does not support this operation.");
 		}
