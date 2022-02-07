@@ -33,7 +33,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 				interest.ThrowIfException();
 			}
 
-			return (T)interest.State.Get();
+			return (T)interest.State.Get()!;
 		}
 
 		/// <summary>
@@ -88,7 +88,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 					{
 						if (result == Result.Success)
 						{
-							Read(state);
+							Read(state!);
 						}
 
 						return result;
