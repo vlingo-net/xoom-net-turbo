@@ -15,20 +15,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
     {
         private readonly List<CodeGenerationParameter> _parameters = new List<CodeGenerationParameter>();
 
-        public static CodeGenerationParameters From(Label label, object value)
-        {
-            return From(label, value.ToString()!);
-        }
+        public static CodeGenerationParameters From(Label label, object value) => From(label, value.ToString()!);
 
-        public static CodeGenerationParameters From(Label label, string value)
-        {
-            return From(CodeGenerationParameter.Of(label, value));
-        }
+        public static CodeGenerationParameters From(Label label, string value) => From(CodeGenerationParameter.Of(label, value));
 
-        public static CodeGenerationParameters From(params CodeGenerationParameter[] codeGenerationParameters)
-        {
-            return new CodeGenerationParameters(codeGenerationParameters.ToList());
-        }
+        public static CodeGenerationParameters From(params CodeGenerationParameter[] codeGenerationParameters) => 
+            new CodeGenerationParameters(codeGenerationParameters.ToList());
 
         public static CodeGenerationParameters Empty() => new CodeGenerationParameters(new List<CodeGenerationParameter>());
 
@@ -54,7 +46,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
             return this;
         }
 
-        public string RetrieveValue(Label label) => RetrieveOne(label).value;
+        public string RetrieveValue(Label label) => RetrieveOne(label).Value;
 
         public T RetrieveValue<T>(Label label, Func<string, T> mapper) => mapper(RetrieveValue(label));
 

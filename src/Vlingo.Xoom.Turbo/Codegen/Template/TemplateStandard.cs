@@ -50,7 +50,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
     }
     public class TemplateStandard
     {
-        private static readonly string _defaultFileExtension = ".cs";
+        private static readonly string DefaultFileExtension = ".cs";
 
         private readonly Func<TemplateParameters, string>? _templateFileRetriever;
         private readonly Func<string, TemplateParameters, string>? _nameResolver;
@@ -86,8 +86,8 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 
         public string ResolveFilename(string name, TemplateParameters parameters)
         {
-            string fileName = _nameResolver!(name, parameters);
-            return fileName.Contains(".") ? fileName : fileName + _defaultFileExtension;
+            var fileName = _nameResolver!(name, parameters);
+            return fileName.Contains(".") ? fileName : fileName + DefaultFileExtension;
         }
     }
 }

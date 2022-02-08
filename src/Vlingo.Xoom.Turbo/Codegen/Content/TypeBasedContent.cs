@@ -13,20 +13,17 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
     public class TypeBasedContent : ContentBase
     {
 
-        public readonly Type contentType;
+        public readonly Type ContentType;
 
-        public TypeBasedContent(TemplateStandard standard, Type contentType) : base(standard)
-        {
-            this.contentType = contentType;
-        }
+        public TypeBasedContent(TemplateStandard standard, Type contentType) : base(standard) => ContentType = contentType;
 
         public override void Create() => throw new NotSupportedException("Type Based Content is read-only");
 
-        public override string RetrieveClassName() => contentType.Name;
+        public override string RetrieveClassName() => ContentType.Name;
 
         public override string RetrievePackage() => ClassFormatter.PackageOf(RetrieveQualifiedName());
 
-        public override string RetrieveQualifiedName() => contentType.FullName!;
+        public override string RetrieveQualifiedName() => ContentType.FullName!;
 
         public override bool CanWrite() => false;
 

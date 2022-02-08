@@ -16,39 +16,40 @@ using Vlingo.Xoom.Turbo.Codegen.Content;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
-	public class XoomInitializerGenerator
-	{
-		private static XoomInitializerGenerator? _instance;
+    public class XoomInitializerGenerator
+    {
+        private static XoomInitializerGenerator? _instance;
 
-		private XoomInitializerGenerator()
-		{
-		}
+        private XoomInitializerGenerator()
+        {
+        }
 
-		public static XoomInitializerGenerator Instance()
-		{
-			if (_instance == null)
-			{
-				_instance = new XoomInitializerGenerator();
-			}
-			return _instance;
-		}
+        public static XoomInitializerGenerator Instance()
+        {
+            if (_instance == null)
+            {
+                _instance = new XoomInitializerGenerator();
+            }
 
-		public void GenerateForm(ProcessingEnvironment environment, AnnotatedElements annotatedElements)
-		{
-			var basePackage = XoomInitializerPackage.From(environment, annotatedElements);
+            return _instance;
+        }
 
-			var context =
-				CodeGenerationContextLoader.From(environment.GetFiler(), basePackage, annotatedElements, environment);
+        public void GenerateForm(ProcessingEnvironment environment, AnnotatedElements annotatedElements)
+        {
+            var basePackage = XoomInitializerPackage.From(environment, annotatedElements);
 
-			new ICodeGenerationStep[]
-				{
-					new ProjectionDispatcherProviderGenerationStep(), new StorageGenerationStep(),
-					new AutoDispatchResourceHandlerGenerationStep(), new XoomInitializerGenerationStep(),
-					new ContentCreationStep()
-				}
-				.Where(step => step.ShouldProcess(context))
-				.ToList()
-				.ForEach(step => step.Process(context));
-		}
-	}
+            var context =
+                CodeGenerationContextLoader.From(environment.GetFiler(), basePackage, annotatedElements, environment);
+
+            new ICodeGenerationStep[]
+                {
+                    new ProjectionDispatcherProviderGenerationStep(), new StorageGenerationStep(),
+                    new AutoDispatchResourceHandlerGenerationStep(), new XoomInitializerGenerationStep(),
+                    new ContentCreationStep()
+                }
+                .Where(step => step.ShouldProcess(context))
+                .ToList()
+                .ForEach(step => step.Process(context));
+        }
+    }
 }

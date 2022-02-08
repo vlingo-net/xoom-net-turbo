@@ -6,7 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 using Model = Vlingo.Xoom.Turbo.Storage.Model;
 

@@ -37,7 +37,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 			if (!model.IsQueryModel())
 			{
 				if (useProjection)
+				{
 					arguments.Add(projectionDispatcher);
+				}
 				arguments.Add(exchangeDispatcherAccess);
 			}
 
@@ -47,7 +49,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 		public static List<StoreProvider> From(StorageType storageType, bool useCqrs, bool useProjection, bool hasExchange)
 		{
 			if (storageType.Equals(StorageType.None))
+			{
 				return new List<StoreProvider>();
+			}
 
 			return ModelTypeExtensions.ApplicableTo(useCqrs)
 				.Select(model => new StoreProvider(storageType, model, useProjection, hasExchange))

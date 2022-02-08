@@ -16,25 +16,25 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
     public class AutoDispatchHandlersMappingTemplateData : TemplateData
     {
 
-        private readonly static string _handlerIndexPattern = "public static final int %s = %d;";
+        private readonly static string HandlerIndexPattern = "public static final int %s = %d;";
         private readonly CodeGenerationParameter _stateAdapterHandler = CodeGenerationParameter.Of(Label.RouteSignature, "adaptState");
 
         private readonly string _aggregateName;
         private readonly TemplateParameters _parameters;
 
-        public AutoDispatchHandlersMappingTemplateData(string basePackage, CodeGenerationParameter aggregate, List<TemplateData> queriesTemplateData, List<ContentBase> contents, bool useCQRS)
+        public AutoDispatchHandlersMappingTemplateData(string basePackage, CodeGenerationParameter aggregate, List<TemplateData> queriesTemplateData, List<ContentBase> contents, bool useCqrs)
         {
-            _aggregateName = aggregate.value;
+            _aggregateName = aggregate.Value;
             _parameters =
                     TemplateParameters.With(TemplateParameter.PackageName, ResolvePackage(basePackage))
                             .And(TemplateParameter.AggregateProtocolName, _aggregateName)
                             .And(TemplateParameter.StateName, new TemplateStandard().ResolveClassname(TemplateStandardType.AggregateState.ToString()))
                             .And(TemplateParameter.DataObjectName, new TemplateStandard().ResolveClassname(TemplateStandardType.DataObject.ToString()))
-                            .And(TemplateParameter.QueriesName, new TemplateStandard().ResolveClassname(TemplateStandardType.Queries.ToString())).And(TemplateParameter.UseCqrs, useCQRS)
+                            .And(TemplateParameter.QueriesName, new TemplateStandard().ResolveClassname(TemplateStandardType.Queries.ToString())).And(TemplateParameter.UseCqrs, useCqrs)
                             .And(TemplateParameter.QueryAllMethodName, FindQueryMethodName(_aggregateName, queriesTemplateData))
                             .AndResolve(TemplateParameter.QueryAllIndexName, @params => AutoDispatchMappingValueFormatter.Format(@params.Find<string>(TemplateParameter.QueryAllMethodName)))
                             .And(TemplateParameter.AutoDispatchHandlersMappingName, Standard().ResolveClassname(_aggregateName))
-                            .And(TemplateParameter.HandlerIndexes, ResolveHandlerIndexes(aggregate, useCQRS))
+                            .And(TemplateParameter.HandlerIndexes, ResolveHandlerIndexes(aggregate, useCqrs))
                             .And(TemplateParameter.HandlerEntries, new List<string>())
                             .AddImports(ResolveImports(_aggregateName, contents));
 
@@ -43,10 +43,10 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
 
         public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.HandlerEntries).Add(outcome);
 
-        private List<string> ResolveHandlerIndexes(CodeGenerationParameter aggregate, bool useCQRS)
+        private List<string> ResolveHandlerIndexes(CodeGenerationParameter aggregate, bool useCqrs)
         {
             var handlers = new List<List<CodeGenerationParameter>>() { aggregate.RetrieveAllRelated(Label.RouteSignature).ToList(), new List<CodeGenerationParameter>() { _stateAdapterHandler } }.SelectMany(x => x).ToList();
-            return Enumerable.Range(0, handlers.Count()).Select(index => string.Format(_handlerIndexPattern, AutoDispatchMappingValueFormatter.Format(handlers[index].value), index)).ToList();
+            return Enumerable.Range(0, handlers.Count()).Select(index => string.Format(HandlerIndexPattern, AutoDispatchMappingValueFormatter.Format(handlers[index].Value), index)).ToList();
         }
 
         private string FindQueryMethodName(string aggregateName, List<TemplateData> queriesTemplateData)
@@ -56,7 +56,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
                 return string.Empty;
             }
 
-            string expectedQueriesName = new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateName);
+            var expectedQueriesName = new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateName);
             return queriesTemplateData.Select(x => x.Parameters()).Where(x => x.HasValue(TemplateParameter.QueriesName, expectedQueriesName)).Select(x => x.Find<string>(TemplateParameter.QueryAllMethodName)).First();
         }
 

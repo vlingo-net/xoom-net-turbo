@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
         public void Init(ProcessingEnvironment environment)
         {
             Environment = environment;
-            ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.C_SHARP));
+            ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.CSharp));
         }
 
         public bool Process(ISet<Type> set)

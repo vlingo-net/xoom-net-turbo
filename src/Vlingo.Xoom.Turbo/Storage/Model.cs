@@ -7,16 +7,16 @@
 
 namespace Vlingo.Xoom.Turbo.Storage
 {
-  public class Model
-  {
-    private readonly string _label;
+    public class Model
+    {
+        private readonly string _label;
 
-    public Model(string label) => _label = label;
+        public Model(string label) => _label = label;
 
-    public bool IsQueryModel => _label.Equals(ModelType.Query.ToString());
+        public bool IsQueryModel => _label.Equals(ModelType.Query.ToString());
 
-    public bool IsDomainModel => _label.Equals(ModelType.Domain.ToString());
+        public bool IsDomainModel => _label.Equals(ModelType.Domain.ToString());
 
-    public override string ToString() => _label;
-  }
+        public override string ToString() => _label;
+    }
 }

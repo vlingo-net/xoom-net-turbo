@@ -11,7 +11,7 @@ using Vlingo.Xoom.Symbio;
 
 namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
 {
-    public abstract class StatefulEntity<S, C> : Entity<S, C> where S : class where C : class
+    public abstract class StatefulEntity<TS, TC> : Entity<TS, TC> where TS : class where TC : class
     {
         private int _currentVersion;
 
@@ -42,7 +42,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
         /// <param name="sources"> the <see cref="List<Source<C>>"/> instances to apply</param>
         /// <param name="metadataValue"> the string metadata value to apply along with the state</param>
         /// <param name="operation"> the string descriptive name of the operation that caused the state modification</param>
-        protected void Apply(S state, List<Source<C>> sources, string metadataValue, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, metadataValue, operation)));
+        protected void Apply(TS state, List<Source<TC>> sources, string metadataValue, string operation) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, sources, Metadata(state, metadataValue, operation)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> and <see cref="metadataValye"/> that was modified
@@ -51,7 +51,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
         /// <param name="state"> the S typed state to apply</param>
         /// <param name="metadataValue"> the string metadata value to apply along with the state</param>
         /// <param name="operation"> the string descriptive name of the operation that caused the state modification</param>
-        protected void Apply(S state, string metadataValue, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, metadataValue, operation)));
+        protected void Apply(TS state, string metadataValue, string operation) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, new List<Source<TC>>(), Metadata(state, metadataValue, operation)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> that was modified due to the descriptive <see cref="operation"/>.
@@ -59,34 +59,34 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
         /// <param name="state"> state the S typed state to apply</param>
         /// <param name="sources"> the <see cref="List<Source<C>>"/> instances to apply</param>
         /// <param name="operation"> the string descriptive name of the operation that caused the state modification</param>
-        protected void Apply(S state, List<Source<C>> sources, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, null!, operation)));
+        protected void Apply(TS state, List<Source<TC>> sources, string operation) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, sources, Metadata(state, null!, operation)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> that was modified due to the descriptive <see cref="operation"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
         /// <param name="operation"> the string descriptive name of the operation that caused the state modification</param>
-        protected void Apply(S state, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, null!, operation)));
+        protected void Apply(TS state, string operation) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, new List<Source<TC>>(), Metadata(state, null!, operation)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> and <see cref="sources"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
         /// <param name="sources"> the <see cref="List{Source{C}}"/> instances to apply</param>
-        protected void Apply(S state, List<Source<C>> sources) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, null!, null!)));
+        protected void Apply(TS state, List<Source<TC>> sources) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, sources, Metadata(state, null!, null!)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> and <see cref="source"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
         /// <param name="source"> the <see cref="Source<C>"/> instances to apply</param>
-        protected void Apply(S state, Source<C> source) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>() { source }, Metadata(state, null!, null!)));
+        protected void Apply(TS state, Source<TC> source) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, new List<Source<TC>>() { source }, Metadata(state, null!, null!)));
 
         /// <summary>
         /// Apply my current <see cref="state"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
-        protected void Apply(S state) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, null!, null!)));
+        protected void Apply(TS state) => Apply(new Applied<TS, TC>(state, _currentVersion + 1, new List<Source<TC>>(), Metadata(state, null!, null!)));
 
         /// <summary>
         /// Answer a representation of a number of segments as a
@@ -100,7 +100,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
         {
             var builder = new StringBuilder();
             builder.Append(idSegments[0]);
-            for (int idx = 1; idx < idSegments.Length; ++idx)
+            for (var idx = 1; idx < idSegments.Length; ++idx)
             {
                 builder.Append(separator).Append(idSegments[idx]);
             }
@@ -112,19 +112,19 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
         /// Must be overridden by my extender.
         /// </summary>
         /// <param name="state"> the S typed state</param>
-        protected abstract void State(S state);
+        protected abstract void State(TS state);
 
         /// <summary>
         /// Apply by setting <see cref="Applied{S, C}()"/> and setting state.
         /// </summary>
         /// <param name="applied">the <see cref="Applied<S, C>"/> to apply</param>
-        private void Apply(Applied<S, C> applied)
+        private void Apply(Applied<TS, TC> applied)
         {
-            _currentVersion = applied.stateVersion;
+            _currentVersion = applied.StateVersion;
             Applied(applied);
-            State(applied.state);
+            State(applied.State);
         }
 
-        private Metadata Metadata(S state, string metadataValue, string operation) => Symbio.Metadata.With(state, metadataValue == null ? "" : metadataValue, operation == null ? "" : operation);
+        private Metadata Metadata(TS state, string metadataValue, string operation) => Symbio.Metadata.With(state, metadataValue == null ? "" : metadataValue, operation == null ? "" : operation);
     }
 }

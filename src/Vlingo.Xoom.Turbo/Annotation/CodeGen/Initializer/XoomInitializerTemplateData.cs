@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -30,12 +31,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 			var hasExchange = ContentQuery.Exists(new TemplateStandard(TemplateStandardType.ExchangeBootstrap), contents);
 			var storageType = context.ParameterOf(Label.StorageType, x =>
 			{
-				StorageType.TryParse(x, out StorageType value);
+				Enum.TryParse(x, out StorageType value);
 				return value;
 			});
 			var projectionType = context.ParameterOf(Label.ProjectionType, x =>
 			{
-				ProjectionType.TryParse(x, out ProjectionType value);
+				Enum.TryParse(x, out ProjectionType value);
 				return value;
 			});
 			var blockingMessaging = context.ParameterOf(Label.BlockingMessaging, x => bool.TrueString.ToLower() == x);
@@ -83,7 +84,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 			var storageType =
 				context.ParameterOf(Label.StorageType, x =>
 				{
-					StorageType.TryParse(x, out StorageType value);
+					Enum.TryParse(x, out StorageType value);
 					return value;
 				});
 

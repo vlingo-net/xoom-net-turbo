@@ -50,7 +50,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 		public static string ResolveTypeRegistryObjectName(this StorageType storageType, ModelType modelType)
 		{
 			if (!modelType.IsQueryModel())
+			{
 				return storageType.TypeRegistryObjectName();
+			}
 			return "StatefulTypeRegistry";
 		}
 
@@ -69,9 +71,15 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 		public static IEnumerable<StorageType> FindRelatedStorageTypes(this StorageType storageType, bool useCqrs)
 		{
 			if (!storageType.IsEnabled())
+			{
 				return new List<StorageType>();
+			}
+
 			if (useCqrs || storageType.IsStateful())
+			{
 				return new List<StorageType> { storageType };
+			}
+			
 			return new List<StorageType> { storageType, StorageType.StateStore };
 		}
 

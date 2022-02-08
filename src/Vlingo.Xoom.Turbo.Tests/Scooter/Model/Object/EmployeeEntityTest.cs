@@ -18,21 +18,21 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 
             employee.Hire("12345", 50000);
 
-            var state1 = employee.Applied().state;
+            var state1 = employee.Applied().State;
             Assert.True(state1.PersistenceId > 0);
             Assert.Equal("12345", state1.Number);
             Assert.Equal(50000, state1.Salary);
 
             employee.Assign("67890");
 
-            var state2 = employee.Applied().state;
+            var state2 = employee.Applied().State;
             Assert.Equal(state1.PersistenceId, state2.PersistenceId);
             Assert.Equal("67890", state2.Number);
             Assert.Equal(50000, state2.Salary);
 
             employee.Adjust(55000);
 
-            var state3 = employee.Applied().state;
+            var state3 = employee.Applied().State;
             Assert.Equal(state1.PersistenceId, state3.PersistenceId);
             Assert.Equal("67890", state3.Number);
             Assert.Equal(55000, state3.Salary);

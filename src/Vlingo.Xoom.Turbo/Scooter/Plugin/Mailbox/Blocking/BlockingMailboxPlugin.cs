@@ -14,10 +14,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 	{
 		private readonly BlockingMailboxPluginConfiguration _configuration;
 
-		public BlockingMailboxPlugin()
-		{
-			_configuration = new BlockingMailboxPluginConfiguration();
-		}
+		public BlockingMailboxPlugin() => _configuration = new BlockingMailboxPluginConfiguration();
 
 		public override void Close()
 		{
@@ -27,10 +24,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 
 		public IMailbox ProvideMailboxFor(int? hashCode, IDispatcher dispatcher) => new BlockingMailbox();
 
-		public override void Start(IRegistrar registrar)
-		{
-			registrar.Register(Name, false, this);
-		}
+		public override void Start(IRegistrar registrar) => registrar.Register(Name, false, this);
 
 		public override IPlugin With(IPluginConfiguration? overrideConfiguration) => this;
 
@@ -41,7 +35,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 
 	public class BlockingMailboxPluginConfiguration : IPluginConfiguration
 	{
-		private string? _name = null;
+		private readonly string? _name = null;
 
 		public BlockingMailboxPluginConfiguration()
 		{

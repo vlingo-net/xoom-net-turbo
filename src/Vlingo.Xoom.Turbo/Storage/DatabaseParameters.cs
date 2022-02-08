@@ -15,8 +15,8 @@ namespace Vlingo.Xoom.Turbo.Storage
     public class DatabaseParameters
     {
         //private static string _xoomPrefix = "VLINGO_XOOM";
-        private static string _queryModelPrefix = "query";
-        private static string _combinationPattern = "{0}.{1}";
+        private static readonly string _queryModelPrefix = "query";
+        private static readonly string _combinationPattern = "{0}.{1}";
 
         private static readonly List<string> PropertiesKeys = new List<string>
         {

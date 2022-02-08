@@ -30,11 +30,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
                             .And(TemplateParameter.IdType, FieldDetail.TypeOf(aggregate, "id"))
                             .And(TemplateParameter.RouteMethod, route.RetrieveRelatedValue(Label.RouteMethod))
                             .And(TemplateParameter.RoutePath, PathFormatter.FormatRelativeRoutePath(route))
-                            .And(TemplateParameter.DataObjectName, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregate.value))
-                            .And(TemplateParameter.RouteMappingValue, AutoDispatchMappingValueFormatter.Format(route.value))
+                            .And(TemplateParameter.DataObjectName, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregate.Value))
+                            .And(TemplateParameter.RouteMappingValue, AutoDispatchMappingValueFormatter.Format(route.Value))
                             .And(TemplateParameter.RequireEntityLoading, route.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x))
-                            .And(TemplateParameter.AutoDispatchHandlersMappingName, new TemplateStandard(TemplateStandardType.AutoDispatchHandlersMapping).ResolveClassname(aggregate.value))
-                            .And(TemplateParameter.MethodName, route.value);
+                            .And(TemplateParameter.AutoDispatchHandlersMappingName, new TemplateStandard(TemplateStandardType.AutoDispatchHandlersMapping).ResolveClassname(aggregate.Value))
+                            .And(TemplateParameter.MethodName, route.Value);
         }
 
         private bool IsRetrievalRoute(CodeGenerationParameter route)

@@ -11,15 +11,15 @@ namespace Vlingo.Xoom.Turbo.Storage
 {
     public class DatabaseParameterNotFoundException : SystemException
     {
-        private static string exceptionMessagePattern = "{0} Database {1} not informed";
+        private static readonly string _exceptionMessagePattern = "{0} Database {1} not informed";
 
         public DatabaseParameterNotFoundException(Model model) : base(model.ToString())
         {
         }
 
         public DatabaseParameterNotFoundException(Model model, string attribute) : base(model.IsDomainModel ?
-                string.Format(exceptionMessagePattern, string.Empty, attribute) :
-                string.Format(exceptionMessagePattern, model, attribute))
+                string.Format(_exceptionMessagePattern, string.Empty, attribute) :
+                string.Format(_exceptionMessagePattern, model, attribute))
         {
         }
     }

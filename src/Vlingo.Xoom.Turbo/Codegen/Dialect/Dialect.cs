@@ -11,11 +11,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Dialect
 {
 	public enum Dialect
 	{
-		C_SHARP
+		CSharp
 	}
+	
 	public static class DialectExtensions
 	{
-		public static Dialect FindDefault() => Dialect.C_SHARP;
+		public static Dialect FindDefault() => Dialect.CSharp;
 
 		public static void ResolvePreParametersProcessing(this Dialect dialect, CodeGenerationParameters parameters)
 		{

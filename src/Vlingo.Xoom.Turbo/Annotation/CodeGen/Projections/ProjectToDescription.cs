@@ -31,7 +31,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
 
 		private string JoinSourceTypes(ProjectionType projectionType, ISet<string> sourceNames)
 		{
-			Func<string, string> mapper = projectionType.IsEventBased()
+			var mapper = projectionType.IsEventBased()
 					? (Func<string, string>) (sourceName => sourceName + DefaultSourceNameInvocation)
 					: (Func<string, string>) (sourceName => $"\"{sourceName}\"");
 			
@@ -47,10 +47,10 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
 				{
 					var projectionActor = projectionActors.ElementAt(index);
 					var eventNames = projectionActor.RetrieveAllRelated(Label.Source)
-						.Select(source => source.value)
+						.Select(source => source.Value)
 						.Select(value => value.Trim())
 						.ToImmutableHashSet();
-					return new ProjectToDescription(index, projectionActors.Count, projectionActor.value, projectionType,
+					return new ProjectToDescription(index, projectionActors.Count, projectionActor.Value, projectionType,
 						eventNames);
 				}).ToList();
 	}

@@ -43,26 +43,26 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model
             {
                 _applied = applied;
             }
-            else if (applied.state != null)
+            else if (applied.State != null)
             {
-                if (applied.metadata.IsEmpty)
+                if (applied.Metadata.IsEmpty)
                 {
-                    _applied = _applied.AlongWith(applied.state, applied.Sources(), _applied.metadata);
+                    _applied = _applied.AlongWith(applied.State, applied.Sources(), _applied.Metadata);
                 }
                 else
                 {
-                    _applied = _applied.AlongWith(applied.state, applied.Sources(), applied.metadata);
+                    _applied = _applied.AlongWith(applied.State, applied.Sources(), applied.Metadata);
                 }
             }
-            else if (applied.state == null)
+            else if (applied.State == null)
             {
-                if (applied.metadata.IsEmpty)
+                if (applied.Metadata.IsEmpty)
                 {
-                    _applied = _applied.AlongWith(applied.state!, applied.Sources(), _applied.metadata);
+                    _applied = _applied.AlongWith(applied.State!, applied.Sources(), _applied.Metadata);
                 }
                 else
                 {
-                    _applied = _applied.AlongWith(applied.state!, applied.Sources(), applied.metadata);
+                    _applied = _applied.AlongWith(applied.State!, applied.Sources(), applied.Metadata);
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Turbo.Storage
 {
 	public class StoreActorBuilder
 	{
-		private static readonly List<IStoreActorBuilder> _builders =
+		private static readonly List<IStoreActorBuilder> Builders =
 			new List<IStoreActorBuilder>
 			{
 				new InMemoryStateStoreActorBuilder(), new DefaultStateStoreActorBuilder(),
@@ -24,14 +24,22 @@ namespace Vlingo.Xoom.Turbo.Storage
 				new ObjectStoreActorBuilder()
 			};
 
-		static T From<T>(Stage stage, Model model, IDispatcher dispatcher, StorageType storageType, IReadOnlyDictionary<string, string> properties,
-			bool autoDatabaseCreation) where T : class
-		{
-			return From<T>(stage, model, new List<IDispatcher> { dispatcher }, storageType, properties, autoDatabaseCreation);
-		}
+		static T From<T>(
+			Stage stage,
+			Model model,
+			IDispatcher dispatcher,
+			StorageType storageType,
+			IReadOnlyDictionary<string, string> properties,
+			bool autoDatabaseCreation) where T : class =>
+			From<T>(stage, model, new List<IDispatcher> { dispatcher }, storageType, properties, autoDatabaseCreation);
 
-		static T From<T>(Stage stage, Model model, List<IDispatcher> dispatcher, StorageType storageType,
-			IReadOnlyDictionary<string, string> properties, bool autoDatabaseCreation) where T : class
+		static T From<T>(
+			Stage stage,
+			Model model,
+			List<IDispatcher> dispatcher,
+			StorageType storageType,
+			IReadOnlyDictionary<string, string> properties,
+			bool autoDatabaseCreation) where T : class
 		{
 			try
 			{
@@ -41,7 +49,7 @@ namespace Vlingo.Xoom.Turbo.Storage
 				var databaseType = DatabaseType.RetrieveFromConfiguration(configuration);
 
 
-				return _builders
+				return Builders
 					.First(resolver => resolver.Support(storageType, databaseType))
 					.Build<T>(stage, dispatcher, configuration);
 			}

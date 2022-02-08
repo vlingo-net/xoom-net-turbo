@@ -12,9 +12,9 @@ namespace Vlingo.Xoom.Turbo.Stepflow
 {
     public class TransitionBuilder<TState, TRawState, TA> where TState : State<object> where TRawState : State<object> where TA : Type
     {
-        private TState _source;
+        private readonly TState _source;
         private TRawState? _target;
-        private List<Action<TState, TRawState>> actions = new List<Action<TState, TRawState>>();
+        private List<Action<TState, TRawState>> _actions = new List<Action<TState, TRawState>>();
 
         private TransitionBuilder(TState source) => _source = source;
 
@@ -30,8 +30,8 @@ namespace Vlingo.Xoom.Turbo.Stepflow
 
         public class TransitionBuilder2<TState1, TRawState1, TA1> where TState1 : State<object> where TRawState1 : State<object> where TA1 : Type
         {
-            private TState1 _source;
-            private TRawState1 _target;
+            private readonly TState1 _source;
+            private readonly TRawState1 _target;
 
             public TransitionBuilder2(TState1 source, TRawState1 target)
             {
@@ -43,7 +43,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
 
             public StateTransition<TState1, TRawState1, TA1> Then(Action<TState1, TRawState1> action)
             {
-                StateTransition<TState1, TRawState1, TA1> transition = new StateTransition<TState1, TRawState1, TA1>(_source, _target);
+                var transition = new StateTransition<TState1, TRawState1, TA1>(_source, _target);
                 transition.SetActionHandler(action);
                 return transition;
             }
@@ -51,29 +51,29 @@ namespace Vlingo.Xoom.Turbo.Stepflow
 
         public class TransitionBuilder3<TState1, TRawState1, TA1> where TState1 : State<object> where TRawState1 : State<object> where TA1 : Type
         {
-            public TState1 source;
-            public TRawState1 target;
+            public TState1 Source;
+            public TRawState1 Target;
             private Type _aggregateType;
-            public Func<TA1, TA1>? action;
+            public Func<TA1, TA1>? Action;
 
             public TransitionBuilder3(TState1 source, TRawState1 target, Type aggregateType)
             {
-                this.source = source;
-                this.target = target;
+                Source = source;
+                Target = target;
                 _aggregateType = aggregateType;
             }
 
             public TransitionBuilder4<TState1, TRawState1, TA1> Then(Func<TA1, TA1> aggregateConsumer)
             {
-                action = aggregateConsumer;
-                StateTransition<TState1, TRawState1, TA1> transition = new StateTransition<TState1, TRawState1, TA1>(source, target);
+                Action = aggregateConsumer;
+                var transition = new StateTransition<TState1, TRawState1, TA1>(Source, Target);
                 transition.SetAggregateConsumer(aggregateConsumer);
                 return new TransitionBuilder4<TState1, TRawState1, TA1>(this);
             }
 
             public StateTransition<TState1, TRawState1, TA2> AndThenAccept<TA2>(Action<TState1, TRawState1> consumer) where TA2 : Type
             {
-                StateTransition<TState1, TRawState1, TA2> transition = new StateTransition<TState1, TRawState1, TA2>(source, target);
+                var transition = new StateTransition<TState1, TRawState1, TA2>(Source, Target);
                 transition.SetActionHandler(consumer);
                 return transition;
             }
@@ -81,14 +81,14 @@ namespace Vlingo.Xoom.Turbo.Stepflow
 
         public class TransitionBuilder4<TState1, TRawState1, TA1> where TState1 : State<object> where TRawState1 : State<object> where TA1 : Type
         {
-            private TransitionBuilder3<TState1, TRawState1, TA1> _transitionBuilder3;
+            private readonly TransitionBuilder3<TState1, TRawState1, TA1> _transitionBuilder3;
 
             public TransitionBuilder4(TransitionBuilder3<TState1, TRawState1, TA1> transitionBuilder3) => _transitionBuilder3 = transitionBuilder3;
 
             public StateTransition<TState1, TRawState1, TA1> Then(Action<TState1, TRawState1> consumer)
             {
-                StateTransition<TState1, TRawState1, TA1> transition = new StateTransition<TState1, TRawState1, TA1>(_transitionBuilder3.source, _transitionBuilder3.target);
-                transition.SetAggregateConsumer(_transitionBuilder3.action!);
+                var transition = new StateTransition<TState1, TRawState1, TA1>(_transitionBuilder3.Source, _transitionBuilder3.Target);
+                transition.SetAggregateConsumer(_transitionBuilder3.Action!);
                 transition.SetActionHandler(consumer);
                 return transition;
             }

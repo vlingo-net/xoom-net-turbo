@@ -16,7 +16,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
     public class RouteMethodTemplateData : TemplateData
     {
-        private static readonly string _defaultIdName = "id";
+        private static readonly string DefaultIdName = "id";
 
         private readonly TemplateParameters _parameters;
 
@@ -31,8 +31,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         private static void InferModelParameters(CodeGenerationParameter aggregateParameter, List<ContentBase> contents)
         {
-            var modelActor = new TemplateStandard(TemplateStandardType.Aggregate).ResolveClassname(aggregateParameter.value);
-            var modelProtocolQualifiedName = ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(TemplateStandardType.AggregateProtocol), aggregateParameter.value, contents);
+            var modelActor = new TemplateStandard(TemplateStandardType.Aggregate).ResolveClassname(aggregateParameter.Value);
+            var modelProtocolQualifiedName = ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(TemplateStandardType.AggregateProtocol), aggregateParameter.Value, contents);
             var modelActorQualifiedName = ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(TemplateStandardType.Aggregate), modelActor, contents);
             aggregateParameter.Relate(Label.ModelProtocol, modelProtocolQualifiedName).Relate(Label.ModelActor, modelActorQualifiedName);
         }
@@ -69,7 +69,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
         {
             if (!routeSignatureParameter.HasAny(Label.Id))
             {
-                return _defaultIdName;
+                return DefaultIdName;
             }
             return routeSignatureParameter.RetrieveRelatedValue(Label.Id);
         }
@@ -84,7 +84,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
         {
             if (mainParameter.IsLabeled(Label.Aggregate))
             {
-                return ClassFormatter.SimpleNameToAttribute(mainParameter.value);
+                return ClassFormatter.SimpleNameToAttribute(mainParameter.Value);
             }
             var qualifiedName = mainParameter.RetrieveRelatedValue(protocolLabel);
             return ClassFormatter.QualifiedNameToAttribute(qualifiedName);

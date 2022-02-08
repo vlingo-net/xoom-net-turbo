@@ -11,12 +11,9 @@ namespace Vlingo.Xoom.Turbo.Codegen
 	{
 		private readonly Dialect.Dialect _dialect;
 
-		private TextExpectation(Dialect.Dialect dialect)
-		{
-			_dialect = dialect;
-		}
+		private TextExpectation(Dialect.Dialect dialect) => _dialect = dialect;
 
-		public static TextExpectation OnCSharp => new TextExpectation(Dialect.Dialect.C_SHARP);
+		public static TextExpectation OnCSharp => new TextExpectation(Dialect.Dialect.CSharp);
 
 		public string Read(string textFileName)
 		{

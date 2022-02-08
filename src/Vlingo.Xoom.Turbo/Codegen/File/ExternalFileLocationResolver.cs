@@ -15,9 +15,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.File
 {
     public class ExternalFileLocationResolver : IFileLocationResolver
     {
-        private static readonly string[] _sourceFolder = new string[] { "src", "main", "java" };
-        private static readonly string[] _schemataFolder = new string[] { "src", "main", "vlingo", "schemata" };
-        private static readonly string[] _resourceFolder = new string[] { "src", "main", "resources" };
+        private static readonly string[] SourceFolder = new string[] { "src", "main", "java" };
+        private static readonly string[] SchemataFolder = new string[] { "src", "main", "vlingo", "schemata" };
+        private static readonly string[] ResourceFolder = new string[] { "src", "main", "resources" };
 
         public string Resolve(CodeGenerationContext context, TemplateData templateData)
         {
@@ -37,18 +37,18 @@ namespace Vlingo.Xoom.Turbo.Codegen.File
         {
             if (templateData.Parameters().Find<bool>(TemplateParameter.ResourceFile, false))
             {
-                return _resourceFolder;
+                return ResourceFolder;
             }
             if (templateData.Parameters().Find<bool>(TemplateParameter.SchemataFile, false))
             {
-                return _schemataFolder;
+                return SchemataFolder;
             }
             if (templateData.Parameters().Find<bool>(TemplateParameter.PomSection, false))
             {
                 return new String[] { };
             }
             var packageName = templateData.Parameters().Find<string>(TemplateParameter.PackageName);
-            var tempSourceFolder = _sourceFolder.ToList();
+            var tempSourceFolder = SourceFolder.ToList();
             tempSourceFolder.AddRange(packageName.Split(new string[] { "\\." }, StringSplitOptions.None));
             return tempSourceFolder.ToArray();
         }

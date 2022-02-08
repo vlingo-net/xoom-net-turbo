@@ -5,8 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Xoom.Actors;
-
 namespace Vlingo.Xoom.Turbo.Codegen.Template
 {
     public class TemplateProcessorConfiguration

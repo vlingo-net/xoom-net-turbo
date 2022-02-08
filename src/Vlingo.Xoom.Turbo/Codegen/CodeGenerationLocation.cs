@@ -9,12 +9,12 @@ namespace Vlingo.Xoom.Turbo.Codegen
 {
     public enum CodeGenerationLocationType
     {
-        INTERNAL,
-        EXTERNAL
+        Internal,
+        External
     }
 
     public class CodeGenerationLocation
     {
-        public static bool IsInternal(CodeGenerationLocationType codeGenerationLocationType) => codeGenerationLocationType.Equals(CodeGenerationLocationType.INTERNAL);
+        public static bool IsInternal(CodeGenerationLocationType codeGenerationLocationType) => codeGenerationLocationType.Equals(CodeGenerationLocationType.Internal);
     }
 }

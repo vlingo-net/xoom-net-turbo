@@ -15,17 +15,16 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 {
     public class Queries
     {
-
-        private static readonly string _qualifiedNamePattern = "{0}.{1}";
+        private static readonly string QualifiedNamePattern = "{0}.{1}";
 
         private readonly string _protocolName;
         private readonly string _actorName;
         private readonly string _attributeName;
         private readonly HashSet<string> _qualifiedNames = new HashSet<string>();
 
-        public static List<Queries> Drom(bool useCQRS, List<ContentBase> contents, List<TemplateData> templatesData)
+        public static List<Queries> Drom(bool useCqrs, List<ContentBase> contents, List<TemplateData> templatesData)
         {
-            if (!useCQRS)
+            if (!useCqrs)
             {
                 return new List<Queries>();
             }
@@ -52,20 +51,20 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
         {
             if (!autoDispatchParameter.HasAny(Label.QueriesProtocol))
             {
-                return Queries.Empty();
+                return Empty();
             }
             return new Queries(autoDispatchParameter.RetrieveRelatedValue(Label.QueriesProtocol), autoDispatchParameter.RetrieveRelatedValue(Label.QueriesActor));
         }
 
-        public static Queries From(CodeGenerationParameter aggregateParameter, List<ContentBase> contents, bool useCQRS)
+        public static Queries From(CodeGenerationParameter aggregateParameter, List<ContentBase> contents, bool useCqrs)
         {
-            if (!useCQRS)
+            if (!useCqrs)
             {
-                return Queries.Empty();
+                return Empty();
             }
 
-            var queriesProtocol = new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateParameter.value);
-            var queriesActor = new TemplateStandard(TemplateStandardType.QueriesActor).ResolveClassname(aggregateParameter.value);
+            var queriesProtocol = new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateParameter.Value);
+            var queriesActor = new TemplateStandard(TemplateStandardType.QueriesActor).ResolveClassname(aggregateParameter.Value);
             return new Queries(ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(TemplateStandardType.Queries), queriesProtocol, contents), ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(TemplateStandardType.QueriesActor), queriesActor, contents));
         }
 
@@ -87,8 +86,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 
             if (!IsEmpty())
             {
-                _qualifiedNames.Add(string.Format(_qualifiedNamePattern, protocolPackageName, protocolName));
-                _qualifiedNames.Add(string.Format(_qualifiedNamePattern, actorPackageName, actorName));
+                _qualifiedNames.Add(string.Format(QualifiedNamePattern, protocolPackageName, protocolName));
+                _qualifiedNames.Add(string.Format(QualifiedNamePattern, actorPackageName, actorName));
             }
         }
 

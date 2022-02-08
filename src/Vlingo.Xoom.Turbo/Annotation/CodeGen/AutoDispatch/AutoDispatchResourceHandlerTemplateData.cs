@@ -29,7 +29,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 		private AutoDispatchResourceHandlerTemplateData(CodeGenerationContext context,
 			CodeGenerationParameter autoDispatchParameter)
 		{
-			_restResourceName = ClassFormatter.SimpleNameOf(autoDispatchParameter.value);
+			_restResourceName = ClassFormatter.SimpleNameOf(autoDispatchParameter.Value);
 
 			var queryStoreProviderParameters = TemplateParameters.With(TemplateParameter.StorageType, StorageType.StateStore)
 				.And(TemplateParameter.Model, ModelType.Query);
@@ -42,7 +42,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 						.RetrieveRelatedValue(Label.ModelProtocol));
 			
 			_parameters = TemplateParameters
-				.With(TemplateParameter.PackageName, ClassFormatter.PackageOf(autoDispatchParameter.value))
+				.With(TemplateParameter.PackageName, ClassFormatter.PackageOf(autoDispatchParameter.Value))
 				.And(TemplateParameter.StateName, AnnotationBasedTemplateStandard.AggregateState.ResolveClassname(aggregateProtocolClassName))
 				.And(TemplateParameter.Queries, Queries.From(autoDispatchParameter))
 				.And(TemplateParameter.RestResourceName, Standard().ResolveClassname(_restResourceName))

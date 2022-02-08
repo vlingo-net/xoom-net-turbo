@@ -30,10 +30,7 @@ namespace Vlingo.Xoom.Turbo
             }
         }
 
-        public static bool ContainsKey(string key)
-        {
-            return Variables.ContainsKey(key);
-        }
+        public static bool ContainsKey(string key) => Variables.ContainsKey(key);
 
         private static void LoadVariables()
         {

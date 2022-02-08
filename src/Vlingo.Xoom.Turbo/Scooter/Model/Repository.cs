@@ -7,10 +7,10 @@
 
 namespace Vlingo.Xoom.Turbo.Scooter.Model
 {
-    public abstract class Repository<S, C> where S : class where C : class
+    public abstract class Repository<TS, TC> where TS : class where TC : class
     {
         public abstract void FromId(string id);
 
-        public abstract void Save(Entity<S, C> entity);
+        public abstract void Save(Entity<TS, TC> entity);
     }
 }

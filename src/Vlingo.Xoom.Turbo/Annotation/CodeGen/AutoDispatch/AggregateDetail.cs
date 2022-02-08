@@ -12,6 +12,6 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 		private static CodeGenerationParameter? FindMethod(CodeGenerationParameter aggregate, string methodName) =>
 			aggregate
 				.RetrieveAllRelated(Label.AggregateMethod)
-				.FirstOrDefault(method => methodName == method.value || method.value.StartsWith($"{methodName}("));
+				.FirstOrDefault(method => methodName == method.Value || method.Value.StartsWith($"{methodName}("));
 	}
 }

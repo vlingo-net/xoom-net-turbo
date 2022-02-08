@@ -18,9 +18,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 
     public static class ModelTypeExtensions
     {
-        public static IEnumerable<ModelType> ApplicableTo(bool useCQRS)
+        public static IEnumerable<ModelType> ApplicableTo(bool useCqrs)
         {
-            if (useCQRS)
+            if (useCqrs)
             {
                 return new List<ModelType>() { ModelType.Query, ModelType.Command };
             }

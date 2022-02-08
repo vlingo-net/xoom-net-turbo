@@ -37,10 +37,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 			throw new InvalidOperationException("BlockingMailbox does not support this operation.");
 		}
 
-		public void Close()
-		{
-			_closed.Set(true);
-		}
+		public void Close() => _closed.Set(true);
 
 		public int ConcurrencyCapacity { get; }
 
@@ -117,10 +114,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
 			}
 		}
 
-		public void SuspendExceptFor(string name, params Type[] overrides)
-		{
-			_suspendedOverrides.Get()!.Push(overrides.ToList());
-		}
+		public void SuspendExceptFor(string name, params Type[] overrides) => _suspendedOverrides.Get()!.Push(overrides.ToList());
 
 		public bool IsSuspendedFor(string name)
 		{

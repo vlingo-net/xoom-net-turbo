@@ -16,16 +16,16 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
     public class RouteDetail
     {
-        private static readonly string _bodyDefaultName = "data";
-        private static readonly string _methodParameterPattern = "final %s %s";
-        private static readonly string _methodSignaturePattern = "%s(%s)";
-        private static readonly List<Method> _bodySupportedHttpMethods = new List<Method>() { Method.Post, Method.Put, Method.Patch };
+        private static readonly string BodyDefaultName = "data";
+        private static readonly string MethodParameterPattern = "final %s %s";
+        private static readonly string MethodSignaturePattern = "%s(%s)";
+        private static readonly List<Method> BodySupportedHttpMethods = new List<Method>() { Method.Post, Method.Put, Method.Patch };
 
         public static string ResolveBodyName(CodeGenerationParameter route)
         {
             var httpMethod = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
 
-            if (!_bodySupportedHttpMethods.Contains(httpMethod))
+            if (!BodySupportedHttpMethods.Contains(httpMethod))
             {
                 return string.Empty;
             }
@@ -35,21 +35,21 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
                 return route.RetrieveRelatedValue(Label.Body);
             }
 
-            return _bodyDefaultName;
+            return BodyDefaultName;
         }
 
         public static string ResolveBodyType(CodeGenerationParameter route)
         {
             var httpMethod = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
 
-            if (!_bodySupportedHttpMethods.Contains(httpMethod))
+            if (!BodySupportedHttpMethods.Contains(httpMethod))
             {
                 return string.Empty;
             }
 
             if (route.Parent().IsLabeled(Label.Aggregate))
             {
-                return new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(route.Parent(Label.Aggregate).value);
+                return new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(route.Parent(Label.Aggregate).Value);
             }
 
             return route.RetrieveRelatedValue(Label.BodyType);
@@ -57,18 +57,18 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         public static bool RequireEntityLoad(CodeGenerationParameter aggregateParameter) => aggregateParameter.RetrieveAllRelated(Label.RouteSignature).Where(route => route.HasAny(Label.RequireEntityLoading)).Any(route => route.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x));
 
-        public static bool RequireModelFactory(CodeGenerationParameter aggregateParameter) => aggregateParameter.RetrieveAllRelated(Label.RouteSignature).Select(methodSignature => AggregateDetail.MethodWithName(aggregateParameter, methodSignature.value)).Any(method => method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower() == x));
+        public static bool RequireModelFactory(CodeGenerationParameter aggregateParameter) => aggregateParameter.RetrieveAllRelated(Label.RouteSignature).Select(methodSignature => AggregateDetail.MethodWithName(aggregateParameter, methodSignature.Value)).Any(method => method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower() == x));
 
         public static string ResolveMethodSignature(CodeGenerationParameter routeSignature)
         {
-            if (HasValidMethodSignature(routeSignature.value))
+            if (HasValidMethodSignature(routeSignature.Value))
             {
-                return routeSignature.value;
+                return routeSignature.Value;
             }
 
             if (routeSignature.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod).IsGet())
             {
-                return string.Format(_methodSignaturePattern, routeSignature.value, string.Empty);
+                return string.Format(MethodSignaturePattern, routeSignature.Value, string.Empty);
             }
 
             return ResolveMethodSignatureWithParams(routeSignature);
@@ -76,20 +76,20 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         private static string ResolveMethodSignatureWithParams(CodeGenerationParameter routeSignature)
         {
-            var idParameter = routeSignature.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x) ? string.Format(_methodParameterPattern, "String", "id") : string.Empty;
-            var method = AggregateDetail.MethodWithName(routeSignature.Parent(), routeSignature.value);
-            var dataClassname = new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(routeSignature.Parent().value);
-            var dataParameterDeclaration = string.Format(_methodParameterPattern, dataClassname, "data");
+            var idParameter = routeSignature.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x) ? string.Format(MethodParameterPattern, "String", "id") : string.Empty;
+            var method = AggregateDetail.MethodWithName(routeSignature.Parent(), routeSignature.Value);
+            var dataClassname = new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(routeSignature.Parent().Value);
+            var dataParameterDeclaration = string.Format(MethodParameterPattern, dataClassname, "data");
             var dataParameter = method.HasAny(Label.MethodParameter) ? dataParameterDeclaration : "";
             var parameters = string.Join(", ", new List<string>() { idParameter, dataParameter }.Where(param => param != string.Empty));
-            return string.Format(_methodSignaturePattern, routeSignature.value, parameters);
+            return string.Format(MethodSignaturePattern, routeSignature.Value, parameters);
         }
 
         private static bool HasValidMethodSignature(string signature) => signature.Contains("(") && signature.Contains(")");
 
         public static CodeGenerationParameter DefaultQueryRouteParameter(CodeGenerationParameter aggregate)
         {
-            return CodeGenerationParameter.Of(Label.RouteSignature, BuildQueryAllMethodName(aggregate.value)).Relate(Label.RouteMethod, Method.Get).Relate(Label.ReadOnly, "true");
+            return CodeGenerationParameter.Of(Label.RouteSignature, BuildQueryAllMethodName(aggregate.Value)).Relate(Label.RouteMethod, Method.Get).Relate(Label.ReadOnly, "true");
         }
 
         private static string BuildQueryAllMethodName(string aggregateProtocol)

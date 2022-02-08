@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
 using Vlingo.Xoom.Turbo.Codegen;
@@ -21,12 +22,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 			var useCqrs = context.ParameterOf(Label.Cqrs, x => bool.TrueString.ToLower() == x);
 			var storageType = context.ParameterOf(Label.StorageType, x =>
 			{
-				StorageType.TryParse(x, out StorageType value);
+				Enum.TryParse(x, out StorageType value);
 				return value;
 			});
 			var projectionType = context.ParameterOf(Label.ProjectionType, x =>
 			{
-				ProjectionType.TryParse(x, out ProjectionType value);
+				Enum.TryParse(x, out ProjectionType value);
 				return value;
 			});
 
@@ -35,7 +36,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 
 		public override bool ShouldProcess(CodeGenerationContext context) => context.ParameterOf(Label.StorageType, x =>
 		{
-			StorageType.TryParse(x, out StorageType value);
+			Enum.TryParse(x, out StorageType value);
 			return value;
 		}).IsEnabled();
 	}

@@ -30,7 +30,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 
 		public FileStream ToFile()
 		{
-			System.IO.Directory.CreateDirectory(Path.GetDirectoryName(FilePath())!);
+			Directory.CreateDirectory(Path.GetDirectoryName(FilePath())!);
 			return new FileStream(FilePath(), FileMode.Create);
 		}
 

@@ -12,14 +12,14 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 {
     public class ProtocolBasedContent : TypeBasedContent
     {
-        public readonly Type contentProtocolType;
+        public readonly Type ContentProtocolType;
 
         public ProtocolBasedContent(TemplateStandard standard, Type contentProtocolType, Type contentType) : base(standard, contentType)
         {
-            this.contentProtocolType = contentProtocolType;
+            ContentProtocolType = contentProtocolType;
         }
 
-        public override string RetrieveProtocolQualifiedName() => contentProtocolType.FullName!;
+        public override string RetrieveProtocolQualifiedName() => ContentProtocolType.FullName!;
 
         public override bool IsProtocolBased => true;
     }

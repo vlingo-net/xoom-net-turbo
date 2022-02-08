@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Management.Endpoints
 {
     public class StepFlowEndpoint
     {
-        private IDictionary<string, IStepFlow<State<object>, State<object>, Type>> _stepFlow = new Dictionary<string, IStepFlow<State<object>, State<object>, Type>>();
+        private readonly IDictionary<string, IStepFlow<State<object>, State<object>, Type>> _stepFlow = new Dictionary<string, IStepFlow<State<object>, State<object>, Type>>();
 
         public IReadOnlyDictionary<string, object> Map(string flowName)
         {
@@ -55,7 +55,7 @@ namespace Vlingo.Xoom.Turbo.Management.Endpoints
             var sourcePort = address.Length != 3 ? (portCount[sourcePortKey] != 0 ? portCount[sourcePortKey] + 1 : 0) : 1;
 
             var targetPortKey = string.Concat("TO", "::", handler.GetStateTransition().GetTargetName());
-            int targetPort = address.Length != 3 ? (portCount[targetPortKey] != 0 ? portCount[targetPortKey] + 1 : 1) : 0;
+            var targetPort = address.Length != 3 ? (portCount[targetPortKey] != 0 ? portCount[targetPortKey] + 1 : 1) : 0;
 
             link.Add("port", sourcePort + targetPort);
 

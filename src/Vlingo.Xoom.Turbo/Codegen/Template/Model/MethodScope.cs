@@ -16,14 +16,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
         Instance,
         Static
     }
+    
     public class MethodScope
     {
-        public readonly Type[] requiredClasses;
+        public readonly Type[] RequiredClasses;
 
-        public MethodScope(params Type[] requiredClasses)
-        {
-            this.requiredClasses = requiredClasses;
-        }
+        public MethodScope(params Type[] requiredClasses) => RequiredClasses = requiredClasses;
 
         public bool IsStatic(MethodScopeType methodScopeType) => methodScopeType == MethodScopeType.Static;
 

@@ -10,7 +10,7 @@ using System;
 namespace Vlingo.Xoom.Turbo.Annotation.Persistence
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-	public class EnableQueriesAttribute : System.Attribute
+	public class EnableQueriesAttribute : Attribute
 	{
 		public QueriesEntryAttribute[]? Value { get; set; }
 	}

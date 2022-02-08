@@ -15,10 +15,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         private readonly string _qualifiedClassName;
 
-        public ImportParameter(string qualifiedClassName)
-        {
-            _qualifiedClassName = qualifiedClassName;
-        }
+        public ImportParameter(string qualifiedClassName) => _qualifiedClassName = qualifiedClassName;
 
         public static HashSet<ImportParameter> Of(params string[] qualifiedClassNames) => Of(qualifiedClassNames as IEnumerable<string>);
 
@@ -34,7 +31,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
         {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-            ImportParameter that = (ImportParameter)o;
+            var that = (ImportParameter)o;
             return _qualifiedClassName == that.GetQualifiedClassName();
         }
 

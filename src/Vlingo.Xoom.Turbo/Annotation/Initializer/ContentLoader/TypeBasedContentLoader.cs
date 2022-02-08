@@ -12,18 +12,18 @@ using Vlingo.Xoom.Turbo.Codegen.Template;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
-	public abstract class TypeBasedContentLoader : AnnotationBasedContentLoader<List<Type>>
-	{
-		public TypeBasedContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-			environment)
-		{
-		}
+    public abstract class TypeBasedContentLoader : AnnotationBasedContentLoader<List<Type>>
+    {
+        public TypeBasedContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+            environment)
+        {
+        }
 
-		public override void Load(CodeGenerationContext context) => RetrieveContentSource()
-			.ForEach(typeElement => context.AddContent(Standard(), typeElement));
+        public override void Load(CodeGenerationContext context) => RetrieveContentSource()
+            .ForEach(typeElement => context.AddContent(Standard(), typeElement));
 
-		protected abstract TemplateStandard Standard();
+        protected abstract TemplateStandard Standard();
 
-		protected abstract override List<Type> RetrieveContentSource();
-	}
+        protected abstract override List<Type> RetrieveContentSource();
+    }
 }

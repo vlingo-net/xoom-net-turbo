@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 {
 	public class AdapterTemplateData : TemplateData
 	{
-		private TemplateParameters _parameters;
+		private readonly TemplateParameters _parameters;
 		private readonly string _sourceClassName;
 		private readonly TemplateStandard _sourceClassStandard;
 

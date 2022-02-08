@@ -26,18 +26,18 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
         private AutoDispatchHandlerEntryTemplateData(CodeGenerationParameter route)
         {
             var aggregate = route.Parent(Label.Aggregate);
-            var method = AggregateDetail.MethodWithName(aggregate, route.value);
+            var method = AggregateDetail.MethodWithName(aggregate, route.Value);
             var factoryMethod = method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower());
 
             //TODO: TemplateStandartType enum methods
             _parameters =
-                    TemplateParameters.With(TemplateParameter.MethodName, route.value)
+                    TemplateParameters.With(TemplateParameter.MethodName, route.Value)
                             .And(TemplateParameter.FactoryMethod, factoryMethod)
-                            .And(TemplateParameter.AggregateProtocolName, aggregate.value)
+                            .And(TemplateParameter.AggregateProtocolName, aggregate.Value)
                             .And(TemplateParameter.DataObjectName, TemplateStandardType.DataObject)
-                            .And(TemplateParameter.AggregateProtocolVariable, Content.ClassFormatter.SimpleNameToAttribute(aggregate.value))
+                            .And(TemplateParameter.AggregateProtocolVariable, Content.ClassFormatter.SimpleNameToAttribute(aggregate.Value))
                             .And(TemplateParameter.StateName, TemplateStandardType.AggregateState)
-                            .And(TemplateParameter.IndexName, AutoDispatchMappingValueFormatter.Format(route.value))
+                            .And(TemplateParameter.IndexName, AutoDispatchMappingValueFormatter.Format(route.Value))
                             .And(TemplateParameter.MethodInvocationParameters, ResolveMethodInvocationParameters(method));
         }
 

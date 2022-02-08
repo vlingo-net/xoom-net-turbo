@@ -19,7 +19,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 			BuildTemplatesData(context).ForEach(templateData =>
 			{
 				var code = TemplateProcessor.Instance().Process(templateData);
-				context.registerTemplateProcessing(templateData, code);
+				context.RegisterTemplateProcessing(templateData, code);
 			});
 		}
 		

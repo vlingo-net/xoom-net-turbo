@@ -13,10 +13,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 	{
 		private readonly Dialect.Dialect _dialect;
 
-		private CodeElementFormatter(Dialect.Dialect dialect)
-		{
-			_dialect = dialect;
-		}
+		private CodeElementFormatter(Dialect.Dialect dialect) => _dialect = dialect;
 
 		public static CodeElementFormatter With(Dialect.Dialect dialect) => new CodeElementFormatter(dialect);
 
@@ -25,9 +22,6 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 		public string SimpleNameOf(string qualifiedName) =>
 			qualifiedName.Substring(qualifiedName.LastIndexOf(".", StringComparison.Ordinal) + 1);
 
-		public string QualifiedNameOf(string packageName, string className)
-		{
-			return packageName + "." + className;
-		}
+		public string QualifiedNameOf(string packageName, string className) => packageName + "." + className;
 	}
 }

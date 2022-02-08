@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
 {
 	public class ProjectionDispatcherProviderTemplateData : TemplateData
 	{
-		private TemplateParameters _parameters = null!;
+		private readonly TemplateParameters _parameters = null!;
 
 		public ProjectionDispatcherProviderTemplateData(ProjectionType projectionType,
 			IEnumerable<CodeGenerationParameter> projectionActors, IReadOnlyList<ContentBase> contents)

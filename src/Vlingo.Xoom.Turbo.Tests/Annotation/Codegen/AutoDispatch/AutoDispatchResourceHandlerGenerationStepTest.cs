@@ -21,7 +21,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch
     {
         public AutoDispatchResourceHandlerGenerationStepTest() =>
             ComponentRegistry.Register<CodeElementFormatter>(
-                CodeElementFormatter.With(C_SHARP));
+                CodeElementFormatter.With(CSharp));
 
         [Fact(Skip = "WIP")]
         public void TestThatAutoDispatchResourceHandlersAreGenerated()

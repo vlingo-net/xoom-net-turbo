@@ -20,8 +20,8 @@ namespace Vlingo.Xoom.Turbo.Codegen
 {
     public class CodeGenerationContext
     {
-        private FileStream _filer;
-        private Type _source;
+        private readonly FileStream _filer;
+        private readonly Type _source;
         private readonly CodeGenerationParameters _parameters;
         private readonly List<ContentBase> _contents = new List<ContentBase>();
         private readonly List<TemplateData> _templatesData = new List<TemplateData>();
@@ -42,7 +42,7 @@ namespace Vlingo.Xoom.Turbo.Codegen
         {
             _filer = filer;
             _source = source;
-            _parameters = CodeGenerationParameters.From(Label.GenerationLocation, filer == null ? CodeGenerationLocationType.EXTERNAL.ToString() : CodeGenerationLocationType.INTERNAL.ToString());
+            _parameters = CodeGenerationParameters.From(Label.GenerationLocation, filer == null ? CodeGenerationLocationType.External.ToString() : CodeGenerationLocationType.Internal.ToString());
         }
 
         public CodeGenerationContext Contents(List<ContentLoaderBase<string>> loaders)
@@ -85,7 +85,7 @@ namespace Vlingo.Xoom.Turbo.Codegen
 
         public IEnumerable<TemplateData> TemplateParametersOf(TemplateStandardType standard) => _templatesData.Where(templateData => templateData.HasStandard(standard));
 
-        public void registerTemplateProcessing(TemplateData templateData, string text)
+        public void RegisterTemplateProcessing(TemplateData templateData, string text)
         {
             AddContent(templateData.Standard(), new TemplateFile(this, templateData), text);
             _templatesData.Add(templateData);
@@ -126,7 +126,7 @@ namespace Vlingo.Xoom.Turbo.Codegen
         public bool IsInternalGeneration => CodeGenerationLocation.IsInternal(ParameterOf(Label.GenerationLocation,
             x =>
             {
-                CodeGenerationLocationType.TryParse(x, out CodeGenerationLocationType value);
+                Enum.TryParse(x, out CodeGenerationLocationType value);
                 return value;
             }));
 

@@ -15,9 +15,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
     public class FieldDetail
     {
         //private static string _unknownFieldMessage = "{0} is not a field in {1} state";
-        private static readonly List<string> _numericTypes = new List<string>() { "byte", "short", "int", "integer", "long", "double", "float" };
+        private static readonly List<string> NumericTypes = new List<string>() { "byte", "short", "int", "integer", "long", "double", "float" };
 
-        public static string TypeOf(CodeGenerationParameter aggregate, string stateFieldName) => aggregate.RetrieveAllRelated(Label.StateField).Where(stateField => stateField.value == stateFieldName).Select(stateField => stateField.RetrieveRelatedValue(Label.FieldType)).FirstOrDefault()
+        public static string TypeOf(CodeGenerationParameter aggregate, string stateFieldName) => aggregate.RetrieveAllRelated(Label.StateField).Where(stateField => stateField.Value == stateFieldName).Select(stateField => stateField.RetrieveRelatedValue(Label.FieldType)).FirstOrDefault()
             ?? throw new ArgumentException();
 
         public static string ResolveDefaultValue(CodeGenerationParameter aggregate, string stateFieldName)
@@ -27,7 +27,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
             {
                 return "false";
             }
-            if (_numericTypes.Contains(TypeOf(aggregate, stateFieldName).ToLower()))
+            if (NumericTypes.Contains(TypeOf(aggregate, stateFieldName).ToLower()))
             {
                 return "0";
             }

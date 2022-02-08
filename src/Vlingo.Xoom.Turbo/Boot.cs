@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo
 
         public static void Main(string[] args)
         {
-            string name = args.Length > 0 ? args[0] : "vlingo-xoom";
+            var name = args.Length > 0 ? args[0] : "vlingo-xoom";
 
             _xoomBootWorld = Start(name);
         }

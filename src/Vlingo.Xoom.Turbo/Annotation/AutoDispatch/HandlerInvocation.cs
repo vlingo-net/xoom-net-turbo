@@ -12,25 +12,25 @@ namespace Vlingo.Xoom.Annotation.AutoDispatch
 {
     public class HandlerInvocation
     {
-        private static readonly string _defaultHandlerInvocationPattern = "{0}.Handler.Handle";
-        private static readonly string parametrizedHandlerInvocationPattern = _defaultHandlerInvocationPattern + "({0})";
+        private static readonly string DefaultHandlerInvocationPattern = "{0}.Handler.Handle";
+        private static readonly string ParametrizedHandlerInvocationPattern = DefaultHandlerInvocationPattern + "({0})";
 
-        public readonly int index;
-        public readonly string invocation;
+        public readonly int Index;
+        public readonly string Invocation;
         private readonly TypeReader _handlersConfigReader;
 
         public HandlerInvocation(TypeReader handlersConfigReader, Type handlerEntry)
         {
             _handlersConfigReader = handlersConfigReader;
-            this.index = FindIndex(handlerEntry);
-            this.invocation = ResolveInvocation(handlerEntry);
+            Index = FindIndex(handlerEntry);
+            Invocation = ResolveInvocation(handlerEntry);
         }
 
         private int FindIndex(Type handlerEntry)
         {
-            string handlerEntryValue = _handlersConfigReader.FindMemberValue(handlerEntry);
+            var handlerEntryValue = _handlersConfigReader.FindMemberValue(handlerEntry);
 
-            string handlerEntryIndex = handlerEntryValue.Substring(handlerEntryValue.IndexOf("(") + 1, handlerEntryValue.IndexOf(","));
+            var handlerEntryIndex = handlerEntryValue.Substring(handlerEntryValue.IndexOf("(") + 1, handlerEntryValue.IndexOf(","));
             try
             {
                 return int.Parse(handlerEntryIndex);
@@ -43,20 +43,20 @@ namespace Vlingo.Xoom.Annotation.AutoDispatch
 
         private string ResolveInvocation(Type handlerEntry)
         {
-            string handlerEntryValue = _handlersConfigReader.FindMemberValue(handlerEntry);
+            var handlerEntryValue = _handlersConfigReader.FindMemberValue(handlerEntry);
 
             if (handlerEntryValue.Contains("->"))
             {
-                string handlerInvocationArguments = ExtractHandlerArguments(handlerEntryValue);
-                return string.Format(parametrizedHandlerInvocationPattern,
+                var handlerInvocationArguments = ExtractHandlerArguments(handlerEntryValue);
+                return string.Format(ParametrizedHandlerInvocationPattern,
                         handlerEntry.FullName, handlerInvocationArguments);
             }
 
-            return string.Format(_defaultHandlerInvocationPattern, handlerEntry.FullName);
+            return string.Format(DefaultHandlerInvocationPattern, handlerEntry.FullName);
         }
 
         private string ExtractHandlerArguments(string handlerEntryValue) => handlerEntryValue.Substring(handlerEntryValue.IndexOf(",") + 1, handlerEntryValue.IndexOf("->")).Replace("\\(", "").Replace("\\)", "").Trim();
 
-        public bool HasCustomParamNames() => invocation.Contains("(") && invocation.Contains(")");
+        public bool HasCustomParamNames() => Invocation.Contains("(") && Invocation.Contains(")");
     }
 }

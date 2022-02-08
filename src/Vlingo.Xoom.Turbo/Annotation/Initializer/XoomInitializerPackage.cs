@@ -10,17 +10,17 @@ using System.Linq;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
-	public class XoomInitializerPackage
-	{
-		public static string From(ProcessingEnvironment environment, AnnotatedElements annotatedElements)
-		{
-			var typesWithMyAttribute =
-				from a in AppDomain.CurrentDomain.GetAssemblies()
-				from t in a.GetTypes()
-				let attributes = t.GetCustomAttributes(typeof(XoomAttribute), true)
-				where attributes != null && attributes.Length > 0
-				select new { Type = t, Attributes = attributes.Cast<XoomAttribute>() };
-			return typesWithMyAttribute.FirstOrDefault()!.Type.Namespace!;
-		}
-	}
+    public class XoomInitializerPackage
+    {
+        public static string From(ProcessingEnvironment environment, AnnotatedElements annotatedElements)
+        {
+            var typesWithMyAttribute =
+                from a in AppDomain.CurrentDomain.GetAssemblies()
+                from t in a.GetTypes()
+                let attributes = t.GetCustomAttributes(typeof(XoomAttribute), true)
+                where attributes != null && attributes.Length > 0
+                select new { Type = t, Attributes = attributes.Cast<XoomAttribute>() };
+            return typesWithMyAttribute.FirstOrDefault()!.Type.Namespace!;
+        }
+    }
 }

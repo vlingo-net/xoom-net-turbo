@@ -12,10 +12,10 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Storage
 {
     public class DatabaseType
     {
-        public readonly string label;
-        public readonly string driver;
-        public readonly string connectionUrl;
-        public readonly bool configurable;
+        public readonly string Label;
+        public readonly string Driver;
+        public readonly string ConnectionUrl;
+        public readonly bool Configurable;
 
         public DatabaseType(string label) : this(label, "", "", false)
         {
@@ -27,10 +27,10 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Storage
 
         public DatabaseType(string label, string driver, string connectionUrl, bool configurable)
         {
-            this.label = label;
-            this.driver = driver;
-            this.connectionUrl = connectionUrl;
-            this.configurable = configurable;
+            Label = label;
+            Driver = driver;
+            ConnectionUrl = connectionUrl;
+            Configurable = configurable;
         }
 
         public static DatabaseCategory GetOrDefault(string name, DatabaseCategory defaultDatabase)

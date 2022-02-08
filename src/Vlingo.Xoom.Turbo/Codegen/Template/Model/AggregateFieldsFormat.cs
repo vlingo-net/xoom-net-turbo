@@ -15,11 +15,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 {
     public class AggregateFieldsFormat<T>
     {
-        AggregateFieldsFormat<IEnumerable<String>> assignment = new Constructor();
-        AggregateFieldsFormat<IEnumerable<String>> memberDeclaration = new Member();
-        AggregateFieldsFormat<IEnumerable<String>> stateBasedAssignment = new Constructor("state");
-        AggregateFieldsFormat<string> selfAlternateReference = AlternateReference.HandlingSelfReferencedFields();
-        AggregateFieldsFormat<string> defaultValue = AlternateReference.HandlingDefaultFieldsValue();
+        AggregateFieldsFormat<IEnumerable<String>> _assignment = new Constructor();
+        AggregateFieldsFormat<IEnumerable<String>> _memberDeclaration = new Member();
+        AggregateFieldsFormat<IEnumerable<String>> _stateBasedAssignment = new Constructor("state");
+        AggregateFieldsFormat<string> _selfAlternateReference = AlternateReference.HandlingSelfReferencedFields();
+        AggregateFieldsFormat<string> _defaultValue = AlternateReference.HandlingDefaultFieldsValue();
 
         public virtual T Format(CodeGenerationParameter aggregate) => Format(aggregate, aggregate.RetrieveAllRelated(Label.StateField));
 
@@ -28,15 +28,15 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
         public class Member : AggregateFieldsFormat<IEnumerable<string>>
         {
-            private static readonly string _pattern = "public final {0} {1};";
+            private static readonly string Pattern = "public final {0} {1};";
 
-            public override IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, FieldDetail.TypeOf(aggregate, field.value), field.value));
+            public override IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(Pattern, FieldDetail.TypeOf(aggregate, field.Value), field.Value));
         }
 
         public class Constructor : AggregateFieldsFormat<IEnumerable<string>>
         {
             private readonly string _carrierName;
-            private static readonly string _pattern = "this.{0} = {1};";
+            private static readonly string Pattern = "this.{0} = {1};";
 
             public Constructor() : this(string.Empty)
             {
@@ -44,9 +44,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
             public Constructor(string carrierName) => _carrierName = carrierName;
 
-            public override IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, field.value, ResolveValueRetrieval(field)));
+            public override IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(Pattern, field.Value, ResolveValueRetrieval(field)));
 
-            private string ResolveValueRetrieval(CodeGenerationParameter field) => _carrierName == string.Empty ? field.value : string.Concat(_carrierName, ".", field.value);
+            private string ResolveValueRetrieval(CodeGenerationParameter field) => _carrierName == string.Empty ? field.Value : string.Concat(_carrierName, ".", field.Value);
         }
 
         public class AlternateReference : AggregateFieldsFormat<string>
@@ -55,13 +55,13 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
             private AlternateReference(Func<CodeGenerationParameter, string> absenceHandler) => _absenceHandler = absenceHandler;
 
-            public static AlternateReference HandlingSelfReferencedFields() => new AlternateReference(field => string.Concat("this.", field.value));
+            public static AlternateReference HandlingSelfReferencedFields() => new AlternateReference(field => string.Concat("this.", field.Value));
 
-            public static AlternateReference HandlingDefaultFieldsValue() => new AlternateReference(field => FieldDetail.ResolveDefaultValue(field.Parent(Label.Aggregate), field.value));
+            public static AlternateReference HandlingDefaultFieldsValue() => new AlternateReference(field => FieldDetail.ResolveDefaultValue(field.Parent(Label.Aggregate), field.Value));
 
-            public override string Format(CodeGenerationParameter para, IEnumerable<CodeGenerationParameter> fields) => string.Join(", ", para.RetrieveAllRelated(Label.StateField).Select(field => IsPresent(field, fields.ToList()) ? field.value : _absenceHandler(field)));
+            public override string Format(CodeGenerationParameter para, IEnumerable<CodeGenerationParameter> fields) => string.Join(", ", para.RetrieveAllRelated(Label.StateField).Select(field => IsPresent(field, fields.ToList()) ? field.Value : _absenceHandler(field)));
 
-            public static bool IsPresent(CodeGenerationParameter field, List<CodeGenerationParameter> presentFields) => presentFields.Any(present => present.value == field.value);
+            public static bool IsPresent(CodeGenerationParameter field, List<CodeGenerationParameter> presentFields) => presentFields.Any(present => present.Value == field.Value);
         }
     }
 }

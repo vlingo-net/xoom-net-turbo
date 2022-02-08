@@ -13,9 +13,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 {
     public abstract class ContentBase
     {
-        public readonly TemplateStandard standard;
+        public readonly TemplateStandard Standard;
 
-        protected ContentBase(TemplateStandard standard) => this.standard = standard;
+        protected ContentBase(TemplateStandard standard) => Standard = standard;
 
         public static ContentBase With(TemplateStandard standard, TemplateFile templatefile, FileStream filer, Type source, string text) => new TextBasedContent(standard, templatefile, source, filer, text);
 

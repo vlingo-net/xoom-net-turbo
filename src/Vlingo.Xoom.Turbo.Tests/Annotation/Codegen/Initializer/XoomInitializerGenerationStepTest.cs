@@ -26,7 +26,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.Initializer
 
         public XoomInitializerGenerationStepTest()
         {
-            ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.C_SHARP));
+            ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.CSharp));
 
             _mockRepository = new MockRepository(MockBehavior.Default);
         }

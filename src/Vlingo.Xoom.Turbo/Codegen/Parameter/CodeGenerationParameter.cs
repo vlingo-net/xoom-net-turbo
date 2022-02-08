@@ -13,8 +13,8 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 {
     public class CodeGenerationParameter
     {
-        public readonly Label label;
-        public readonly string value;
+        public readonly Label Label;
+        public readonly string Value;
         private CodeGenerationParameter? _parent;
         private readonly CodeGenerationParameters _relatedParameters;
 
@@ -26,20 +26,14 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         private CodeGenerationParameter(Label label, string value)
         {
-            this.label = label;
-            this.value = value;
+            Label = label;
+            Value = value;
             _relatedParameters = CodeGenerationParameters.Empty();
         }
 
-        public CodeGenerationParameter Relate(Label label, object value)
-        {
-            return Relate(label, value.ToString()!);
-        }
+        public CodeGenerationParameter Relate(Label label, object value) => Relate(label, value.ToString()!);
 
-        public CodeGenerationParameter Relate(Label label, string value)
-        {
-            return Relate(Of(label, value));
-        }
+        public CodeGenerationParameter Relate(Label label, string value) => Relate(Of(label, value));
 
         public CodeGenerationParameter Relate(params CodeGenerationParameter[] relatedParameters)
         {
@@ -51,15 +45,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
             return this;
         }
 
-        public CodeGenerationParameter RetrieveOneRelated(Label label)
-        {
-            return _relatedParameters.RetrieveOne(this.label);
-        }
+        public CodeGenerationParameter RetrieveOneRelated(Label label) => _relatedParameters.RetrieveOne(Label);
 
-        public IEnumerable<CodeGenerationParameter> RetrieveAllRelated(Label label)
-        {
-            return _relatedParameters.RetrieveAll(this.label);
-        }
+        public IEnumerable<CodeGenerationParameter> RetrieveAllRelated(Label label) => _relatedParameters.RetrieveAll(Label);
 
         public CodeGenerationParameter Parent() => _parent!;
 
@@ -70,11 +58,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
                 throw new NotSupportedException("Orphan parameter");
             }
 
-            CodeGenerationParameter matchedParent = _parent!;
+            var matchedParent = _parent!;
 
             while (matchedParent != null)
             {
-                if (matchedParent.IsLabeled(this.label))
+                if (matchedParent.IsLabeled(Label))
                 {
                     return matchedParent;
                 }
@@ -88,12 +76,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         private void OwnedBy(CodeGenerationParameter parent) => _parent = parent;
 
-        public string RetrieveRelatedValue(Label label) => RetrieveRelatedValue(this.label, value => value);
+        public string RetrieveRelatedValue(Label label) => RetrieveRelatedValue(Label, value => value);
 
-        public T RetrieveRelatedValue<T>(Label label, Func<string, T> mapper) => mapper(RetrieveOneRelated(this.label).value);
+        public T RetrieveRelatedValue<T>(Label label, Func<string, T> mapper) => mapper(RetrieveOneRelated(Label).Value);
 
-        public bool IsLabeled(Label label) => this.label == label;
+        public bool IsLabeled(Label label) => Label == label;
 
-        public bool HasAny(Label label) => IsLabeled(this.label) || _relatedParameters.List().Any(parameter => parameter.value != null && parameter.IsLabeled(this.label) && parameter.value != string.Empty);
+        public bool HasAny(Label label) => IsLabeled(Label) || _relatedParameters.List().Any(parameter => parameter.Value != null && parameter.IsLabeled(Label) && parameter.Value != string.Empty);
     }
 }

@@ -9,25 +9,25 @@ using System;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
-	public abstract class AnnotationBasedContentLoader<T> : IContentLoader
-	{
-		protected readonly Type? AnnotatedClass;
-		protected readonly ProcessingEnvironment Environment;
-		protected readonly TypeRetriever TypeRetriever;
+    public abstract class AnnotationBasedContentLoader<T> : IContentLoader
+    {
+        protected readonly Type? AnnotatedClass;
+        protected readonly ProcessingEnvironment Environment;
+        protected readonly TypeRetriever TypeRetriever;
 
-		protected AnnotationBasedContentLoader(Type annotatedClass, ProcessingEnvironment environment)
-		{
-			AnnotatedClass = annotatedClass;
-			Environment = environment;
-			TypeRetriever = TypeRetriever.With(environment);
-		}
+        protected AnnotationBasedContentLoader(Type annotatedClass, ProcessingEnvironment environment)
+        {
+            AnnotatedClass = annotatedClass;
+            Environment = environment;
+            TypeRetriever = TypeRetriever.With(environment);
+        }
 
-		public abstract void Load(CodeGenerationContext context);
+        public abstract void Load(CodeGenerationContext context);
 
-		public bool ShouldLoad() => AnnotatedClass != null;
+        public bool ShouldLoad() => AnnotatedClass != null;
 
-		protected abstract T RetrieveContentSource();
-	}
+        protected abstract T RetrieveContentSource();
+    }
 }

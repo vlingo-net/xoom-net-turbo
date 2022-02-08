@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
 	public class HandlerResolver
 	{
-		private static string _handlerEntryClassName = nameof(HandlerEntry);
+		private static readonly string _handlerEntryClassName = nameof(HandlerEntry);
 
 		private readonly TypeReader _handlersConfigReader;
 		private readonly List<HandlerInvocation> _handlerInvocations = new List<HandlerInvocation>();
@@ -29,7 +29,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 		}
 
 		public HandlerInvocation Find(int index) =>
-			_handlerInvocations.FirstOrDefault(invocation => invocation.index == index) ??
+			_handlerInvocations.FirstOrDefault(invocation => invocation.Index == index) ??
 			throw new ArgumentException(string.Concat("Handler Invocation with index ", index, " not found"));
 
 		private List<HandlerInvocation> ResolveInvocations() => _handlersConfigReader.FindMembers()

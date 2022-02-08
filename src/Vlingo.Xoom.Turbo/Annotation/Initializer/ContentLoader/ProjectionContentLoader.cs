@@ -14,24 +14,25 @@ using Vlingo.Xoom.Turbo.Codegen.Template;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
-	public class ProjectionContentLoader : TypeBasedContentLoader
-	{
-		public ProjectionContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass, environment)
-		{
-		}
+    public class ProjectionContentLoader : TypeBasedContentLoader
+    {
+        public ProjectionContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+            environment)
+        {
+        }
 
-		protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.Projection);
+        protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.Projection);
 
-		protected override List<Type> RetrieveContentSource()
-		{
-			var projections = AnnotatedClass!.GetCustomAttribute<ProjectionsAttribute>();
+        protected override List<Type> RetrieveContentSource()
+        {
+            var projections = AnnotatedClass!.GetCustomAttribute<ProjectionsAttribute>();
 
-			if (projections == null)
-				return new List<Type>();
+            if (projections == null)
+                return new List<Type>();
 
-			return new[] { projections.Value }
-				.Select(_ => TypeRetriever.From(projections, p => (p as ProjectionAttribute)!.Actor!))
-				.ToList();
-		}
-	}
+            return new[] { projections.Value }
+                .Select(_ => TypeRetriever.From(projections, p => (p as ProjectionAttribute)!.Actor!))
+                .ToList();
+        }
+    }
 }

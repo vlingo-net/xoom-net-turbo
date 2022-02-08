@@ -62,7 +62,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
 
         public ICompletes<StateTransition<TState, TRawState, TTypeState>> ApplyEvent<TN>(TN @event) where TN : Event
         {
-            TransitionHandler<TState, TRawState, TTypeState> handler = _transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
+            var handler = _transitionHandlerMap.First(x => x.Key == @event.GetEventType()).Value;
             try
             {
                 if (handler == null)

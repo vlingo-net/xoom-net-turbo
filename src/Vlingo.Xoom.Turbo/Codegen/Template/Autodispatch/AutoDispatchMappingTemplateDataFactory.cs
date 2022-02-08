@@ -17,9 +17,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
         public static List<TemplateData> Build(CodeGenerationParameters parameters, List<TemplateData> queriesData, List<ContentBase> contents)
         {
             var basePackage = parameters.RetrieveValue(Label.Package);
-            var useCQRS = parameters.RetrieveValue(Label.Cqrs, x => bool.TrueString.ToLower() == x);
-            return parameters.RetrieveAll(Label.Aggregate).SelectMany(x => new List<TemplateData>() { new AutoDispatchMappingTemplateData(basePackage, x, useCQRS, contents),
-                            new AutoDispatchHandlersMappingTemplateData(basePackage, x, queriesData, contents, useCQRS) }).ToList();
+            var useCqrs = parameters.RetrieveValue(Label.Cqrs, x => bool.TrueString.ToLower() == x);
+            return parameters.RetrieveAll(Label.Aggregate).SelectMany(x => new List<TemplateData>() { new AutoDispatchMappingTemplateData(basePackage, x, useCqrs, contents),
+                            new AutoDispatchHandlersMappingTemplateData(basePackage, x, queriesData, contents, useCqrs) }).ToList();
         }
     }
 }

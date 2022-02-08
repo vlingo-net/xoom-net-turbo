@@ -74,14 +74,14 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			private void Read(object state)
 			{
-				this.State.Set(state);
+				State.Set(state);
 				_read.Set(true);
 			}
 
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			public bool IsRead() => _read.Get();
 
-			private void ReadConsidering<S>(IOutcome<StorageException, Result> outcome, S state)
+			private void ReadConsidering<TS>(IOutcome<StorageException, Result> outcome, TS state)
 			{
 				outcome
 					.AndThen(result =>
@@ -95,7 +95,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 					})
 					.Otherwise(ex =>
 					{
-						_exception.Set(ex);
+						Exception.Set(ex);
 						return outcome.GetOrNull();
 					});
 			}
@@ -139,7 +139,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 					})
 					.Otherwise(ex =>
 					{
-						_exception.Set(ex);
+						Exception.Set(ex);
 						return outcome.GetOrNull();
 					});
 			}
@@ -154,17 +154,17 @@ namespace Vlingo.Xoom.Turbo.Scooter.Persistence
 
 		public class Exceptional
 		{
-			protected readonly AtomicReference<StorageException> _exception;
+			protected readonly AtomicReference<StorageException> Exception;
 
 			protected Exceptional()
 			{
-				_exception = new AtomicReference<StorageException>();
+				Exception = new AtomicReference<StorageException>();
 			}
 
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			public void ThrowIfException()
 			{
-				var t = _exception.Get();
+				var t = Exception.Get();
 				if (t != null)
 				{
 					throw new InvalidOperationException(string.Concat("Append failed because: ", t.Message), t);

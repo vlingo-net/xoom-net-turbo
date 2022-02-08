@@ -15,32 +15,32 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
 {
     public class DefaultHandlerInvocationResolver : HandlerInvocationResolver, IHandlerInvocationResolver
     {
-        private readonly static string _commandPattern = "{0}.{1}({2})";
-        private readonly static string _queryPattern = _queriesParameter + ".{3}()";
-        private readonly static string _adapterPattern = "{0}.from(state)";
+        private readonly static string CommandPattern = "{0}.{1}({2})";
+        private readonly static string QueryPattern = QueriesParameter + ".{3}()";
+        private readonly static string AdapterPattern = "{0}.from(state)";
 
         public string ResolveRouteHandlerInvocation(CodeGenerationParameter aggregateParameter, CodeGenerationParameter routeParameter)
         {
             if (routeParameter.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod).IsGet())
             {
-                return ResolveQueryMethodInvocation(routeParameter.value);
+                return ResolveQueryMethodInvocation(routeParameter.Value);
             }
             return ResolveCommandMethodInvocation(aggregateParameter, routeParameter);
         }
 
-        public string ResolveAdapterHandlerInvocation(CodeGenerationParameter aggregateParameter, CodeGenerationParameter routeSignatureParameter) => string.Format(_adapterPattern, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregateParameter.value));
+        public string ResolveAdapterHandlerInvocation(CodeGenerationParameter aggregateParameter, CodeGenerationParameter routeSignatureParameter) => string.Format(AdapterPattern, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregateParameter.Value));
 
         private string ResolveCommandMethodInvocation(CodeGenerationParameter aggregateParameter, CodeGenerationParameter routeParameter)
         {
             var argumentsFormat = new AggregateArgumentsFormat.MethodInvocation("stage()", "data");
-            var method = AggregateDetail.MethodWithName(aggregateParameter, routeParameter.value);
+            var method = AggregateDetail.MethodWithName(aggregateParameter, routeParameter.Value);
             var factoryMethod = method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower() == x);
             var scope = factoryMethod ? MethodScopeType.Static : MethodScopeType.Instance;
             var methodInvocationParameters = argumentsFormat.Format(method, scope);
-            var invoker = factoryMethod ? aggregateParameter.value : ClassFormatter.SimpleNameToAttribute(aggregateParameter.value);
-            return string.Format(_commandPattern, invoker, method.value, methodInvocationParameters);
+            var invoker = factoryMethod ? aggregateParameter.Value : ClassFormatter.SimpleNameToAttribute(aggregateParameter.Value);
+            return string.Format(CommandPattern, invoker, method.Value, methodInvocationParameters);
         }
 
-        private string ResolveQueryMethodInvocation(string methodName) => string.Format(_queryPattern, methodName);
+        private string ResolveQueryMethodInvocation(string methodName) => string.Format(QueryPattern, methodName);
     }
 }

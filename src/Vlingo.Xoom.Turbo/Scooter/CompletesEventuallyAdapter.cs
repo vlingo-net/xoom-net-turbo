@@ -15,10 +15,7 @@ namespace Vlingo.Xoom.Turbo.Scooter
     {
         private readonly ICompletes<Type> _completes;
 
-        public CompletesEventuallyAdapter(ICompletes<Type> completes)
-        {
-            _completes = completes;
-        }
+        public CompletesEventuallyAdapter(ICompletes<Type> completes) => _completes = completes;
 
         public IAddress Address => NoAddress.NoAddressValue;
 

@@ -13,31 +13,35 @@ using Vlingo.Xoom.Turbo.Codegen.Template;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 {
-	public class AdapterEntriesContentLoader : TypeBasedContentLoader
-	{
-		public AdapterEntriesContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-			environment)
-		{
-		}
+    public class AdapterEntriesContentLoader : TypeBasedContentLoader
+    {
+        public AdapterEntriesContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(
+            annotatedClass, environment)
+        {
+        }
 
-		protected override TemplateStandard Standard()
-		{
-			var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
+        protected override TemplateStandard Standard()
+        {
+            var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
 
-			if (persistence!.IsJournal())
-				return new TemplateStandard(TemplateStandardType.DomainEvent);
+            if (persistence!.IsJournal())
+            {
+                return new TemplateStandard(TemplateStandardType.DomainEvent);
+            }
 
-			return new TemplateStandard(TemplateStandardType.AggregateState);
-		}
+            return new TemplateStandard(TemplateStandardType.AggregateState);
+        }
 
-		protected override List<Type> RetrieveContentSource()
-		{
-			var adapters = AnnotatedClass?.GetCustomAttribute<AdaptersAttribute>();
+        protected override List<Type> RetrieveContentSource()
+        {
+            var adapters = AnnotatedClass?.GetCustomAttribute<AdaptersAttribute>();
 
-			if (adapters == null)
-				return new List<Type>();
+            if (adapters == null)
+            {
+                return new List<Type>();
+            }
 
-			return TypeRetriever.TypesFrom(new List<Type> { adapters.GetType() }, _ => adapters.Value!);
-		}
-	}
+            return TypeRetriever.TypesFrom(new List<Type> { adapters.GetType() }, _ => adapters.Value!);
+        }
+    }
 }

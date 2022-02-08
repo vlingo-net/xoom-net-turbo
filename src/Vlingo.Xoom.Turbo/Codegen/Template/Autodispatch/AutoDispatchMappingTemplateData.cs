@@ -21,9 +21,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
         private readonly string _aggregateName;
         private readonly TemplateParameters _parameters;
 
-        public AutoDispatchMappingTemplateData(string basePackage, CodeGenerationParameter aggregate, bool useCQRS, List<ContentBase> contents)
+        public AutoDispatchMappingTemplateData(string basePackage, CodeGenerationParameter aggregate, bool useCqrs, List<ContentBase> contents)
         {
-            _aggregateName = aggregate.value;
+            _aggregateName = aggregate.Value;
             _parameters =
                     TemplateParameters.With(TemplateParameter.PackageName, ResolvePackage(basePackage))
                             .And(TemplateParameter.AggregateProtocolName, _aggregateName)
@@ -36,18 +36,18 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
                             .And(TemplateParameter.UriRoot, aggregate.RetrieveRelatedValue(Label.UriRoot))
                             .AddImports(ResolveImports(_aggregateName, contents))
                             .And(TemplateParameter.RouteDeclarations, new List<string>())
-                            .And(TemplateParameter.UseCqrs, useCQRS);
+                            .And(TemplateParameter.UseCqrs, useCqrs);
 
-            LoadDependencies(aggregate, useCQRS);
+            LoadDependencies(aggregate, useCqrs);
         }
 
-        private void LoadDependencies(CodeGenerationParameter aggregate, bool useCQRS)
+        private void LoadDependencies(CodeGenerationParameter aggregate, bool useCqrs)
         {
-            if (useCQRS)
+            if (useCqrs)
             {
                 aggregate.Relate(RouteDetail.DefaultQueryRouteParameter(aggregate));
             }
-            this.DependOn(AutoDispatchRouteTemplateData.From(aggregate.RetrieveAllRelated(Label.RouteSignature)));
+            DependOn(AutoDispatchRouteTemplateData.From(aggregate.RetrieveAllRelated(Label.RouteSignature)));
         }
 
         public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.RouteDeclarations).Add(outcome);

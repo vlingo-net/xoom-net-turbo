@@ -9,9 +9,9 @@ using System;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
-	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class XoomAttribute : Attribute
-	{
-		public string? Name { get; set; }
-	}
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class XoomAttribute : Attribute
+    {
+        public string? Name { get; set; }
+    }
 }

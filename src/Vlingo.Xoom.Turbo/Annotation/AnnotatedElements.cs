@@ -15,10 +15,6 @@ namespace Vlingo.Xoom.Turbo.Annotation
     {
         private readonly IDictionary<object, HashSet<Type>> _elements = new Dictionary<object, HashSet<Type>>();
 
-        public AnnotatedElements()
-        {
-            
-        }
         public static AnnotatedElements From(IEnumerable<object> supportedAnnotations)
         {
             //Func<object, AbstractMap.SimpleEntry<Class, Set<Element>>> mapper =

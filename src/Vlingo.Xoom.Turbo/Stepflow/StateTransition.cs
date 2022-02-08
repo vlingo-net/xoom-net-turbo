@@ -39,7 +39,7 @@ namespace Vlingo.Xoom.Turbo.Stepflow
             {
                 throw new InvalidOperationException("A state transition must define a success and error result");
             }
-            TA a = _aggregateConsumer(aggregate);
+            var a = _aggregateConsumer(aggregate);
             _action(GetFrom(), GetTo());
             return a;
         }

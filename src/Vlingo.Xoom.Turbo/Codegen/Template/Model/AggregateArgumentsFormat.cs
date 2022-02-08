@@ -15,8 +15,8 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 {
     public class AggregateArgumentsFormat
     {
-        AggregateArgumentsFormat METHOD_INVOCATION = new MethodInvocation("stage");
-        AggregateArgumentsFormat SIGNATURE_DECLARATION = new SignatureDeclaration();
+        AggregateArgumentsFormat _methodInvocation = new MethodInvocation("stage");
+        AggregateArgumentsFormat _signatureDeclaration = new SignatureDeclaration();
 
         public virtual string Format(CodeGenerationParameter parameter)
         {
@@ -27,12 +27,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
         public class SignatureDeclaration : AggregateArgumentsFormat
         {
-            private static readonly string _signaturePatttern = "final {0} {1}";
-            private static readonly string _stateArgument = string.Format(_stateArgument!, "Stage", "stage");
+            private static readonly string SignaturePatttern = "final {0} {1}";
+            private static readonly string StateArgument = string.Format(StateArgument!, "Stage", "stage");
 
             public override string Format(CodeGenerationParameter parameter, MethodScopeType scope)
             {
-                var args = scope == MethodScopeType.Static ? new List<string> { _stateArgument } : new List<string>();
+                var args = scope == MethodScopeType.Static ? new List<string> { StateArgument } : new List<string>();
                 return string.Join(", ", new List<List<string>>() { args, FormatMethodParameters(parameter) }.SelectMany(x => x));
             }
 
@@ -40,8 +40,8 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
             {
                 return parameter.RetrieveAllRelated(ResolveFieldsLabel(parameter)).Select(param =>
                 {
-                    var paramType = FieldDetail.TypeOf(param.Parent(Label.Aggregate), param.value);
-                    return string.Format(_signaturePatttern, paramType, param.value);
+                    var paramType = FieldDetail.TypeOf(param.Parent(Label.Aggregate), param.Value);
+                    return string.Format(SignaturePatttern, paramType, param.Value);
                 }).ToList();
             }
 
@@ -52,7 +52,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
         {
             private readonly string _carrier;
             private readonly string _stageVariableName;
-            private static readonly string _filedAccessPattern = "{0}.{1}";
+            private static readonly string FiledAccessPattern = "{0}.{1}";
 
             public MethodInvocation(string stageVariableName) : this(stageVariableName, "")
             {
@@ -70,7 +70,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
                 return string.Join(", ", new List<List<string>>() { args, FormatMethodParameters(method) }.SelectMany(x => x));
             }
 
-            private List<string> FormatMethodParameters(CodeGenerationParameter method) => method.RetrieveAllRelated(Label.MethodParameter).Select(param => string.IsNullOrEmpty(_carrier) ? param.value : string.Format(_filedAccessPattern, _carrier, param.value)).ToList();
+            private List<string> FormatMethodParameters(CodeGenerationParameter method) => method.RetrieveAllRelated(Label.MethodParameter).Select(param => string.IsNullOrEmpty(_carrier) ? param.Value : string.Format(FiledAccessPattern, _carrier, param.Value)).ToList();
         }
     }
 }

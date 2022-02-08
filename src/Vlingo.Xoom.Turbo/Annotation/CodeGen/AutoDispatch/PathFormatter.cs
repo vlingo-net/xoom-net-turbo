@@ -53,7 +53,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 
         private static string RemoveSurplusesSlashes(string path)
         {
-            string cleanPath = path;
+            var cleanPath = path;
             while (cleanPath.Contains("//"))
             {
                 cleanPath = cleanPath.Replace("//", "/");

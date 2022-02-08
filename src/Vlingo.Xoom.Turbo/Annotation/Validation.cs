@@ -18,7 +18,9 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
 		{
 			if (annotatedElements.Count(annotation) > 1)
+			{
 				throw new ProcessingAnnotationException($"Only one class should be annotated with {annotation.FullName}");
+			}
 		};
 
 		public static Action<ProcessingEnvironment, Type, AnnotatedElements> TargetValidation() => (
@@ -27,7 +29,9 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
 				if (!rootElement.IsClass)
+				{
 					throw new ProcessingAnnotationException($"The {annotation.FullName}");
+				}
 			}
 		};
 
@@ -37,7 +41,9 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
 				if (rootElement.IsNotPublic)
+				{
 					throw new ProcessingAnnotationException($"The class {annotation.FullName} is not public");
+				}
 			}
 		};
 
@@ -47,8 +53,10 @@ namespace Vlingo.Xoom.Turbo.Annotation
 			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 			{
 				if (!rootElement.IsInterface)
+				{
 					throw new ProcessingAnnotationException(
 						$"The {annotation.FullName} annotation is only allowed at interface level");
+				}
 			}
 		};
 	}

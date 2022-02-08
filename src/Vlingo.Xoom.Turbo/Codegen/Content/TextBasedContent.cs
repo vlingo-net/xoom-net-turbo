@@ -14,27 +14,27 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 {
 	public class TextBasedContent : ContentBase
 	{
-		public readonly FileStream _file;
-		public readonly string text;
+		public readonly FileStream File;
+		public readonly string Text;
 		private readonly FileStream _filer;
 		private readonly Type _source;
 
 		public TextBasedContent(TemplateStandard standard, TemplateFile templateFile, Type source, FileStream filer,
 			string text) : base(standard)
 		{
-			this.text = text;
+			Text = text;
 			_filer = filer;
 			_source = source;
-			_file = templateFile.ToFile();
+			File = templateFile.ToFile();
 		}
 
 		public TextBasedContent(TemplateStandard standard, OutputFile file, Type source, FileStream filer, string text) :
 			base(standard)
 		{
-			this.text = text;
+			Text = text;
 			_filer = filer;
 			_source = source;
-			_file = file.ToFile();
+			File = file.ToFile();
 		}
 
 		public override void Create()
@@ -60,13 +60,13 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 		{
 			try
 			{
-				if (Exists(_file.Name))
+				if (Exists(File.Name))
 				{
-					AppendAllText(_file.Name, text);
+					AppendAllText(File.Name, Text);
 				}
 				else
 				{
-					WriteAllText(System.IO.Directory.GetParent(_file.Name).FullName, text);
+					WriteAllText(Directory.GetParent(File.Name).FullName, Text);
 				}
 			}
 			catch (Exception ex)
@@ -80,7 +80,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 			try
 			{
 				var path = string.Format("{0}/{1}.{2}", Environment.CurrentDirectory, RetrieveQualifiedName(), _source.Name);
-				WriteAllText(path, text);
+				WriteAllText(path, Text);
 			}
 			catch (Exception ex)
 			{
@@ -88,18 +88,18 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 			}
 		}
 
-		public override string RetrieveClassName() => Path.GetFileNameWithoutExtension(_file.Name);
+		public override string RetrieveClassName() => Path.GetFileNameWithoutExtension(File.Name);
 
 		public override string RetrievePackage()
 		{
-			var packageStartIndex = text.IndexOf("package");
-			var packageEndIndex = text.IndexOf(";");
-			return text.Substring(packageStartIndex + 8, packageEndIndex);
+			var packageStartIndex = Text.IndexOf("package");
+			var packageEndIndex = Text.IndexOf(";");
+			return Text.Substring(packageStartIndex + 8, packageEndIndex);
 		}
 
 		public override string RetrieveQualifiedName() => string.Format("{0}.{1}", RetrievePackage(), RetrieveClassName());
 
-		public override bool Contains(string term) => text.Contains(term);
+		public override bool Contains(string term) => Text.Contains(term);
 
 		public override bool CanWrite() => true;
 	}

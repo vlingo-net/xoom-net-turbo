@@ -16,15 +16,12 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
 {
 	public class StorageProviderTemplateData : TemplateData
 	{
-		private TemplateParameters _parameters;
+		private readonly TemplateParameters _parameters;
 
 		private StorageProviderTemplateData(string persistencePackage, StorageType storageType,
 			ProjectionType projectionType, List<TemplateData> stateAdapterTemplatesData, IReadOnlyList<ContentBase> contents,
-			ModelType modelType)
-		{
-			_parameters = LoadParameter(persistencePackage, storageType, projectionType, stateAdapterTemplatesData, contents,
-				modelType);
-		}
+			ModelType modelType) =>
+			_parameters = LoadParameter(persistencePackage, storageType, projectionType, stateAdapterTemplatesData, contents, modelType);
 
 		private TemplateParameters LoadParameter(string packageName, StorageType storageType,
 			ProjectionType projectionType, List<TemplateData> templatesData, IReadOnlyList<ContentBase> contents,

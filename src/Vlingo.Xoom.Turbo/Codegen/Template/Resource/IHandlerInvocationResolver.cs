@@ -19,7 +19,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
 
     public class HandlerInvocationResolver
     {
-        protected static readonly string _queriesParameter = "$queries";
+        protected static readonly string QueriesParameter = "$queries";
 
         public static IHandlerInvocationResolver With(CodeGenerationParameter parentParameter)
         {
