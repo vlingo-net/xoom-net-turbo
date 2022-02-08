@@ -12,7 +12,7 @@ namespace Vlingo.Xoom.Turbo.Annotation
 {
     public class TypeRetriever
     {
-        private static TypeRetriever _instance;
+        //private static TypeRetriever _instance;
         private readonly Type _elements;
         private readonly ProcessingEnvironment _environment;
 
@@ -26,27 +26,27 @@ namespace Vlingo.Xoom.Turbo.Annotation
 
         public bool IsValidPackage(string packageName) => _elements.Assembly.GetName().Name != null;
 
-        public bool IsAnInterface(Attribute attribute, Func<object, Type> retriever) =>
+        public bool IsAnInterface(Attribute? attribute, Func<object, Type> retriever) =>
             GetTypeElement(attribute, retriever).IsInterface;
 
-        private Type GetTypeElement(Attribute attribute, Func<object, Type> retriever) =>
-            From(attribute.GetType(), retriever);
+        private Type GetTypeElement(Attribute? attribute, Func<object, Type> retriever) =>
+            From(attribute!.GetType(), retriever);
 
         public Type From(Attribute attribute, Func<object, Type> retriever)
         {
             var clazz = retriever.Invoke(attribute);
-            return _environment.GetElementUtils().GetElementType();
+            return _environment.GetElementUtils().GetElementType()!;
         }
 
         public T From<T>(Attribute[] attribute, Func<object, Type> retriever) where T : Type
         {
             var clazz = retriever.Invoke(attribute);
-            return _environment.GetElementUtils().GetElementType() as T;
+            return (_environment.GetElementUtils().GetElementType() as T)!;
         }
         public T From<T>(T attribute, Func<object, Type> retriever) where T : Type
         {
             var clazz = retriever.Invoke(attribute);
-            return _environment.GetElementUtils().GetElementType() as T;
+            return (_environment.GetElementUtils().GetElementType() as T)!;
         }
 
         public T TypesFrom<T>(T attribute, Func<T, Type[]> retriever)

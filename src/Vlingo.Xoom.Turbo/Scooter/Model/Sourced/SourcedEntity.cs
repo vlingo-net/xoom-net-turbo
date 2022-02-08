@@ -16,33 +16,23 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 {
 	public abstract class SourcedEntity<T> : Entity<object, T> where T : class
 	{
-		private static readonly ConcurrentDictionary<Type?, IDictionary<Type, Action<Source<T>>?>> _registeredConsumers =
-			new ConcurrentDictionary<Type?, IDictionary<Type, Action<Source<T>>?>>();
+		private static readonly ConcurrentDictionary<Type, IDictionary<Type, Action<Source<T>>?>> RegisteredConsumers =
+			new ConcurrentDictionary<Type, IDictionary<Type, Action<Source<T>>?>>();
 
 		private readonly int _currentVersion;
-
-		/// <summary>
-		/// Register the means to apply <see cref="sourceType"/> instances for state transition
-		/// of <see cref="sourcedType"/> by means of a given <see cref="consumer"/>.
-		/// </summary>
-		/// <param name="sourcedType"> the concrete <see cref="Class<SOURCED>"/> type to which sourceType instances are applied</param>
-		/// <param name="sourceType"> the concrete <see cref="Class<SOURCED>"/> type to apply</param>
-		/// <param name="consumer"> the <see cref="Action<SOURCED, SOURCE>"/> used to perform the application of sourceType</param>
-		/// <param name="SOURCED"> the type <see cref="Type"/> of the sourced entity to apply to</param>
-		/// <param name="SOURCE"> the type <see cref="Type"/> of the sourced entity to apply to</param>
-		/// <returns><see cref="World"/></returns>
-		public static void RegisterConsumer<SOURCED, SOURCE>(Action<Source<T>> consumer)
+		
+		public static void RegisterConsumer<TSourced, TSource>(Action<Source<T>> consumer)
 		{
-			if (!_registeredConsumers.TryGetValue(typeof(SOURCED), out IDictionary<Type, Action<Source<T>>?> sourcedTypeMap))
+			if (!RegisteredConsumers.TryGetValue(typeof(TSourced), out var sourcedTypeMap))
 			{
 				sourcedTypeMap = new Dictionary<Type, Action<Source<T>>?>();
-				_registeredConsumers.TryAdd(typeof(SOURCED), sourcedTypeMap);
+				RegisteredConsumers.TryAdd(typeof(TSourced), sourcedTypeMap);
 			}
 
-			sourcedTypeMap.Add(typeof(SOURCE), consumer);
+			sourcedTypeMap.Add(typeof(TSource), consumer);
 		}
 
-		public int CurrentVersion() => _currentVersion;
+		public override int CurrentVersion() => _currentVersion;
 
 		/// <summary>
 		/// Answer my type name.
@@ -116,7 +106,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// </summary>
 		/// <param name="<SNAPSHOT>">the type of the snapshot</param>
 		/// <returns><see cref="SNAPSHOT"/></returns>
-		protected SNAPSHOT Snapshot<SNAPSHOT>() where SNAPSHOT : class => null;
+		protected TSnapshot Snapshot<TSnapshot>() where TSnapshot : class => null!;
 
 		/// <summary>
 		/// Answer my stream name. Must override.
@@ -156,10 +146,10 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 			{
 				Type? type = GetType();
 
-				Action<Source<T>> consumer = null;
+				Action<Source<T>>? consumer = null;
 				while (type != typeof(SourcedEntity<>))
 				{
-					_registeredConsumers.TryGetValue(type, out var sourcedTypeMap);
+					RegisteredConsumers.TryGetValue(type!, out var sourcedTypeMap);
 					if (sourcedTypeMap != null)
 					{
 						sourcedTypeMap.TryGetValue(source.GetType(), out consumer);
@@ -170,7 +160,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 						}
 					}
 
-					type = type.BaseType;
+					type = type?.BaseType;
 				}
 
 				if (consumer == null)
@@ -185,13 +175,13 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// </summary>
 		/// <param name="source">the <see cref="Source{T}"/> to wrap</param>
 		/// <returns><see cref="List{Source{T}}"/></returns>
-		private List<Source<T>> Wrap<T>(Source<T> source) => new List<Source<T>>() { source };
+		private List<Source<T>> Wrap(Source<T> source) => new List<Source<T>>() { source };
 
 		/// <summary>
 		/// Answer <see cref="sources"/> wrapped in a <see cref="List{Source{T}}"/>.
 		/// </summary>
 		/// <param name="sources">the <see cref="Source{T}[]"/> to wrap</param>
 		/// <returns><see cref="List{Source{T}}"/></returns>
-		private List<Source<T>> Wrap<T>(Source<T>[] sources) => sources.ToList();
+		private List<Source<T>> Wrap(Source<T>[] sources) => sources.ToList();
 	}
 }

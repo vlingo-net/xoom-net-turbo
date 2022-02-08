@@ -18,7 +18,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
         AggregateArgumentsFormat METHOD_INVOCATION = new MethodInvocation("stage");
         AggregateArgumentsFormat SIGNATURE_DECLARATION = new SignatureDeclaration();
 
-        public string Format(CodeGenerationParameter parameter)
+        public virtual string Format(CodeGenerationParameter parameter)
         {
             return Format(parameter, MethodScopeType.Instance);
         }
@@ -28,11 +28,11 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
         public class SignatureDeclaration : AggregateArgumentsFormat
         {
             private static readonly string _signaturePatttern = "final {0} {1}";
-            private static readonly string _stateArgument = string.Format(_stateArgument, "Stage", "stage");
+            private static readonly string _stateArgument = string.Format(_stateArgument!, "Stage", "stage");
 
-            public string Format(CodeGenerationParameter parameter, MethodScopeType scope)
+            public override string Format(CodeGenerationParameter parameter, MethodScopeType scope)
             {
-                var args = scope == MethodScopeType.Static ? new List<string>() { _stateArgument } : new List<string>();
+                var args = scope == MethodScopeType.Static ? new List<string> { _stateArgument } : new List<string>();
                 return string.Join(", ", new List<List<string>>() { args, FormatMethodParameters(parameter) }.SelectMany(x => x));
             }
 

@@ -23,7 +23,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 
         protected void DependOn(params List<TemplateData>[] templatesData) => _dependencies.AddRange(templatesData.SelectMany(x => x));
 
-        public void HandleDependencyOutcome(TemplateStandard standard, string outcome) => throw new NotSupportedException("Unable to handle dependency outcome");
+        public virtual void HandleDependencyOutcome(TemplateStandard standard, string outcome) => throw new NotSupportedException("Unable to handle dependency outcome");
 
         public virtual string Filename() => Standard().ResolveFilename(Parameters());
 

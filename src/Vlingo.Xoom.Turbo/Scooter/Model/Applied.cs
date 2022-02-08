@@ -39,25 +39,25 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model
 		{
 		}
 
-		public Applied(int stateVersion, List<Source<C>> sources, Metadata metadata) : this(null, stateVersion, sources,
+		public Applied(int stateVersion, List<Source<C>> sources, Metadata metadata) : this(null!, stateVersion, sources,
 			metadata)
 		{
 		}
 
-		public Applied(List<Source<C>> sources, Metadata metadata) : this(null, 1, sources, metadata)
+		public Applied(List<Source<C>> sources, Metadata metadata) : this(null!, 1, sources, metadata)
 		{
 		}
 
-		public Applied(int stateVersion, List<Source<C>> sources) : this(null, stateVersion, sources,
+		public Applied(int stateVersion, List<Source<C>> sources) : this(null!, stateVersion, sources,
 			Metadata.NullMetadata())
 		{
 		}
 
-		public Applied(List<Source<C>> sources) : this(null, 1, sources, Metadata.NullMetadata())
+		public Applied(List<Source<C>> sources) : this(null!, 1, sources, Metadata.NullMetadata())
 		{
 		}
 
-		public Applied() : this(null, 0, new List<Source<C>>(), Metadata.NullMetadata())
+		public Applied() : this(null!, 0, new List<Source<C>>(), Metadata.NullMetadata())
 		{
 		}
 
@@ -101,7 +101,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model
 
 		public Type StateType() => state.GetType();
 
-		public string StateTypeName() => state.GetType().FullName;
+		public string StateTypeName() => state.GetType().FullName!;
 
 		public string StateTypeSimpleName() => state.GetType().Name;
 	}

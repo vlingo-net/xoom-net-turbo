@@ -24,11 +24,11 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var dataObjects = AnnotatedClass.GetCustomAttribute<DataObjectAttribute>();
+			var dataObjects = AnnotatedClass?.GetCustomAttribute<DataObjectAttribute>();
 			if (dataObjects == null)
 				return new List<Type>();
 
-			return TypeRetriever.TypesFrom(new List<Type> { dataObjects.GetType() }, (types) => dataObjects.Value);
+			return TypeRetriever.TypesFrom(new List<Type> { dataObjects.GetType() }, _ => dataObjects.Value!);
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			{
 				var queries = element.GetCustomAttribute<QueriesAttribute>();
 				var retriever = TypeRetriever.With(processingEnvironment);
-				if (retriever.IsAnInterface(queries!, Void => queries!.Protocol))
+				if (retriever.IsAnInterface(queries, _ => queries!.Protocol!))
 					throw new ProcessingAnnotationException(
 						$"Class {annotation.FullName}. Protocol value to Queries annotation must be an interface");
 			}
@@ -56,7 +56,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 					foreach (var enclosed in rootElement.GetMethods())
 					{
 						var routeAnnotation = enclosed.GetCustomAttribute<RouteAttribute>();
-						var hasMethods = !routeAnnotation.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
+						var hasMethods = !routeAnnotation!.GetType().IsInterface && !routeAnnotation.GetType().IsClass &&
 						                 (routeAnnotation.Method == Method.Post ||
 						                  routeAnnotation.Method == Method.Put ||
 						                  routeAnnotation.Method == Method.Patch ||

@@ -17,7 +17,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         public static CodeGenerationParameters From(Label label, object value)
         {
-            return From(label, value.ToString());
+            return From(label, value.ToString()!);
         }
 
         public static CodeGenerationParameters From(Label label, string value)
@@ -34,7 +34,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         private CodeGenerationParameters(List<CodeGenerationParameter> parameters) => _parameters.AddRange(parameters);
 
-        public CodeGenerationParameters Add(Label label, object value) => Add(label, value.ToString());
+        public CodeGenerationParameters Add(Label label, object value) => Add(label, value.ToString()!);
 
         public CodeGenerationParameters Add(Label label, string value) => Add(CodeGenerationParameter.Of(label, value));
 

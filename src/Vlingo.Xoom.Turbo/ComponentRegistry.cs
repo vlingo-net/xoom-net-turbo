@@ -20,14 +20,14 @@ namespace Vlingo.Xoom.Turbo
 
     public static void Register<T>(object componentInstance)
     {
-      _components.Add(typeof(T).FullName, componentInstance);
+      _components.Add(typeof(T).FullName!, componentInstance);
     }
 
-    public static bool Has<T>() => _components.ContainsKey(typeof(T).FullName);
+    public static bool Has<T>() => _components.ContainsKey(typeof(T).FullName!);
 
     public static object WithName(string name) => _components[name];
 
-    public static T WithType<T>() => (T) WithName(typeof(T).FullName);
+    public static T WithType<T>() => (T) WithName(typeof(T).FullName!);
 
     public static bool Has(string componentName) => _components.ContainsKey(componentName);
 

@@ -38,10 +38,10 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
                             .And(TemplateParameter.HandlerEntries, new List<string>())
                             .AddImports(ResolveImports(_aggregateName, contents));
 
-            this.DependOn(AutoDispatchHandlerEntryTemplateData.From(aggregate).ToList());
+            DependOn(AutoDispatchHandlerEntryTemplateData.From(aggregate).ToList());
         }
 
-        public void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.HandlerEntries).Add(outcome);
+        public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.HandlerEntries).Add(outcome);
 
         private List<string> ResolveHandlerIndexes(CodeGenerationParameter aggregate, bool useCQRS)
         {
@@ -71,7 +71,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
                     var standart = entry.Key;
                     return ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(standart), className, contents);
                 }
-                catch (ArgumentException exception)
+                catch (ArgumentException)
                 {
                     return string.Empty;
                 }

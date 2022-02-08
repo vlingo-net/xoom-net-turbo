@@ -26,7 +26,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
 
         public override string RetrievePackage() => ClassFormatter.PackageOf(RetrieveQualifiedName());
 
-        public override string RetrieveQualifiedName() => contentType.FullName;
+        public override string RetrieveQualifiedName() => contentType.FullName!;
 
         public override bool CanWrite() => false;
 

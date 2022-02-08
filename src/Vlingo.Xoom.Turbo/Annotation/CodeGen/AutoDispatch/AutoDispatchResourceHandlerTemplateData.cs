@@ -24,7 +24,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 		private readonly TemplateParameters _parameters;
 
 		public static List<TemplateData> From(CodeGenerationContext context) => context.ParametersOf(Label.AutoDispatchName)
-			.Select(@param => (TemplateData)new AutoDispatchResourceHandlerTemplateData(context, @param)).ToList();
+			.Select(param => (TemplateData)new AutoDispatchResourceHandlerTemplateData(context, @param)).ToList();
 
 		private AutoDispatchResourceHandlerTemplateData(CodeGenerationContext context,
 			CodeGenerationParameter autoDispatchParameter)
@@ -55,7 +55,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 				.And(TemplateParameter.RouteMethod, new List<string>())
 				.And(TemplateParameter.AutoDispatchMappingName, _restResourceName).And(TemplateParameter.UseAutoDispatch, true)
 				.And(TemplateParameter.DataObjectName, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregateProtocolClassName))
-				.And(TemplateParameter.UseCqrs, context.ParameterOf<bool>(Label.Cqrs, x => bool.TrueString.ToLower() == x))
+				.And(TemplateParameter.UseCqrs, context.ParameterOf(Label.Cqrs, x => bool.TrueString.ToLower() == x))
 				.AddImports(ResolveImports(context, autoDispatchParameter, queryStoreProviderName));
 
 			DependOn(RouteMethodTemplateData.From(autoDispatchParameter, _parameters));
@@ -70,7 +70,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 			return new HashSet<string>(new List<string>() { queriesProtocolQualifiedName, queryStoreProviderQualifiedName });
 		}
 
-		public void HandleDependencyOutcome(TemplateStandard standard, string outcome) =>
+		public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) =>
 			_parameters.Find<List<string>>(TemplateParameter.RouteMethods).Add(outcome);
 
 		public override TemplateParameters Parameters() => _parameters;

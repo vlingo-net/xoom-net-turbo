@@ -7,15 +7,11 @@
 
 namespace Vlingo.Xoom.Turbo.Scooter.Model
 {
-    public abstract class Entity<S, C> where S : class where C : class
+    public abstract class Entity<TS, TC> where TS : class where TC : class
     {
-        private Applied<S, C> _applied;
-
-        /// <summary>
-        /// Answer my <see cref="applied"/>.
-        /// </summary>
-        /// <returns><see cref="Applied<S,C>"/></returns>
-        public Applied<S, C> Applied() => _applied;
+        private Applied<TS, TC>? _applied;
+        
+        public Applied<TS, TC>? Applied() => _applied;
 
         /// <summary>
         /// Answer my <see cref="currentVersion"/>, which, if zero, indicates that the
@@ -41,7 +37,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model
         {
         }
 
-        protected void Applied(Applied<S, C> applied)
+        protected void Applied(Applied<TS, TC> applied)
         {
             if (_applied == null)
             {
@@ -62,11 +58,11 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model
             {
                 if (applied.metadata.IsEmpty)
                 {
-                    _applied = _applied.AlongWith(applied.state, applied.Sources(), _applied.metadata);
+                    _applied = _applied.AlongWith(applied.state!, applied.Sources(), _applied.metadata);
                 }
                 else
                 {
-                    _applied = _applied.AlongWith(applied.state, applied.Sources(), applied.metadata);
+                    _applied = _applied.AlongWith(applied.state!, applied.Sources(), applied.metadata);
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 {
 	public class AutoDispatchValidator
 	{
-		private static AutoDispatchValidator _instance;
+		private static AutoDispatchValidator? _instance;
 
 		private AutoDispatchValidator()
 		{

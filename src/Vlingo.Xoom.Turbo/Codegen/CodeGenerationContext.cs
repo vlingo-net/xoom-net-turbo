@@ -34,7 +34,7 @@ namespace Vlingo.Xoom.Turbo.Codegen
 
         public static CodeGenerationContext With(CodeGenerationParameters parameters) => new CodeGenerationContext().On(parameters);
 
-        private CodeGenerationContext() : this(null, null)
+        private CodeGenerationContext() : this(null!, null!)
         {
         }
 

@@ -18,7 +18,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 {
 	public class XoomInitializerGenerator
 	{
-		private static XoomInitializerGenerator _instance;
+		private static XoomInitializerGenerator? _instance;
 
 		private XoomInitializerGenerator()
 		{
@@ -27,7 +27,9 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 		public static XoomInitializerGenerator Instance()
 		{
 			if (_instance == null)
+			{
 				_instance = new XoomInitializerGenerator();
+			}
 			return _instance;
 		}
 

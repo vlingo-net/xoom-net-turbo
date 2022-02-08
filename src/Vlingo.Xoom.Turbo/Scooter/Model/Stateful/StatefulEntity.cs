@@ -59,34 +59,34 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Stateful
         /// <param name="state"> state the S typed state to apply</param>
         /// <param name="sources"> the <see cref="List<Source<C>>"/> instances to apply</param>
         /// <param name="operation"> the string descriptive name of the operation that caused the state modification</param>
-        protected void Apply(S state, List<Source<C>> sources, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, null, operation)));
+        protected void Apply(S state, List<Source<C>> sources, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, null!, operation)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> that was modified due to the descriptive <see cref="operation"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
         /// <param name="operation"> the string descriptive name of the operation that caused the state modification</param>
-        protected void Apply(S state, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, null, operation)));
+        protected void Apply(S state, string operation) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, null!, operation)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> and <see cref="sources"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
-        /// <param name="sources"> the <see cref="List<Source<C>>"/> instances to apply</param>
-        protected void Apply(S state, List<Source<C>> sources) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, null, null)));
+        /// <param name="sources"> the <see cref="List{Source{C}}"/> instances to apply</param>
+        protected void Apply(S state, List<Source<C>> sources) => Apply(new Applied<S, C>(state, _currentVersion + 1, sources, Metadata(state, null!, null!)));
 
         /// <summary>
         /// Apply my current <see cref="state"/> and <see cref="source"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
         /// <param name="source"> the <see cref="Source<C>"/> instances to apply</param>
-        protected void Apply(S state, Source<C> source) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>() { source }, Metadata(state, null, null)));
+        protected void Apply(S state, Source<C> source) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>() { source }, Metadata(state, null!, null!)));
 
         /// <summary>
         /// Apply my current <see cref="state"/>.
         /// </summary>
         /// <param name="state"> the S typed state to apply</param>
-        protected void Apply(S state) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, null, null)));
+        protected void Apply(S state) => Apply(new Applied<S, C>(state, _currentVersion + 1, new List<Source<C>>(), Metadata(state, null!, null!)));
 
         /// <summary>
         /// Answer a representation of a number of segments as a

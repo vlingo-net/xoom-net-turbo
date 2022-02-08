@@ -20,7 +20,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer
 				let attributes = t.GetCustomAttributes(typeof(XoomAttribute), true)
 				where attributes != null && attributes.Length > 0
 				select new { Type = t, Attributes = attributes.Cast<XoomAttribute>() };
-			return typesWithMyAttribute.FirstOrDefault()!.Type.Namespace;
+			return typesWithMyAttribute.FirstOrDefault()!.Type.Namespace!;
 		}
 	}
 }

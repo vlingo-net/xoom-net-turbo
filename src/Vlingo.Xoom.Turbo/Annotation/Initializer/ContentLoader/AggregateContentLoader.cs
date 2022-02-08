@@ -26,8 +26,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var persistence = AnnotatedClass.GetCustomAttribute<PersistenceAttribute>();
-			if (!persistence.IsJournal())
+			var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
+			if (!persistence!.IsJournal())
 			{
 				return new List<Type>();
 			}

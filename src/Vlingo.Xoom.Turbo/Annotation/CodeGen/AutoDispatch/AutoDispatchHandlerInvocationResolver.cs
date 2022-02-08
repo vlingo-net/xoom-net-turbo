@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
     {
         private static readonly string _defaultAdapterParameter = "state";
         private static readonly string _handlerInvocationPattern = "%s.%s";
-        private static readonly string _defaultFactoryMethodParameter = "$stage";
+        //private static readonly string _defaultFactoryMethodParameter = "$stage";
         private static readonly string _handlerInvocationWithDefaultParamsPattern = "%s.%s(%s)";
         
         //TODO: 

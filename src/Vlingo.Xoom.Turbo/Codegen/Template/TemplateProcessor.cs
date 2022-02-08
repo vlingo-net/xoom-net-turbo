@@ -12,7 +12,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 {
     public class TemplateProcessor
     {
-        private static TemplateProcessor _instance;
+        private static TemplateProcessor? _instance;
         private static readonly string _templatePathPattern = "Resources/Codegen/Csharp/{0}.tt";
 
         private TemplateProcessor()

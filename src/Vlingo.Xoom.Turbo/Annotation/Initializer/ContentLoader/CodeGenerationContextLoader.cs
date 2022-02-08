@@ -58,8 +58,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 			new CodeGenerationContextLoader(filer, basePackage, elements, environment).Load();
 
 		private CodeGenerationContext Load() => CodeGenerationContext
-			.Using(_filer, _bootStrapClass)
-			.On(XoomInitializerParameterResolver.From(_basePackage, _bootStrapClass, _environment).Resolve())
+			.Using(_filer, _bootStrapClass!)
+			.On(XoomInitializerParameterResolver.From(_basePackage, _bootStrapClass!, _environment).Resolve())
 			.On(AutoDispatchParameterResolver.From(_autoDispatchResourceClasses, _environment).Resolve())
 			.On(PersistenceParameterResolver.From(_persistenceSetupClass, _environment).Resolve())
 			.Contents(ResolveContentLoaders());

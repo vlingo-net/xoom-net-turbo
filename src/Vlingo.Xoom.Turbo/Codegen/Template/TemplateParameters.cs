@@ -84,7 +84,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 
         public IReadOnlyDictionary<string, object>? Map() => _parameters as IReadOnlyDictionary<string, object>;
 
-        public bool Has(TemplateParameter parameter) => _parameters.ContainsKey(parameter.ToString()) && _parameters[parameter.ToString()] != null && _parameters[parameter.ToString()].ToString().Trim() != string.Empty;
+        public bool Has(TemplateParameter parameter) => _parameters.ContainsKey(parameter.ToString()) && _parameters[parameter.ToString()] != null && _parameters[parameter.ToString()].ToString()?.Trim() != string.Empty;
 
         public bool HasValue(TemplateParameter parameter, string value) => Has(parameter) && (string)_parameters[parameter.ToString()] == value;
     }

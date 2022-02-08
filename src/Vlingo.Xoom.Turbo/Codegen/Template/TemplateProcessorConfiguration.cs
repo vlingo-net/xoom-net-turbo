@@ -11,9 +11,9 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
 {
     public class TemplateProcessorConfiguration
     {
-        public readonly Configuration configuration;
+        //public readonly Configuration configuration;
 
-        private static TemplateProcessorConfiguration _instance;
+        private static TemplateProcessorConfiguration? _instance;
 
         public static TemplateProcessorConfiguration Instance()
         {

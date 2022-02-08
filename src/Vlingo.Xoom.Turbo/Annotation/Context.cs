@@ -15,9 +15,9 @@ namespace Vlingo.Xoom.Turbo.Annotation
 		private static readonly string TestOutputDirectory = "test-classes";
 		
 		
-		public static string LocateBaseDirectory(FileStream getFiler) => default;
+		public static string LocateBaseDirectory(FileStream getFiler) => default!;
 
-		public static object LocateSourceFolder(FileStream filer) => default;
+		public static object LocateSourceFolder(FileStream filer) => default!;
 		
 		public static string LocateBaseDirectory(string path)
 		{

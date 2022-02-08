@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Scooter
     {
         public static readonly IAddress NoAddressValue = new NoAddress();
 
-        public int CompareTo(IAddress other) => -1;
+        public int CompareTo(IAddress? other) => -1;
 
         public long Id => 0;
 
@@ -24,7 +24,7 @@ namespace Vlingo.Xoom.Turbo.Scooter
 
         public string IdString => "0";
 
-        public T IdTyped<T>(Func<string, T> typeConverter) => default(T);
+        public T IdTyped<T>(Func<string, T> typeConverter) => default!;
 
         public string Name => string.Empty;
 

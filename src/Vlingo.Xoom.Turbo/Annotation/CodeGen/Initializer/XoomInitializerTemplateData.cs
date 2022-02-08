@@ -69,7 +69,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
 
 			if (exchangeBootstrapQualifiedName == null)
 			{
-				return null;
+				return null!;
 			}
 
 			return exchangeBootstrapQualifiedName;

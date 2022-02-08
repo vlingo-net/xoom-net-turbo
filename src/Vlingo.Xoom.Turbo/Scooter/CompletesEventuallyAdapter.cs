@@ -28,6 +28,6 @@ namespace Vlingo.Xoom.Turbo.Scooter
 
         public void Stop() => throw new NotImplementedException();
 
-        public void With(object outcome) => _completes.With(outcome);
+        public void With(object? outcome) => _completes.With(outcome);
     }
 }

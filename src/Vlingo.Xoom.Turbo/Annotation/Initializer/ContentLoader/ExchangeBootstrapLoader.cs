@@ -26,11 +26,11 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override List<Type> RetrieveContentSource()
 		{
-			var persistence = AnnotatedClass.GetCustomAttribute<PersistenceAttribute>();
+			var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
 
 			var baseDirectory = Context.LocateBaseDirectory(Environment.GetFiler());
 
-			var allPackages = PackageCollector.From(baseDirectory, persistence.BasePackage).CollectAll().ToArray();
+			var allPackages = PackageCollector.From(baseDirectory, persistence!.BasePackage).CollectAll().ToArray();
 
 			return TypeRetriever.SubClassesOf<ExchangeInitializer>(allPackages);
 		}

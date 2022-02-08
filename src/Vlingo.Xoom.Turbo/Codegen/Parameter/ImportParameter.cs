@@ -30,10 +30,10 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         public bool MatchClass(string qualifiedClassName) => _qualifiedClassName == qualifiedClassName;
 
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (this == o) return true;
-            if (o == null || this.GetType() != o.GetType()) return false;
+            if (o == null || GetType() != o.GetType()) return false;
             ImportParameter that = (ImportParameter)o;
             return _qualifiedClassName == that.GetQualifiedClassName();
         }

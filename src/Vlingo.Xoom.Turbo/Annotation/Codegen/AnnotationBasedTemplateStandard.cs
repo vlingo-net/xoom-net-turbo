@@ -23,7 +23,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen
 		});
 
 		public static TemplateStandard AutoDispatchResourceHandler => new TemplateStandard((parameters) => "RestResource");
-		public static TemplateStandard AggregateState => new TemplateStandard((parameters) => null);
+		public static TemplateStandard AggregateState => new TemplateStandard((parameters) => null!);
 		public static TemplateStandard XoomInitializer => new TemplateStandard((parameters) => "", (name, parameters)
 			=> "XoomInitializer");
 

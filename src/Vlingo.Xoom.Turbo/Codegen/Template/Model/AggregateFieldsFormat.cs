@@ -15,25 +15,25 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 {
     public class AggregateFieldsFormat<T>
     {
-        AggregateFieldsFormat<List<String>> assignment = new Constructor();
-        AggregateFieldsFormat<List<String>> memberDeclaration = new Member();
-        AggregateFieldsFormat<List<String>> stateBasedAssignment = new Constructor("state");
-        AggregateFieldsFormat<String> selfAlternateReference = AlternateReference.HandlingSelfReferencedFields();
-        AggregateFieldsFormat<String> defaultValue = AlternateReference.HandlingDefaultFieldsValue();
+        AggregateFieldsFormat<IEnumerable<String>> assignment = new Constructor();
+        AggregateFieldsFormat<IEnumerable<String>> memberDeclaration = new Member();
+        AggregateFieldsFormat<IEnumerable<String>> stateBasedAssignment = new Constructor("state");
+        AggregateFieldsFormat<string> selfAlternateReference = AlternateReference.HandlingSelfReferencedFields();
+        AggregateFieldsFormat<string> defaultValue = AlternateReference.HandlingDefaultFieldsValue();
 
-        public T Format(CodeGenerationParameter aggregate) => Format(aggregate, aggregate.RetrieveAllRelated(Label.StateField));
+        public virtual T Format(CodeGenerationParameter aggregate) => Format(aggregate, aggregate.RetrieveAllRelated(Label.StateField));
 
         //TODO: has no body in java
-        public T Format(CodeGenerationParameter parameter, IEnumerable<CodeGenerationParameter> fields) => throw new NotImplementedException();
+        public virtual T Format(CodeGenerationParameter parameter, IEnumerable<CodeGenerationParameter> fields) => throw new NotImplementedException();
 
-        public class Member : AggregateFieldsFormat<List<string>>
+        public class Member : AggregateFieldsFormat<IEnumerable<string>>
         {
             private static readonly string _pattern = "public final {0} {1};";
 
-            public IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, FieldDetail.TypeOf(aggregate, field.value), field.value));
+            public override IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, FieldDetail.TypeOf(aggregate, field.value), field.value));
         }
 
-        public class Constructor : AggregateFieldsFormat<List<string>>
+        public class Constructor : AggregateFieldsFormat<IEnumerable<string>>
         {
             private readonly string _carrierName;
             private static readonly string _pattern = "this.{0} = {1};";
@@ -44,7 +44,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
             public Constructor(string carrierName) => _carrierName = carrierName;
 
-            public IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, field.value, ResolveValueRetrieval(field)));
+            public override IEnumerable<string> Format(CodeGenerationParameter aggregate, IEnumerable<CodeGenerationParameter> fields) => fields.Select(field => string.Format(_pattern, field.value, ResolveValueRetrieval(field)));
 
             private string ResolveValueRetrieval(CodeGenerationParameter field) => _carrierName == string.Empty ? field.value : string.Concat(_carrierName, ".", field.value);
         }
@@ -59,7 +59,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
 
             public static AlternateReference HandlingDefaultFieldsValue() => new AlternateReference(field => FieldDetail.ResolveDefaultValue(field.Parent(Label.Aggregate), field.value));
 
-            public string Format(CodeGenerationParameter para, IEnumerable<CodeGenerationParameter> fields) => string.Join(", ", para.RetrieveAllRelated(Label.StateField).Select(field => IsPresent(field, fields.ToList()) ? field.value : _absenceHandler(field)));
+            public override string Format(CodeGenerationParameter para, IEnumerable<CodeGenerationParameter> fields) => string.Join(", ", para.RetrieveAllRelated(Label.StateField).Select(field => IsPresent(field, fields.ToList()) ? field.value : _absenceHandler(field)));
 
             public static bool IsPresent(CodeGenerationParameter field, List<CodeGenerationParameter> presentFields) => presentFields.Any(present => present.value == field.value);
         }

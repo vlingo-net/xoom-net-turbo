@@ -30,7 +30,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 				return new List<Type>();
 
 			return new[] { projections.Value }
-				.Select(projection => TypeRetriever.From(projections, projection => (projection as ProjectionAttribute)!.Actor))
+				.Select(_ => TypeRetriever.From(projections, p => (p as ProjectionAttribute)!.Actor!))
 				.ToList();
 		}
 	}

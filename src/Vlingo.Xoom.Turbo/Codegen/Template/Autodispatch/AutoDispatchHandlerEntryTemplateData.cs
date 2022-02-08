@@ -15,7 +15,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
 {
     public class AutoDispatchHandlerEntryTemplateData : TemplateData
     {
-        private readonly TemplateParameters _parameters;
+        private readonly TemplateParameters? _parameters;
 
         public static IEnumerable<TemplateData> From(CodeGenerationParameter aggregate) => aggregate.RetrieveAllRelated(Label.RouteSignature).Where(route => !route.HasAny(Label.ReadOnly)).Select(x => new AutoDispatchHandlerEntryTemplateData());
 
@@ -48,7 +48,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
             return new AggregateArgumentsFormat.MethodInvocation("$stage", "data").Format(method, methodScope);
         }
 
-        public override TemplateParameters Parameters() => _parameters;
+        public override TemplateParameters Parameters() => _parameters!;
 
         public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchHandlerEntry);
     }

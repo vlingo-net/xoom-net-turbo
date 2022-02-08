@@ -19,7 +19,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Content
             this.contentProtocolType = contentProtocolType;
         }
 
-        public override string RetrieveProtocolQualifiedName() => contentProtocolType.FullName;
+        public override string RetrieveProtocolQualifiedName() => contentProtocolType.FullName!;
 
         public override bool IsProtocolBased => true;
     }

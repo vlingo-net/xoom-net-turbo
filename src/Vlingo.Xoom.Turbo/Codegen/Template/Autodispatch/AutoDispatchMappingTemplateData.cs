@@ -50,7 +50,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
             this.DependOn(AutoDispatchRouteTemplateData.From(aggregate.RetrieveAllRelated(Label.RouteSignature)));
         }
 
-        public void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.RouteDeclarations).Add(outcome);
+        public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.RouteDeclarations).Add(outcome);
 
         private HashSet<string> ResolveImports(string aggregateName, List<ContentBase> contents)
         {
@@ -64,7 +64,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
                     var standard = entry.Key;
                     return ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(standard), className, contents);
                 }
-                catch (ArgumentException exception)
+                catch (ArgumentException)
                 {
                     return string.Empty;
                 }

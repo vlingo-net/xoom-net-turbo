@@ -15,12 +15,12 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
     {
         public readonly Label label;
         public readonly string value;
-        private CodeGenerationParameter _parent;
+        private CodeGenerationParameter? _parent;
         private readonly CodeGenerationParameters _relatedParameters;
 
         public static CodeGenerationParameter Of(Label label) => Of(label, label.ToString());
 
-        public static CodeGenerationParameter Of(Label label, object value) => Of(label, value.ToString());
+        public static CodeGenerationParameter Of(Label label, object value) => Of(label, value.ToString()!);
 
         public static CodeGenerationParameter Of(Label label, string value) => new CodeGenerationParameter(label, value);
 
@@ -33,7 +33,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
 
         public CodeGenerationParameter Relate(Label label, object value)
         {
-            return Relate(label, value.ToString());
+            return Relate(label, value.ToString()!);
         }
 
         public CodeGenerationParameter Relate(Label label, string value)
@@ -61,7 +61,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
             return _relatedParameters.RetrieveAll(this.label);
         }
 
-        public CodeGenerationParameter Parent() => _parent;
+        public CodeGenerationParameter Parent() => _parent!;
 
         public CodeGenerationParameter Parent(Label label)
         {
@@ -70,7 +70,7 @@ namespace Vlingo.Xoom.Turbo.Codegen.Parameter
                 throw new NotSupportedException("Orphan parameter");
             }
 
-            CodeGenerationParameter matchedParent = _parent;
+            CodeGenerationParameter matchedParent = _parent!;
 
             while (matchedParent != null)
             {

@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
 {
     public class FieldDetail
     {
-        private static string _unknownFieldMessage = "{0} is not a field in {1} state";
+        //private static string _unknownFieldMessage = "{0} is not a field in {1} state";
         private static readonly List<string> _numericTypes = new List<string>() { "byte", "short", "int", "integer", "long", "double", "float" };
 
         public static string TypeOf(CodeGenerationParameter aggregate, string stateFieldName) => aggregate.RetrieveAllRelated(Label.StateField).Where(stateField => stateField.value == stateFieldName).Select(stateField => stateField.RetrieveRelatedValue(Label.FieldType)).FirstOrDefault()

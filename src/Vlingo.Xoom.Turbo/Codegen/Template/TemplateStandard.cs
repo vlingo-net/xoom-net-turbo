@@ -52,8 +52,8 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
     {
         private static readonly string _defaultFileExtension = ".cs";
 
-        private readonly Func<TemplateParameters, string> _templateFileRetriever;
-        private readonly Func<string, TemplateParameters, string> _nameResolver;
+        private readonly Func<TemplateParameters, string>? _templateFileRetriever;
+        private readonly Func<string, TemplateParameters, string>? _nameResolver;
         private readonly TemplateStandardType _templateStandardType;
 
         public TemplateStandard()
@@ -72,21 +72,21 @@ namespace Vlingo.Xoom.Turbo.Codegen.Template
             _nameResolver = nameResolver;
         }
 
-        public string RetrieveTemplateFilename(TemplateParameters parameters) => _templateFileRetriever(parameters);
+        public string RetrieveTemplateFilename(TemplateParameters parameters) => _templateFileRetriever!(parameters);
 
         public string ResolveClassname() => ResolveClassname("");
 
-        public string ResolveClassname(string name) => ResolveClassname(name, null);
+        public string ResolveClassname(string name) => ResolveClassname(name, null!);
 
-        public string ResolveClassname(TemplateParameters parameters) => ResolveClassname(null, parameters);
+        public string ResolveClassname(TemplateParameters parameters) => ResolveClassname(null!, parameters);
 
-        public string ResolveClassname(string name, TemplateParameters parameters) => _nameResolver(name, parameters);
+        public string ResolveClassname(string name, TemplateParameters parameters) => _nameResolver!(name, parameters);
 
-        public string ResolveFilename(TemplateParameters parameters) => ResolveFilename(null, parameters);
+        public string ResolveFilename(TemplateParameters parameters) => ResolveFilename(null!, parameters);
 
         public string ResolveFilename(string name, TemplateParameters parameters)
         {
-            string fileName = _nameResolver(name, parameters);
+            string fileName = _nameResolver!(name, parameters);
             return fileName.Contains(".") ? fileName : fileName + _defaultFileExtension;
         }
     }

@@ -10,12 +10,12 @@ namespace Vlingo.Xoom.Turbo.Annotation
 {
     public abstract class AnnotationProcessor
     {
-        protected ProcessingEnvironment Environment;
+        protected ProcessingEnvironment? Environment;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Init(ProcessingEnvironment environment)
         {
-            this.Environment = environment;
+            Environment = environment;
             ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.C_SHARP));
         }
 

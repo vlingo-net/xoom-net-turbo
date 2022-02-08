@@ -33,8 +33,8 @@ namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
 			throw new ArgumentException(string.Concat("Handler Invocation with index ", index, " not found"));
 
 		private List<HandlerInvocation> ResolveInvocations() => _handlersConfigReader.FindMembers()
-			.Where(element => element.DeclaringType.Name.StartsWith(_handlerEntryClassName))
-			.Select(handlerEntry => new HandlerInvocation(_handlersConfigReader, handlerEntry as Type))
+			.Where(element => element.DeclaringType!.Name.StartsWith(_handlerEntryClassName))
+			.Select(handlerEntry => new HandlerInvocation(_handlersConfigReader, (handlerEntry as Type)!))
 			.ToList();
 	}
 }

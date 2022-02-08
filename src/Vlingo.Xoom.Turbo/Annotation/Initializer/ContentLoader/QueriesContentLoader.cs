@@ -32,15 +32,15 @@ namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
 
 		protected override Dictionary<Type, Type> RetrieveContentSource()
 		{
-			var queries = AnnotatedClass.GetCustomAttribute<EnableQueriesAttribute>();
+			var queries = AnnotatedClass?.GetCustomAttribute<EnableQueriesAttribute>();
 
 			if (queries == null)
 				return new Dictionary<Type, Type>();
 
 			return new[] { queries.Value }.SelectMany(queriesEntry =>
 			{
-				var protocolType = TypeRetriever.From<Type>(queriesEntry, entry => (entry as QueriesEntryAttribute)!.Protocol);
-				var actorType = TypeRetriever.From<Type>(queriesEntry, entry => (entry as QueriesEntryAttribute)!.Actor);
+				var protocolType = TypeRetriever.From<Type>((queriesEntry as Attribute[])!, entry => (entry as QueriesEntryAttribute)!.Protocol!);
+				var actorType = TypeRetriever.From<Type>((queriesEntry as Attribute[])!, entry => (entry as QueriesEntryAttribute)!.Actor!);
 				return new Dictionary<Type, Type> { { protocolType, actorType } };
 			}).ToDictionary(entry => entry.Key, entry => entry.Value);
 		}
