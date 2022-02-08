@@ -9,16 +9,16 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests
 {
-  public class BootTest
-  {
-    private const string BOOT_WORLD_NAME = "test-boot";
-
-    [Fact]
-    public void TestThatWorldStarts()
+    public class BootTest
     {
-      var world = Boot.Start(BOOT_WORLD_NAME);
+        private const string BOOT_WORLD_NAME = "test-boot";
 
-      Assert.Equal(BOOT_WORLD_NAME, world.Name);
+        [Fact]
+        public void TestThatWorldStarts()
+        {
+            var world = Boot.Start(BOOT_WORLD_NAME);
+
+            Assert.Equal(BOOT_WORLD_NAME, world.Name);
+        }
     }
-  }
 }

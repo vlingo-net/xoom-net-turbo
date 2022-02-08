@@ -34,10 +34,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		private readonly AtomicInteger _readObjectResultedIn = new AtomicInteger(0);
 		private readonly AtomicReference<object> _objectReadResult = new AtomicReference<object>();
 
-		public MockStateStoreResultInterest()
-		{
-			_access = AfterCompleting(0);
-		}
+		public MockStateStoreResultInterest() => _access = AfterCompleting(0);
 
 		public void ReadResultedIn<TState>(
 			IOutcome<StorageException, Result> outcome,

@@ -13,9 +13,6 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 	{
 		private readonly string _id;
 
-		public Test1Happened(string id)
-		{
-			_id = id;
-		}
+		public Test1Happened(string id) => _id = id;
 	}
 }

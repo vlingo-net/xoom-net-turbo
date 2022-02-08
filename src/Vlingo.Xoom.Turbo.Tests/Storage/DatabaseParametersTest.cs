@@ -15,81 +15,81 @@ using static Vlingo.Xoom.Turbo.EnvironmentVariables;
 
 namespace Vlingo.Xoom.Turbo.Tests.Storage
 {
-  public class DatabaseParametersTest : IDisposable
-  {
-    private readonly MockIEnvironmentVariables _mockIEnvironmentVariables;
-
-    public DatabaseParametersTest()
+    public class DatabaseParametersTest : IDisposable
     {
-      var dict = new Dictionary<string, string>();
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_CATEGORY", "MYSQL");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_NAME", "12F");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_URL", "jdbc:mysql://localhost:9001/");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_DRIVER", "com.mysql.cj.jdbc.Driver");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_USERNAME", "12FDB");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_PASSWORD", "vlingo12F");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_ORIGINATOR", "FTI");
-      dict.Add("VLINGO_XOOM_QUERY_DATABASE_CONNECTION_ATTEMPTS", "2");
+        private readonly MockIEnvironmentVariables _mockIEnvironmentVariables;
 
-      _mockIEnvironmentVariables = new MockIEnvironmentVariables(dict);
-      ComponentRegistry.Register<IEnvironmentVariablesRetriever>(_mockIEnvironmentVariables);
+        public DatabaseParametersTest()
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_CATEGORY", "MYSQL");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_NAME", "12F");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_URL", "jdbc:mysql://localhost:9001/");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_DRIVER", "com.mysql.cj.jdbc.Driver");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_USERNAME", "12FDB");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_PASSWORD", "vlingo12F");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_ORIGINATOR", "FTI");
+            dict.Add("VLINGO_XOOM_QUERY_DATABASE_CONNECTION_ATTEMPTS", "2");
+
+            _mockIEnvironmentVariables = new MockIEnvironmentVariables(dict);
+            ComponentRegistry.Register<IEnvironmentVariablesRetriever>(_mockIEnvironmentVariables);
+        }
+
+        [Fact]
+        public void TestThatDomainParametersAreLoaded()
+        {
+            var parameters = new DatabaseParameters(new Model(ModelType.Domain.ToString()),
+                new ReadOnlyDictionary<string, string>(Settings.Properties()));
+
+            Assert.Equal("IN_MEMORY", parameters.Database);
+            Assert.True(parameters.AutoCreate);
+        }
+
+        [Fact]
+        public void TestThatCommandParametersAreLoaded()
+        {
+            var parameters = new DatabaseParameters(new Model(ModelType.Command.ToString()),
+                new ReadOnlyDictionary<string, string>(Settings.Properties()));
+
+            Assert.Equal("IN_MEMORY", parameters.Database);
+            Assert.True(parameters.AutoCreate);
+        }
+
+        [Fact]
+        public void TestThatQueryParametersAreLoaded()
+        {
+            var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
+                new ReadOnlyDictionary<string, string>(Settings.Properties()), true);
+
+            Assert.Equal("MYSQL", parameters.Database);
+            Assert.Equal("STORAGE_TEST", parameters.Name);
+            Assert.Equal("jdbc:mysql://localhost:2215/", parameters.Url);
+            Assert.Equal("com.mysql.cj.jdbc.Driver", parameters.Driver);
+            Assert.Equal("vlingo_test", parameters.Username);
+            Assert.Equal("vlingo123", parameters.Password);
+            Assert.Equal("MAIN", parameters.Originator);
+            Assert.True(parameters.AutoCreate);
+        }
+
+        [Fact]
+        public void TestThatQueryParametersAreLoadedEnvVars()
+        {
+            var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
+                new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()), true);
+
+            Assert.Equal("MYSQL", parameters.Database);
+            Assert.Equal("12F", parameters.Name);
+            Assert.Equal("jdbc:mysql://localhost:9001/", parameters.Url);
+            Assert.Equal("com.mysql.cj.jdbc.Driver", parameters.Driver);
+            Assert.Equal("12FDB", parameters.Username);
+            Assert.Equal("vlingo12F", parameters.Password);
+            Assert.Equal("FTI", parameters.Originator);
+            Assert.True(parameters.AutoCreate);
+        }
+
+        public void Dispose()
+        {
+            ComponentRegistry.Clear();
+        }
     }
-
-    [Fact]
-    public void TestThatDomainParametersAreLoaded()
-    {
-      var parameters = new DatabaseParameters(new Model(ModelType.Domain.ToString()),
-        new ReadOnlyDictionary<string, string>(Settings.Properties()));
-
-      Assert.Equal("IN_MEMORY", parameters.Database);
-      Assert.True(parameters.AutoCreate);
-    }
-
-    [Fact]
-    public void TestThatCommandParametersAreLoaded()
-    {
-      var parameters = new DatabaseParameters(new Model(ModelType.Command.ToString()),
-        new ReadOnlyDictionary<string, string>(Settings.Properties()));
-
-      Assert.Equal("IN_MEMORY", parameters.Database);
-      Assert.True(parameters.AutoCreate);
-    }
-
-    [Fact]
-    public void TestThatQueryParametersAreLoaded()
-    {
-      var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
-        new ReadOnlyDictionary<string, string>(Settings.Properties()), true);
-
-      Assert.Equal("MYSQL", parameters.Database);
-      Assert.Equal("STORAGE_TEST", parameters.Name);
-      Assert.Equal("jdbc:mysql://localhost:2215/", parameters.Url);
-      Assert.Equal("com.mysql.cj.jdbc.Driver", parameters.Driver);
-      Assert.Equal("vlingo_test", parameters.Username);
-      Assert.Equal("vlingo123", parameters.Password);
-      Assert.Equal("MAIN", parameters.Originator);
-      Assert.True(parameters.AutoCreate);
-    }
-
-    [Fact]
-    public void TestThatQueryParametersAreLoadedEnvVars()
-    {
-      var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
-        new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()), true);
-
-      Assert.Equal("MYSQL", parameters.Database);
-      Assert.Equal("12F", parameters.Name);
-      Assert.Equal("jdbc:mysql://localhost:9001/", parameters.Url);
-      Assert.Equal("com.mysql.cj.jdbc.Driver", parameters.Driver);
-      Assert.Equal("12FDB", parameters.Username);
-      Assert.Equal("vlingo12F", parameters.Password);
-      Assert.Equal("FTI", parameters.Originator);
-      Assert.True(parameters.AutoCreate);
-    }
-
-    public void Dispose()
-    {
-      ComponentRegistry.Clear();
-    }
-  }
 }

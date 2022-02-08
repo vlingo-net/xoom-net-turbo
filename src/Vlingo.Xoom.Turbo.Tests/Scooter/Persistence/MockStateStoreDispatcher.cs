@@ -30,10 +30,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			_access = AccessSafely.AfterCompleting(0);
 		}
 
-		public void ControlWith(IDispatcherControl control)
-		{
-			_control = control;
-		}
+		public void ControlWith(IDispatcherControl control) => _control = control;
 
 		public void Dispatch(Dispatchable dispatchable)
 		{

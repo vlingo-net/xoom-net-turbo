@@ -9,17 +9,14 @@ using System.Collections.Generic;
 
 namespace Vlingo.Xoom.Turbo.Tests
 {
-  public class MockIEnvironmentVariables : EnvironmentVariables.IEnvironmentVariablesRetriever
-  {
-    private readonly Dictionary<string, string> _values;
-
-    public MockIEnvironmentVariables(Dictionary<string, string> values)
+    public class MockIEnvironmentVariables : EnvironmentVariables.IEnvironmentVariablesRetriever
     {
-      _values = values;
+        private readonly Dictionary<string, string> _values;
+
+        public MockIEnvironmentVariables(Dictionary<string, string> values) => _values = values;
+
+        public string Retrieve(string key) => _values.GetValueOrDefault(key);
+
+        public bool ContainsKey(string key) => _values.ContainsKey(key);
     }
-
-    public string Retrieve(string key) => _values.GetValueOrDefault(key);
-
-    public bool ContainsKey(string key) => _values.ContainsKey(key);
-  }
 }

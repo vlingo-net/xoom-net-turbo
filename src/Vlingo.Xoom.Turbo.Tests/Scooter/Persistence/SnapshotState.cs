@@ -14,6 +14,5 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 		public SnapshotState() : base("123", typeof(string), 1, "data", 1, null)
 		{
 		}
-
 	}
 }

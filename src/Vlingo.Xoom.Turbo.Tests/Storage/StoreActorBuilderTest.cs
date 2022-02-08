@@ -12,40 +12,34 @@ using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Storage
 {
-  public class StoreActorBuilderTest : IDisposable
-  {
-    private readonly World _world;
-
-    public StoreActorBuilderTest()
+    public class StoreActorBuilderTest : IDisposable
     {
-      _world = World.StartWithDefaults("store-actor-build-tests");
-    }
+        private readonly World _world;
 
-    [Fact]
-    public void TestThatMySqlJournalActorIsBuilt()
-    {
-      // var journal = StoreActorBuilder.From(_world.Stage, new Model(ModelType.Command.ToString()),
-      //   new MockDispatcher<,>(),
-      //   StorageType.Journal, DefaultDatabaseProperties(Codegen.Template.Storage.ModelType.Command), false);
-    }
+        public StoreActorBuilderTest() => _world = World.StartWithDefaults("store-actor-build-tests");
 
-    private Properties DefaultDatabaseProperties(ModelType modelType)
-    {
-      var prefix = ModelType.Query.Equals(modelType) ? "query." : "";
-      var properties = new Properties();
-      properties.SetProperty(prefix + "database", "MYSQL");
-      properties.SetProperty(prefix + "database.name", "STORAGE_TEST");
-      properties.SetProperty(prefix + "database.url", "jdbc:mysql://localhost:2215/");
-      properties.SetProperty(prefix + "database.driver", "com.mysql.cj.jdbc.Driver");
-      properties.SetProperty(prefix + "database.username", "xoom_test");
-      properties.SetProperty(prefix + "database.password", "vlingo123");
-      properties.SetProperty(prefix + "database.originator", "MAIN");
-      return properties;
-    }
+        [Fact]
+        public void TestThatMySqlJournalActorIsBuilt()
+        {
+            // var journal = StoreActorBuilder.From(_world.Stage, new Model(ModelType.Command.ToString()),
+            //   new MockDispatcher<,>(),
+            //   StorageType.Journal, DefaultDatabaseProperties(Codegen.Template.Storage.ModelType.Command), false);
+        }
 
-    public void Dispose()
-    {
-      _world.Terminate();
+        private Properties DefaultDatabaseProperties(ModelType modelType)
+        {
+            var prefix = ModelType.Query.Equals(modelType) ? "query." : "";
+            var properties = new Properties();
+            properties.SetProperty(prefix + "database", "MYSQL");
+            properties.SetProperty(prefix + "database.name", "STORAGE_TEST");
+            properties.SetProperty(prefix + "database.url", "jdbc:mysql://localhost:2215/");
+            properties.SetProperty(prefix + "database.driver", "com.mysql.cj.jdbc.Driver");
+            properties.SetProperty(prefix + "database.username", "xoom_test");
+            properties.SetProperty(prefix + "database.password", "vlingo123");
+            properties.SetProperty(prefix + "database.originator", "MAIN");
+            return properties;
+        }
+
+        public void Dispose() => _world.Terminate();
     }
-  }
 }
