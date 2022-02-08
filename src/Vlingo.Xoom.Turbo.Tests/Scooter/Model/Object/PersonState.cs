@@ -41,7 +41,9 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
         public PersonState With(int age) => new PersonState(PersistenceId, Name, age);
         public int GetHashCode(PersonState obj) => 31 * Name.GetHashCode() * Age;
 
-        public override bool Equals(object? other)
+        public override bool Equals(object other) => Equals((PersonState)other);
+
+        protected bool Equals(PersonState other)
         {
             if (other == null || other.GetType() != GetType())
             {
@@ -53,9 +55,14 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
                 return true;
             }
 
-            var otherPerson = (PersonState)other;
+            var otherPerson = other;
 
             return PersistenceId == otherPerson.PersistenceId;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), Name, Age);
         }
 
         public int CompareTo(PersonState otherPerson) => PersistenceId.CompareTo(otherPerson.PersistenceId);

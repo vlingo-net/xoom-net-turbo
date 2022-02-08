@@ -11,14 +11,14 @@ using Vlingo.Xoom.Symbio;
 
 namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 {
-  public abstract class EventSourcedEntity : SourcedEntity<DomainEvent>
-  {
-    public EventSourcedEntity() : base()
+    public abstract class EventSourcedEntity : SourcedEntity<DomainEvent>
     {
-    }
+        public EventSourcedEntity()
+        {
+        }
 
-    public EventSourcedEntity(List<Source<DomainEvent>> stream, int currentVersion) : base(stream, currentVersion)
-    {
+        public EventSourcedEntity(List<Source<DomainEvent>> stream, int currentVersion) : base(stream, currentVersion)
+        {
+        }
     }
-  }
 }

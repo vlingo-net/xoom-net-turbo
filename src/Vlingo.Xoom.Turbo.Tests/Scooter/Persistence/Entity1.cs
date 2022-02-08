@@ -18,13 +18,20 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 			Value = value;
 		}
 
-		public override bool Equals(object obj)
+		public override bool Equals(object obj) => Equals((Entity1)obj);
+
+		protected bool Equals(Entity1 other)
 		{
-			if (obj == null || obj.GetType() != GetType())
+			if (other == null || other.GetType() != GetType())
 			{
 				return false;
 			}
-			return Id == ((Entity1)obj).Id;
+			return Id == (other).Id;
+		}
+
+		public override int GetHashCode()
+		{
+			throw new System.NotImplementedException();
 		}
 	}
 }

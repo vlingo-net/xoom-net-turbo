@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 {
 	public abstract class ProductGrandParent : EventSourcedEntity
 	{
-		public string Type { get; set; }
+		public override string Type { get; }
 
 		protected ProductGrandParent(string type)
 		{

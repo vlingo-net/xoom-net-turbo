@@ -17,7 +17,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
 	{
 		private readonly EntryAdapterProvider _adapterProvider;
 		private readonly IJournal<string> _journal;
-		private readonly IStreamReader? _reader;
+		private readonly IStreamReader _reader;
 
 		public TestEntityRepository(IJournal<string> journal, EntryAdapterProvider adapterProvider)
 		{

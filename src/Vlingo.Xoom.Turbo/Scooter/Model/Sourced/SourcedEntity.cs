@@ -38,8 +38,8 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		/// Answer my type name.
 		/// </summary>
 		/// <returns><see cref="string<S,C>"/></returns>
-		public string Type() => GetType().Name;
-		
+		public virtual string Type => GetType().Name;
+
 		/// <summary>
 		/// Construct my default state.
 		/// </summary>
@@ -126,7 +126,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		{
 			var builder = new StringBuilder();
 			builder.Append(streamNameSegments[0]);
-			for (int idx = 1; idx < streamNameSegments.Length; ++idx)
+			for (var idx = 1; idx < streamNameSegments.Length; ++idx)
 			{
 				builder.Append(separator).Append(streamNameSegments[idx]);
 			}
@@ -144,7 +144,7 @@ namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
 		{
 			foreach (var source in stream)
 			{
-				Type? type = GetType();
+				var type = GetType();
 
 				Action<Source<T>>? consumer = null;
 				while (type != typeof(SourcedEntity<>))

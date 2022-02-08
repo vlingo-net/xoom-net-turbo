@@ -36,7 +36,9 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
 
         public int GetHashCode(EmployeeState obj) => 31 * Number.GetHashCode() * Salary;
 
-        public override bool Equals(object other)
+        public override bool Equals(object other) => Equals((EmployeeState)other);
+
+        protected bool Equals(EmployeeState other)
         {
             if (other == null || other.GetType() != GetType())
             {
@@ -48,9 +50,14 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
                 return true;
             }
 
-            var otherEmployee = (EmployeeState)other;
+            var otherEmployee = other;
 
             return PersistenceId == otherEmployee.PersistenceId;
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
         }
 
         public int CompareTo(EmployeeState otherEmployee) => PersistenceId.CompareTo(otherEmployee.PersistenceId);

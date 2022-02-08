@@ -97,9 +97,16 @@ namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
 
 			var otherProduct = (Product)obj;
 
-			return this.Name == otherProduct.Name &&
-			       this.Description == otherProduct.Description &&
-			       this.Price == otherProduct.Price;
+			return Name == otherProduct.Name &&
+			       Description == otherProduct.Description &&
+			       Price == otherProduct.Price;
+		}
+
+		protected bool Equals(Product other) => Equals((object)other);
+
+		public override int GetHashCode()
+		{
+			throw new System.NotImplementedException();
 		}
 	}
 }
