@@ -7,7 +7,7 @@
 
         <!-- NuGet Metadata -->
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.1.5</PackageVersion>
+        <PackageVersion>$(VlingoVersion)</PackageVersion>
         <PackageId>Vlingo.Xoom.Turbo</PackageId>
         <Authors>Vlingo</Authors>
         <Description>
@@ -57,7 +57,7 @@
           <PackageReference Include="Vlingo.Xoom.Http" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Lattice" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Symbio" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.3.3" />
+          <PackageReference Include="Vlingo.Xoom.Symbio.Ado" Version="0.3.4" />
           <PackageReference Include="Vlingo.Xoom.UUID" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Xoom.Wire" Version="$(VlingoVersion)" />
         </ItemGroup>
