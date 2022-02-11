@@ -12,51 +12,50 @@ using Vlingo.Xoom.Symbio.Store;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
-namespace Vlingo.Xoom.Turbo.Storage
+namespace Vlingo.Xoom.Turbo.Storage;
+
+public class StoreActorBuilder
 {
-	public class StoreActorBuilder
-	{
-		private static readonly List<IStoreActorBuilder> Builders =
-			new List<IStoreActorBuilder>
-			{
-				new InMemoryStateStoreActorBuilder(), new DefaultStateStoreActorBuilder(),
-				new InMemoryJournalActorBuilder(), new DefaultJournalActorBuilder(),
-				new ObjectStoreActorBuilder()
-			};
-
-		static T From<T>(
-			Stage stage,
-			Model model,
-			IDispatcher dispatcher,
-			StorageType storageType,
-			IReadOnlyDictionary<string, string> properties,
-			bool autoDatabaseCreation) where T : class =>
-			From<T>(stage, model, new List<IDispatcher> { dispatcher }, storageType, properties, autoDatabaseCreation);
-
-		static T From<T>(
-			Stage stage,
-			Model model,
-			List<IDispatcher> dispatcher,
-			StorageType storageType,
-			IReadOnlyDictionary<string, string> properties,
-			bool autoDatabaseCreation) where T : class
+	private static readonly List<IStoreActorBuilder> Builders =
+		new List<IStoreActorBuilder>
 		{
-			try
-			{
-				var configuration = new DatabaseParameters(model, properties, autoDatabaseCreation)
-					.MapToConfiguration();
+			new InMemoryStateStoreActorBuilder(), new DefaultStateStoreActorBuilder(),
+			new InMemoryJournalActorBuilder(), new DefaultJournalActorBuilder(),
+			new ObjectStoreActorBuilder()
+		};
 
-				var databaseType = DatabaseType.RetrieveFromConfiguration(configuration);
+	static T From<T>(
+		Stage stage,
+		Model model,
+		IDispatcher dispatcher,
+		StorageType storageType,
+		IReadOnlyDictionary<string, string> properties,
+		bool autoDatabaseCreation) where T : class =>
+		From<T>(stage, model, new List<IDispatcher> { dispatcher }, storageType, properties, autoDatabaseCreation);
+
+	static T From<T>(
+		Stage stage,
+		Model model,
+		List<IDispatcher> dispatcher,
+		StorageType storageType,
+		IReadOnlyDictionary<string, string> properties,
+		bool autoDatabaseCreation) where T : class
+	{
+		try
+		{
+			var configuration = new DatabaseParameters(model, properties, autoDatabaseCreation)
+				.MapToConfiguration();
+
+			var databaseType = DatabaseType.RetrieveFromConfiguration(configuration);
 
 
-				return Builders
-					.First(resolver => resolver.Support(storageType, databaseType))
-					.Build<T>(stage, dispatcher, configuration);
-			}
-			catch (StorageException)
-			{
-				return storageType.ResolveNoOpStore<T>(stage)!;
-			}
+			return Builders
+				.First(resolver => resolver.Support(storageType, databaseType))
+				.Build<T>(stage, dispatcher, configuration);
+		}
+		catch (StorageException)
+		{
+			return storageType.ResolveNoOpStore<T>(stage)!;
 		}
 	}
 }

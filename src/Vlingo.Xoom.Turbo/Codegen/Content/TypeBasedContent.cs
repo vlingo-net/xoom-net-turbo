@@ -8,25 +8,24 @@
 using System;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Content
+namespace Vlingo.Xoom.Turbo.Codegen.Content;
+
+public class TypeBasedContent : ContentBase
 {
-    public class TypeBasedContent : ContentBase
-    {
 
-        public readonly Type ContentType;
+    public readonly Type ContentType;
 
-        public TypeBasedContent(TemplateStandard standard, Type contentType) : base(standard) => ContentType = contentType;
+    public TypeBasedContent(TemplateStandard standard, Type contentType) : base(standard) => ContentType = contentType;
 
-        public override void Create() => throw new NotSupportedException("Type Based Content is read-only");
+    public override void Create() => throw new NotSupportedException("Type Based Content is read-only");
 
-        public override string RetrieveClassName() => ContentType.Name;
+    public override string RetrieveClassName() => ContentType.Name;
 
-        public override string RetrievePackage() => ClassFormatter.PackageOf(RetrieveQualifiedName());
+    public override string RetrievePackage() => ClassFormatter.PackageOf(RetrieveQualifiedName());
 
-        public override string RetrieveQualifiedName() => ContentType.FullName!;
+    public override string RetrieveQualifiedName() => ContentType.FullName!;
 
-        public override bool CanWrite() => false;
+    public override bool CanWrite() => false;
 
-        public override bool Contains(string term) => throw new NotSupportedException("Unable to search on TypeBasedContent");
-    }
+    public override bool Contains(string term) => throw new NotSupportedException("Unable to search on TypeBasedContent");
 }

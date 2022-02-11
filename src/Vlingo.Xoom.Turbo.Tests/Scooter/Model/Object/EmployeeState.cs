@@ -9,57 +9,56 @@ using System;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Symbio.Store.Object;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object;
+
+public class EmployeeState : StateObject, IComparable<EmployeeState>
 {
-    public class EmployeeState : StateObject, IComparable<EmployeeState>
+    private static readonly AtomicLong IdentityGenerator = new AtomicLong(0);
+
+    public string Number { get; }
+    public int Salary { get; }
+
+    public EmployeeState() : base(IdentityGenerator.IncrementAndGet())
     {
-        private static readonly AtomicLong IdentityGenerator = new AtomicLong(0);
-
-        public string Number { get; }
-        public int Salary { get; }
-
-        public EmployeeState() : base(IdentityGenerator.IncrementAndGet())
-        {
-            Number = "";
-            Salary = 0;
-        }
-
-        public EmployeeState(long id, string number, int salary) : base(id)
-        {
-            Number = number;
-            Salary = salary;
-        }
-
-        public EmployeeState With(string number) => new EmployeeState(PersistenceId, number, Salary);
-
-        public EmployeeState With(int salary) => new EmployeeState(PersistenceId, Number, salary);
-
-        public int GetHashCode(EmployeeState obj) => 31 * Number.GetHashCode() * Salary;
-
-        public override bool Equals(object other) => Equals((EmployeeState)other);
-
-        protected bool Equals(EmployeeState other)
-        {
-            if (other == null || other.GetType() != GetType())
-            {
-                return false;
-            }
-
-            if (this == other)
-            {
-                return true;
-            }
-
-            var otherEmployee = other;
-
-            return PersistenceId == otherEmployee.PersistenceId;
-        }
-
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int CompareTo(EmployeeState otherEmployee) => PersistenceId.CompareTo(otherEmployee.PersistenceId);
+        Number = "";
+        Salary = 0;
     }
+
+    public EmployeeState(long id, string number, int salary) : base(id)
+    {
+        Number = number;
+        Salary = salary;
+    }
+
+    public EmployeeState With(string number) => new EmployeeState(PersistenceId, number, Salary);
+
+    public EmployeeState With(int salary) => new EmployeeState(PersistenceId, Number, salary);
+
+    public int GetHashCode(EmployeeState obj) => 31 * Number.GetHashCode() * Salary;
+
+    public override bool Equals(object other) => Equals((EmployeeState)other);
+
+    protected bool Equals(EmployeeState other)
+    {
+        if (other == null || other.GetType() != GetType())
+        {
+            return false;
+        }
+
+        if (this == other)
+        {
+            return true;
+        }
+
+        var otherEmployee = other;
+
+        return PersistenceId == otherEmployee.PersistenceId;
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public int CompareTo(EmployeeState otherEmployee) => PersistenceId.CompareTo(otherEmployee.PersistenceId);
 }

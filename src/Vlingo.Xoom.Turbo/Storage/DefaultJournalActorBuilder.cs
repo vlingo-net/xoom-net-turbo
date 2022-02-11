@@ -10,17 +10,16 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
-namespace Vlingo.Xoom.Turbo.Storage
-{
-	public class DefaultJournalActorBuilder : IStoreActorBuilder
-	{
-		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class
-		{
-			// TODO: need symbio store implementation
-			return default!;
-		}
+namespace Vlingo.Xoom.Turbo.Storage;
 
-		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
-			storageType.IsJournal() && !databaseType.IsInMemory();
+public class DefaultJournalActorBuilder : IStoreActorBuilder
+{
+	public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class
+	{
+		// TODO: need symbio store implementation
+		return default!;
 	}
+
+	public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
+		storageType.IsJournal() && !databaseType.IsInMemory();
 }

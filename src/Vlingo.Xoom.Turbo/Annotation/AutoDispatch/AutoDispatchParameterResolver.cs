@@ -9,18 +9,17 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
-{
-	public class AutoDispatchParameterResolver
-	{
-		public static AutoDispatchParameterResolver From(Type autoDispatchResourceClasses, ProcessingEnvironment environment)
-		{
-			throw new NotImplementedException();
-		}
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 
-		public IReadOnlyDictionary<Label, string> Resolve()
-		{
-			throw new NotImplementedException();
-		}
+public class AutoDispatchParameterResolver
+{
+	public static AutoDispatchParameterResolver From(Type autoDispatchResourceClasses, ProcessingEnvironment environment)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IReadOnlyDictionary<Label, string> Resolve()
+	{
+		throw new NotImplementedException();
 	}
 }

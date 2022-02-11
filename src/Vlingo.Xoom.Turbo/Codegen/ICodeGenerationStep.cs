@@ -5,11 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Codegen
+namespace Vlingo.Xoom.Turbo.Codegen;
+
+public interface ICodeGenerationStep
 {
-	public interface ICodeGenerationStep
-	{
-		public void Process(CodeGenerationContext context);
-		public bool ShouldProcess(CodeGenerationContext context);
-	}
+	public void Process(CodeGenerationContext context);
+	public bool ShouldProcess(CodeGenerationContext context);
 }

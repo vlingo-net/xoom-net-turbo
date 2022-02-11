@@ -11,47 +11,46 @@ using Vlingo.Xoom.Actors.TestKit;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Symbio.Store.Dispatch;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence;
+
+public class MockDispatcher<T, ST> : IDispatcher
 {
-	public class MockDispatcher<T, ST> : IDispatcher
+	private AccessSafely _access;
+	private readonly IConfirmDispatchedResultInterest _confirmDispatchedResultInterest;
+	private IDispatcherControl _control;
+	private AtomicBoolean _processDispatch = new AtomicBoolean(true);
+	private List<Dispatchable> _dispatched = new List<Dispatchable>();
+	private int _dispatchAttemptCount = 0;
+
+	public MockDispatcher(IConfirmDispatchedResultInterest confirmDispatchedResultInterest)
 	{
-		private AccessSafely _access;
-		private readonly IConfirmDispatchedResultInterest _confirmDispatchedResultInterest;
-		private IDispatcherControl _control;
-		private AtomicBoolean _processDispatch = new AtomicBoolean(true);
-		private List<Dispatchable> _dispatched = new List<Dispatchable>();
-		private int _dispatchAttemptCount = 0;
+		_confirmDispatchedResultInterest = confirmDispatchedResultInterest;
+		_access = AfterCompleting(0);
+	}
 
-		public MockDispatcher(IConfirmDispatchedResultInterest confirmDispatchedResultInterest)
-		{
-			_confirmDispatchedResultInterest = confirmDispatchedResultInterest;
-			_access = AfterCompleting(0);
-		}
-
-		private AccessSafely AfterCompleting(int times)
-		{
-			_access = AccessSafely.AfterCompleting(times)
-				.WritingWith("dispatched", (Action<Dispatchable>)_dispatched.Add)
-				.ReadingWith("dispatched", () => _dispatched)
+	private AccessSafely AfterCompleting(int times)
+	{
+		_access = AccessSafely.AfterCompleting(times)
+			.WritingWith("dispatched", (Action<Dispatchable>)_dispatched.Add)
+			.ReadingWith("dispatched", () => _dispatched)
 				
-				.WritingWith("processDispatch", (Action<bool>)_processDispatch.Set)
-				.ReadingWith("processDispatch", _processDispatch.Get)
-				.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount);
+			.WritingWith("processDispatch", (Action<bool>)_processDispatch.Set)
+			.ReadingWith("processDispatch", _processDispatch.Get)
+			.ReadingWith("dispatchAttemptCount", () => _dispatchAttemptCount);
 
-			return _access;
-		}
+		return _access;
+	}
 
-		public void ControlWith(IDispatcherControl control) => _control = control;
+	public void ControlWith(IDispatcherControl control) => _control = control;
 
-		public void Dispatch(Dispatchable dispatchable)
+	public void Dispatch(Dispatchable dispatchable)
+	{
+		_dispatchAttemptCount++;
+		if (_processDispatch.Get())
 		{
-			_dispatchAttemptCount++;
-			if (_processDispatch.Get())
-			{
-				var dispatchId = dispatchable.Id;
-				_access.WriteUsing("dispatched", dispatchable);
-				_control.ConfirmDispatched(dispatchId, _confirmDispatchedResultInterest);
-			}
+			var dispatchId = dispatchable.Id;
+			_access.WriteUsing("dispatched", dispatchable);
+			_control.ConfirmDispatched(dispatchId, _confirmDispatchedResultInterest);
 		}
 	}
 }

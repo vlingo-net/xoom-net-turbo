@@ -10,20 +10,19 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
+
+public abstract class TypeBasedContentLoader : AnnotationBasedContentLoader<List<Type>>
 {
-    public abstract class TypeBasedContentLoader : AnnotationBasedContentLoader<List<Type>>
+    public TypeBasedContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+        environment)
     {
-        public TypeBasedContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-            environment)
-        {
-        }
-
-        public override void Load(CodeGenerationContext context) => RetrieveContentSource()
-            .ForEach(typeElement => context.AddContent(Standard(), typeElement));
-
-        protected abstract TemplateStandard Standard();
-
-        protected abstract override List<Type> RetrieveContentSource();
     }
+
+    public override void Load(CodeGenerationContext context) => RetrieveContentSource()
+        .ForEach(typeElement => context.AddContent(Standard(), typeElement));
+
+    protected abstract TemplateStandard Standard();
+
+    protected abstract override List<Type> RetrieveContentSource();
 }

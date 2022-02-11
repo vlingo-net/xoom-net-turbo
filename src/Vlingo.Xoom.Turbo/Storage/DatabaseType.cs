@@ -8,26 +8,25 @@
 using System;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Xoom.Turbo.Storage
+namespace Vlingo.Xoom.Turbo.Storage;
+
+public class DatabaseType
 {
-    public class DatabaseType
+    private readonly string _name;
+
+    public DatabaseType(string name) => _name = name;
+
+    public static DatabaseCategory RetrieveFromConfiguration(Configuration? configuration)
     {
-        private readonly string _name;
-
-        public DatabaseType(string name) => _name = name;
-
-        public static DatabaseCategory RetrieveFromConfiguration(Configuration? configuration)
+        if (configuration == null)
         {
-            if (configuration == null)
-            {
-                return DatabaseCategory.InMemory;
-            }
-
-            throw new ArgumentException($"Configuration is not supported");
+            return DatabaseCategory.InMemory;
         }
 
-        public bool IsInMemory => Equals(DatabaseCategory.InMemory);
-
-        public bool HasName(string name) => _name == name;
+        throw new ArgumentException($"Configuration is not supported");
     }
+
+    public bool IsInMemory => Equals(DatabaseCategory.InMemory);
+
+    public bool HasName(string name) => _name == name;
 }

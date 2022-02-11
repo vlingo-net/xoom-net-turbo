@@ -13,30 +13,29 @@ using Vlingo.Xoom.Lattice.Model.Sourcing;
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
+
+public class AggregateContentLoader : TypeBasedContentLoader
 {
-    public class AggregateContentLoader : TypeBasedContentLoader
+    public AggregateContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+        environment)
     {
-        public AggregateContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-            environment)
+    }
+
+    protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.Aggregate);
+
+    protected override List<Type> RetrieveContentSource()
+    {
+        var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
+        if (!persistence!.IsJournal())
         {
+            return new List<Type>();
         }
 
-        protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.Aggregate);
+        var baseDirectory = Context.LocateBaseDirectory(Environment.GetFiler());
 
-        protected override List<Type> RetrieveContentSource()
-        {
-            var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
-            if (!persistence!.IsJournal())
-            {
-                return new List<Type>();
-            }
+        var allPackages = PackageCollector.From(baseDirectory, persistence.BasePackage).CollectAll().ToArray();
 
-            var baseDirectory = Context.LocateBaseDirectory(Environment.GetFiler());
-
-            var allPackages = PackageCollector.From(baseDirectory, persistence.BasePackage).CollectAll().ToArray();
-
-            return TypeRetriever.SubClassesOf<EventSourced>(allPackages);
-        }
+        return TypeRetriever.SubClassesOf<EventSourced>(allPackages);
     }
 }

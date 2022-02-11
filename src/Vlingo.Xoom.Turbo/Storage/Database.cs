@@ -7,41 +7,40 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Storage
-{
-	public class Database
-	{
-		public static DatabaseCategory? From(string name)
-		{
-			if (name == null)
-			{
-				return null;
-			}
+namespace Vlingo.Xoom.Turbo.Storage;
 
-			try
-			{
-				var database = (DatabaseCategory)Enum.Parse(typeof(DatabaseCategory), name);
-				return database;
-			}
-			catch (Exception e)
-			{
-				throw new ArgumentException(e.Message, e);
-			}
+public class Database
+{
+	public static DatabaseCategory? From(string name)
+	{
+		if (name == null)
+		{
+			return null;
+		}
+
+		try
+		{
+			var database = (DatabaseCategory)Enum.Parse(typeof(DatabaseCategory), name);
+			return database;
+		}
+		catch (Exception e)
+		{
+			throw new ArgumentException(e.Message, e);
 		}
 	}
+}
 
-	public static class DatabaseCategoryExtensions
-	{
-		public static bool IsInMemory(this DatabaseCategory databaseCategory) =>
-			databaseCategory.Equals(DatabaseCategory.InMemory);
-	}
+public static class DatabaseCategoryExtensions
+{
+	public static bool IsInMemory(this DatabaseCategory databaseCategory) =>
+		databaseCategory.Equals(DatabaseCategory.InMemory);
+}
 
-	public enum DatabaseCategory
-	{
-		InMemory,
-		Postgres,
-		Hsqldb,
-		Mysql,
-		YugaByte
-	}
+public enum DatabaseCategory
+{
+	InMemory,
+	Postgres,
+	Hsqldb,
+	Mysql,
+	YugaByte
 }

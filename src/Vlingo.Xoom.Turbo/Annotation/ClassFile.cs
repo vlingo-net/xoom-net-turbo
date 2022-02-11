@@ -8,30 +8,29 @@
 using System;
 using System.IO;
 
-namespace Vlingo.Xoom.Turbo.Annotation
+namespace Vlingo.Xoom.Turbo.Annotation;
+
+public class ClassFile
 {
-	public class ClassFile
+	private readonly FileStream _file;
+
+	public static ClassFile From(string path, Type typeElement) => new ClassFile(path, typeElement);
+
+	private ClassFile(string path, Type typeElement)
 	{
-		private readonly FileStream _file;
+		var className = $"{typeElement.Name}.cs";
 
-		public static ClassFile From(string path, Type typeElement) => new ClassFile(path, typeElement);
+		var packageName = typeElement.Namespace;
 
-		private ClassFile(string path, Type typeElement)
-		{
-			var className = $"{typeElement.Name}.cs";
-
-			var packageName = typeElement.Namespace;
-
-			_file = FindFile(path, packageName, className);
-		}
-
-		private FileStream FindFile(string path, string? packageName, string className)
-		{
-			var sourceFolder = Context.LocateSourceFolder(path);
-			var packagePath = packageName?.Replace("\\.", "/") ?? string.Empty;
-			return new FileStream(Path.Combine(sourceFolder, packagePath, className), FileMode.Create);
-		}
-
-		public FileStream OpenInputStream() => _file;
+		_file = FindFile(path, packageName, className);
 	}
+
+	private FileStream FindFile(string path, string? packageName, string className)
+	{
+		var sourceFolder = Context.LocateSourceFolder(path);
+		var packagePath = packageName?.Replace("\\.", "/") ?? string.Empty;
+		return new FileStream(Path.Combine(sourceFolder, packagePath, className), FileMode.Create);
+	}
+
+	public FileStream OpenInputStream() => _file;
 }

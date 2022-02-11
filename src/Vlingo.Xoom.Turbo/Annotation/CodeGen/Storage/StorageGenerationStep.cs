@@ -12,32 +12,31 @@ using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+
+public class StorageGenerationStep : TemplateProcessingStep
 {
-	public class StorageGenerationStep : TemplateProcessingStep
+	protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context)
 	{
-		protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context)
-		{
-			var basePackage = context.ParameterOf<string>(Label.Package);
-			var useCqrs = context.ParameterOf(Label.Cqrs, x => bool.TrueString.ToLower() == x);
-			var storageType = context.ParameterOf(Label.StorageType, x =>
-			{
-				Enum.TryParse(x, out StorageType value);
-				return value;
-			});
-			var projectionType = context.ParameterOf(Label.ProjectionType, x =>
-			{
-				Enum.TryParse(x, out ProjectionType value);
-				return value;
-			});
-
-			return StorageTemplateDataFactory.Build(basePackage, context.Contents(), storageType, projectionType, useCqrs);
-		}
-
-		public override bool ShouldProcess(CodeGenerationContext context) => context.ParameterOf(Label.StorageType, x =>
+		var basePackage = context.ParameterOf<string>(Label.Package);
+		var useCqrs = context.ParameterOf(Label.Cqrs, x => bool.TrueString.ToLower() == x);
+		var storageType = context.ParameterOf(Label.StorageType, x =>
 		{
 			Enum.TryParse(x, out StorageType value);
 			return value;
-		}).IsEnabled();
+		});
+		var projectionType = context.ParameterOf(Label.ProjectionType, x =>
+		{
+			Enum.TryParse(x, out ProjectionType value);
+			return value;
+		});
+
+		return StorageTemplateDataFactory.Build(basePackage, context.Contents(), storageType, projectionType, useCqrs);
 	}
+
+	public override bool ShouldProcess(CodeGenerationContext context) => context.ParameterOf(Label.StorageType, x =>
+	{
+		Enum.TryParse(x, out StorageType value);
+		return value;
+	}).IsEnabled();
 }

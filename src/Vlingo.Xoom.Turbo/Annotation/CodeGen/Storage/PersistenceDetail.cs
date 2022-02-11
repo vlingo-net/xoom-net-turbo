@@ -5,20 +5,19 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
-{
-	public class PersistenceDetail
-	{
-		public static string ResolvePackage(string basePackage)
-		{
-			if (basePackage.EndsWith(".infrastructure"))
-				return $"{basePackage}.{PersistencePackageName}";
-			
-			return string.Format(PackagePattern, basePackage, ParentPackageName, PersistencePackageName).ToLower();
-		}
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 
-		private const string PackagePattern = "{0}.{1}.{2}";
-		private const string ParentPackageName = "infrastructure";
-		private const string PersistencePackageName = "persistence";
+public class PersistenceDetail
+{
+	public static string ResolvePackage(string basePackage)
+	{
+		if (basePackage.EndsWith(".infrastructure"))
+			return $"{basePackage}.{PersistencePackageName}";
+			
+		return string.Format(PackagePattern, basePackage, ParentPackageName, PersistencePackageName).ToLower();
 	}
+
+	private const string PackagePattern = "{0}.{1}.{2}";
+	private const string ParentPackageName = "infrastructure";
+	private const string PersistencePackageName = "persistence";
 }

@@ -7,11 +7,10 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+
+[AttributeUsage(AttributeTargets.Method)]
+public class ResponseAdapterAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Method)]
-	public class ResponseAdapterAttribute : Attribute
-	{
-		public int Handler { get; set; }
-	}
+	public int Handler { get; set; }
 }

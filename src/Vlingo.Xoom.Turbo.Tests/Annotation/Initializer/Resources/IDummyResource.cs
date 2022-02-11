@@ -11,15 +11,14 @@ using Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 using Vlingo.Xoom.Turbo.Tests.Annotation.Model;
 using Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer.Resources;
+
+[AutoDispatch(Path = "/dummies", Handlers = typeof(DummyHandlers))]
+[Queries(Protocol = typeof(IDummyQueries), Actor = typeof(DummyQueriesActor))]
+[Model(Protocol = typeof(IDummy), Actor = typeof(DummyEntity), Data = typeof(DummyData))]
+public interface IDummyResource
 {
-    [AutoDispatch(Path = "/dummies", Handlers = typeof(DummyHandlers))]
-    [Queries(Protocol = typeof(IDummyQueries), Actor = typeof(DummyQueriesActor))]
-    [Model(Protocol = typeof(IDummy), Actor = typeof(DummyEntity), Data = typeof(DummyData))]
-    public interface IDummyResource
-    {
-        [Route(Method = Method.Post, Handler = 1)]
-        [ResponseAdapter(Handler = 3)]
-        ICompletes<Response> DefineDummy([Body] DummyData dummyData);
-    }
+    [Route(Method = Method.Post, Handler = 1)]
+    [ResponseAdapter(Handler = 3)]
+    ICompletes<Response> DefineDummy([Body] DummyData dummyData);
 }

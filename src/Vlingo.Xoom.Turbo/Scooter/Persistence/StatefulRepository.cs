@@ -13,162 +13,161 @@ using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store;
 using Vlingo.Xoom.Symbio.Store.State;
 
-namespace Vlingo.Xoom.Turbo.Scooter.Persistence
+namespace Vlingo.Xoom.Turbo.Scooter.Persistence;
+
+public abstract class StatefulRepository
 {
-	public abstract class StatefulRepository
+	protected StatefulRepository()
 	{
-		protected StatefulRepository()
+	}
+
+	/// <summary>
+	/// Answer the T afer awaiting the read to be completed. The <see cref="interest"/>
+	/// must be requested upon each new <see cref="Code()"/>.
+	/// </summary>
+	/// <param name="T">the type of object to answer</param>
+	protected T Await<T>(ReadInterest interest)
+	{
+		while (!interest.IsRead())
 		{
+			interest.ThrowIfException();
 		}
 
-		/// <summary>
-		/// Answer the T afer awaiting the read to be completed. The <see cref="interest"/>
-		/// must be requested upon each new <see cref="Code()"/>.
-		/// </summary>
-		/// <param name="T">the type of object to answer</param>
-		protected T Await<T>(ReadInterest interest)
-		{
-			while (!interest.IsRead())
-			{
-				interest.ThrowIfException();
-			}
+		return (T)interest.State.Get()!;
+	}
 
-			return (T)interest.State.Get()!;
+	/// <summary>
+	/// Await on the write to be completed. The <see cref="interest"/> must be
+	/// requested upon each new <see cref="Write()"/>.
+	/// </summary>
+	/// <param name="interest"> the WriteInterest on which the await is based</param>
+	protected void Await(WriteInterest interest)
+	{
+		while (!interest.IsWritten())
+		{
+			interest.ThrowIfException();
+		}
+	}
+
+	/// <summary> 
+	/// Answer a <see cref="StatefulRepository.ReadInterest"/> for each new <see cref="Read()"/>.
+	/// </summary>
+	/// <returns><see cref="ReadInterest"/></returns>
+	protected ReadInterest CreateReadInterest() => new ReadInterest();
+
+	/// <summary> 
+	/// Answer a <see cref="StatefulRepository.WriteInterest"/> for each new <see cref="Write()"/>.
+	/// </summary>
+	/// <returns><see cref="WriteInterest"/></returns>
+	protected WriteInterest CreateWriteInterest() => new WriteInterest();
+
+	public class ReadInterest : Exceptional, IReadResultInterest
+	{
+		private readonly AtomicBoolean _read;
+		private readonly AtomicReference<object> _state;
+
+		public AtomicReference<object> State => _state;
+
+		public void ReadResultedIn<TState>(IOutcome<StorageException, Result> outcome, string? id, TState state,
+			int stateVersion, Metadata? metadata, object? @object) => ReadConsidering(outcome, state);
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private void Read(object state)
+		{
+			State.Set(state);
+			_read.Set(true);
 		}
 
-		/// <summary>
-		/// Await on the write to be completed. The <see cref="interest"/> must be
-		/// requested upon each new <see cref="Write()"/>.
-		/// </summary>
-		/// <param name="interest"> the WriteInterest on which the await is based</param>
-		protected void Await(WriteInterest interest)
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public bool IsRead() => _read.Get();
+
+		private void ReadConsidering<TS>(IOutcome<StorageException, Result> outcome, TS state)
 		{
-			while (!interest.IsWritten())
-			{
-				interest.ThrowIfException();
-			}
-		}
-
-		/// <summary> 
-		/// Answer a <see cref="StatefulRepository.ReadInterest"/> for each new <see cref="Read()"/>.
-		/// </summary>
-		/// <returns><see cref="ReadInterest"/></returns>
-		protected ReadInterest CreateReadInterest() => new ReadInterest();
-
-		/// <summary> 
-		/// Answer a <see cref="StatefulRepository.WriteInterest"/> for each new <see cref="Write()"/>.
-		/// </summary>
-		/// <returns><see cref="WriteInterest"/></returns>
-		protected WriteInterest CreateWriteInterest() => new WriteInterest();
-
-		public class ReadInterest : Exceptional, IReadResultInterest
-		{
-			private readonly AtomicBoolean _read;
-			private readonly AtomicReference<object> _state;
-
-			public AtomicReference<object> State => _state;
-
-			public void ReadResultedIn<TState>(IOutcome<StorageException, Result> outcome, string? id, TState state,
-				int stateVersion, Metadata? metadata, object? @object) => ReadConsidering(outcome, state);
-
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			private void Read(object state)
-			{
-				State.Set(state);
-				_read.Set(true);
-			}
-
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			public bool IsRead() => _read.Get();
-
-			private void ReadConsidering<TS>(IOutcome<StorageException, Result> outcome, TS state)
-			{
-				outcome
-					.AndThen(result =>
-					{
-						if (result == Result.Success)
-						{
-							Read(state!);
-						}
-
-						return result;
-					})
-					.Otherwise(ex =>
-					{
-						Exception.Set(ex);
-						return outcome.GetOrNull();
-					});
-			}
-
-			public void ReadResultedIn<TState>(IOutcome<StorageException, Result> outcome,
-				IEnumerable<TypedStateBundle> bundles, object? @object) => throw new NotImplementedException();
-
-			public ReadInterest()
-			{
-				_read = new AtomicBoolean(false);
-				_state = new AtomicReference<object>();
-			}
-		}
-
-		public class WriteInterest : Exceptional, IWriteResultInterest
-		{
-			private readonly AtomicBoolean _written;
-
-			public void WriteResultedIn<TState, TSource>(IOutcome<StorageException, Result> outcome, string id, TState state,
-				int stateVersion, IEnumerable<Source<TSource>> sources, object? @object) => WrittenConsidering(outcome);
-
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			private void Written() => _written.Set(true);
-
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			public bool IsWritten() => _written.Get();
-
-			public WriteInterest() => _written = new AtomicBoolean(false);
-
-			private void WrittenConsidering(IOutcome<StorageException, Result> outcome)
-			{
-				outcome
-					.AndThen(result =>
-					{
-						if (result == Result.Success)
-						{
-							Written();
-						}
-
-						return result;
-					})
-					.Otherwise(ex =>
-					{
-						Exception.Set(ex);
-						return outcome.GetOrNull();
-					});
-			}
-
-			public void WriteResultedIn<TState, TSource>(IOutcome<StorageException, Result> outcome, string id, TState state,
-				int stateVersion, IEnumerable<TSource> sources,
-				object? @object)
-			{
-				WrittenConsidering(outcome);
-			}
-		}
-
-		public class Exceptional
-		{
-			protected readonly AtomicReference<StorageException> Exception;
-
-			protected Exceptional()
-			{
-				Exception = new AtomicReference<StorageException>();
-			}
-
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			public void ThrowIfException()
-			{
-				var t = Exception.Get();
-				if (t != null)
+			outcome
+				.AndThen(result =>
 				{
-					throw new InvalidOperationException(string.Concat("Append failed because: ", t.Message), t);
-				}
+					if (result == Result.Success)
+					{
+						Read(state!);
+					}
+
+					return result;
+				})
+				.Otherwise(ex =>
+				{
+					Exception.Set(ex);
+					return outcome.GetOrNull();
+				});
+		}
+
+		public void ReadResultedIn<TState>(IOutcome<StorageException, Result> outcome,
+			IEnumerable<TypedStateBundle> bundles, object? @object) => throw new NotImplementedException();
+
+		public ReadInterest()
+		{
+			_read = new AtomicBoolean(false);
+			_state = new AtomicReference<object>();
+		}
+	}
+
+	public class WriteInterest : Exceptional, IWriteResultInterest
+	{
+		private readonly AtomicBoolean _written;
+
+		public void WriteResultedIn<TState, TSource>(IOutcome<StorageException, Result> outcome, string id, TState state,
+			int stateVersion, IEnumerable<Source<TSource>> sources, object? @object) => WrittenConsidering(outcome);
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private void Written() => _written.Set(true);
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public bool IsWritten() => _written.Get();
+
+		public WriteInterest() => _written = new AtomicBoolean(false);
+
+		private void WrittenConsidering(IOutcome<StorageException, Result> outcome)
+		{
+			outcome
+				.AndThen(result =>
+				{
+					if (result == Result.Success)
+					{
+						Written();
+					}
+
+					return result;
+				})
+				.Otherwise(ex =>
+				{
+					Exception.Set(ex);
+					return outcome.GetOrNull();
+				});
+		}
+
+		public void WriteResultedIn<TState, TSource>(IOutcome<StorageException, Result> outcome, string id, TState state,
+			int stateVersion, IEnumerable<TSource> sources,
+			object? @object)
+		{
+			WrittenConsidering(outcome);
+		}
+	}
+
+	public class Exceptional
+	{
+		protected readonly AtomicReference<StorageException> Exception;
+
+		protected Exceptional()
+		{
+			Exception = new AtomicReference<StorageException>();
+		}
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public void ThrowIfException()
+		{
+			var t = Exception.Get();
+			if (t != null)
+			{
+				throw new InvalidOperationException(string.Concat("Append failed because: ", t.Message), t);
 			}
 		}
 	}

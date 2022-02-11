@@ -11,89 +11,88 @@ using System.Linq;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
+
+public class AutoDispatchHandlersMappingTemplateData : TemplateData
 {
-    public class AutoDispatchHandlersMappingTemplateData : TemplateData
+
+    private readonly static string HandlerIndexPattern = "public static final int %s = %d;";
+    private readonly CodeGenerationParameter _stateAdapterHandler = CodeGenerationParameter.Of(Label.RouteSignature, "adaptState");
+
+    private readonly string _aggregateName;
+    private readonly TemplateParameters _parameters;
+
+    public AutoDispatchHandlersMappingTemplateData(string basePackage, CodeGenerationParameter aggregate, List<TemplateData> queriesTemplateData, List<ContentBase> contents, bool useCqrs)
     {
+        _aggregateName = aggregate.Value;
+        _parameters =
+            TemplateParameters.With(TemplateParameter.PackageName, ResolvePackage(basePackage))
+                .And(TemplateParameter.AggregateProtocolName, _aggregateName)
+                .And(TemplateParameter.StateName, new TemplateStandard().ResolveClassname(TemplateStandardType.AggregateState.ToString()))
+                .And(TemplateParameter.DataObjectName, new TemplateStandard().ResolveClassname(TemplateStandardType.DataObject.ToString()))
+                .And(TemplateParameter.QueriesName, new TemplateStandard().ResolveClassname(TemplateStandardType.Queries.ToString())).And(TemplateParameter.UseCqrs, useCqrs)
+                .And(TemplateParameter.QueryAllMethodName, FindQueryMethodName(_aggregateName, queriesTemplateData))
+                .AndResolve(TemplateParameter.QueryAllIndexName, @params => AutoDispatchMappingValueFormatter.Format(@params.Find<string>(TemplateParameter.QueryAllMethodName)))
+                .And(TemplateParameter.AutoDispatchHandlersMappingName, Standard().ResolveClassname(_aggregateName))
+                .And(TemplateParameter.HandlerIndexes, ResolveHandlerIndexes(aggregate, useCqrs))
+                .And(TemplateParameter.HandlerEntries, new List<string>())
+                .AddImports(ResolveImports(_aggregateName, contents));
 
-        private readonly static string HandlerIndexPattern = "public static final int %s = %d;";
-        private readonly CodeGenerationParameter _stateAdapterHandler = CodeGenerationParameter.Of(Label.RouteSignature, "adaptState");
+        DependOn(AutoDispatchHandlerEntryTemplateData.From(aggregate).ToList());
+    }
 
-        private readonly string _aggregateName;
-        private readonly TemplateParameters _parameters;
+    public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.HandlerEntries).Add(outcome);
 
-        public AutoDispatchHandlersMappingTemplateData(string basePackage, CodeGenerationParameter aggregate, List<TemplateData> queriesTemplateData, List<ContentBase> contents, bool useCqrs)
+    private List<string> ResolveHandlerIndexes(CodeGenerationParameter aggregate, bool useCqrs)
+    {
+        var handlers = new List<List<CodeGenerationParameter>>() { aggregate.RetrieveAllRelated(Label.RouteSignature).ToList(), new List<CodeGenerationParameter>() { _stateAdapterHandler } }.SelectMany(x => x).ToList();
+        return Enumerable.Range(0, handlers.Count()).Select(index => string.Format(HandlerIndexPattern, AutoDispatchMappingValueFormatter.Format(handlers[index].Value), index)).ToList();
+    }
+
+    private string FindQueryMethodName(string aggregateName, List<TemplateData> queriesTemplateData)
+    {
+        if (queriesTemplateData == null || queriesTemplateData.Count == 0)
         {
-            _aggregateName = aggregate.Value;
-            _parameters =
-                    TemplateParameters.With(TemplateParameter.PackageName, ResolvePackage(basePackage))
-                            .And(TemplateParameter.AggregateProtocolName, _aggregateName)
-                            .And(TemplateParameter.StateName, new TemplateStandard().ResolveClassname(TemplateStandardType.AggregateState.ToString()))
-                            .And(TemplateParameter.DataObjectName, new TemplateStandard().ResolveClassname(TemplateStandardType.DataObject.ToString()))
-                            .And(TemplateParameter.QueriesName, new TemplateStandard().ResolveClassname(TemplateStandardType.Queries.ToString())).And(TemplateParameter.UseCqrs, useCqrs)
-                            .And(TemplateParameter.QueryAllMethodName, FindQueryMethodName(_aggregateName, queriesTemplateData))
-                            .AndResolve(TemplateParameter.QueryAllIndexName, @params => AutoDispatchMappingValueFormatter.Format(@params.Find<string>(TemplateParameter.QueryAllMethodName)))
-                            .And(TemplateParameter.AutoDispatchHandlersMappingName, Standard().ResolveClassname(_aggregateName))
-                            .And(TemplateParameter.HandlerIndexes, ResolveHandlerIndexes(aggregate, useCqrs))
-                            .And(TemplateParameter.HandlerEntries, new List<string>())
-                            .AddImports(ResolveImports(_aggregateName, contents));
-
-            DependOn(AutoDispatchHandlerEntryTemplateData.From(aggregate).ToList());
+            return string.Empty;
         }
 
-        public override void HandleDependencyOutcome(TemplateStandard standard, string outcome) => _parameters.Find<List<string>>(TemplateParameter.HandlerEntries).Add(outcome);
+        var expectedQueriesName = new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateName);
+        return queriesTemplateData.Select(x => x.Parameters()).Where(x => x.HasValue(TemplateParameter.QueriesName, expectedQueriesName)).Select(x => x.Find<string>(TemplateParameter.QueryAllMethodName)).First();
+    }
 
-        private List<string> ResolveHandlerIndexes(CodeGenerationParameter aggregate, bool useCqrs)
+    private HashSet<string> ResolveImports(string aggregateName, List<ContentBase> contents)
+    {
+        var classes = MapClassesWithTemplateStandards(aggregateName);
+        return new HashSet<string>(classes.Select(entry =>
         {
-            var handlers = new List<List<CodeGenerationParameter>>() { aggregate.RetrieveAllRelated(Label.RouteSignature).ToList(), new List<CodeGenerationParameter>() { _stateAdapterHandler } }.SelectMany(x => x).ToList();
-            return Enumerable.Range(0, handlers.Count()).Select(index => string.Format(HandlerIndexPattern, AutoDispatchMappingValueFormatter.Format(handlers[index].Value), index)).ToList();
-        }
-
-        private string FindQueryMethodName(string aggregateName, List<TemplateData> queriesTemplateData)
-        {
-            if (queriesTemplateData == null || queriesTemplateData.Count == 0)
+            try
+            {
+                var className = entry.Value;
+                var standart = entry.Key;
+                return ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(standart), className, contents);
+            }
+            catch (ArgumentException)
             {
                 return string.Empty;
             }
-
-            var expectedQueriesName = new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateName);
-            return queriesTemplateData.Select(x => x.Parameters()).Where(x => x.HasValue(TemplateParameter.QueriesName, expectedQueriesName)).Select(x => x.Find<string>(TemplateParameter.QueryAllMethodName)).First();
-        }
-
-        private HashSet<string> ResolveImports(string aggregateName, List<ContentBase> contents)
-        {
-            var classes = MapClassesWithTemplateStandards(aggregateName);
-            return new HashSet<string>(classes.Select(entry =>
-            {
-                try
-                {
-                    var className = entry.Value;
-                    var standart = entry.Key;
-                    return ContentQuery.FindFullyQualifiedClassName(new TemplateStandard(standart), className, contents);
-                }
-                catch (ArgumentException)
-                {
-                    return string.Empty;
-                }
-            }));
-        }
-        private IDictionary<TemplateStandardType, string> MapClassesWithTemplateStandards(string aggregateName)
-        {
-            var result = new Dictionary<TemplateStandardType, string>();
-            result.Add(TemplateStandardType.AggregateProtocol, aggregateName);
-            result.Add(TemplateStandardType.AggregateState, new TemplateStandard(TemplateStandardType.AggregateState).ResolveClassname(aggregateName));
-            result.Add(TemplateStandardType.Queries, new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateName));
-            result.Add(TemplateStandardType.DataObject, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregateName));
-            return result;
-        }
-
-        private string ResolvePackage(string basePackage) => string.Format("{0}.{1}.{2}", basePackage, "infrastructure", "resource").ToLower();
-
-        public override TemplateParameters Parameters() => _parameters;
-
-        public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchHandlersMapping);
-
-        public override string Filename() => Standard().ResolveFilename(_aggregateName, _parameters);
-
+        }));
     }
+    private IDictionary<TemplateStandardType, string> MapClassesWithTemplateStandards(string aggregateName)
+    {
+        var result = new Dictionary<TemplateStandardType, string>();
+        result.Add(TemplateStandardType.AggregateProtocol, aggregateName);
+        result.Add(TemplateStandardType.AggregateState, new TemplateStandard(TemplateStandardType.AggregateState).ResolveClassname(aggregateName));
+        result.Add(TemplateStandardType.Queries, new TemplateStandard(TemplateStandardType.Queries).ResolveClassname(aggregateName));
+        result.Add(TemplateStandardType.DataObject, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregateName));
+        return result;
+    }
+
+    private string ResolvePackage(string basePackage) => string.Format("{0}.{1}.{2}", basePackage, "infrastructure", "resource").ToLower();
+
+    public override TemplateParameters Parameters() => _parameters;
+
+    public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchHandlersMapping);
+
+    public override string Filename() => Standard().ResolveFilename(_aggregateName, _parameters);
+
 }

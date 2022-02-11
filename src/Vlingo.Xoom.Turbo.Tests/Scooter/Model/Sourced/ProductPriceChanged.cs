@@ -8,18 +8,17 @@
 using System;
 using Vlingo.Xoom.Lattice.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced;
+
+public class ProductPriceChanged : DomainEvent
 {
-	public class ProductPriceChanged : DomainEvent
+	public long Price { get; }
+	public DateTime OccurredOn { get; }
+	public int Version { get; }
+	public ProductPriceChanged(int price)
 	{
-		public long Price { get; }
-		public DateTime OccurredOn { get; }
-		public int Version { get; }
-		public ProductPriceChanged(int price)
-		{
-			Price = price;
-			OccurredOn = DateTime.Now;
-			Version = 1;
-		}
+		Price = price;
+		OccurredOn = DateTime.Now;
+		Version = 1;
 	}
 }

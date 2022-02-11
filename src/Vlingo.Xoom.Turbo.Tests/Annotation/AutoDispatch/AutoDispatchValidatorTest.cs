@@ -17,166 +17,165 @@ using static Vlingo.Xoom.Turbo.Annotation.Validation;
 using Xunit;
 using static Vlingo.Xoom.Turbo.Annotation.AutoDispatch.AutoDispatchValidations;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch;
+
+public class AutoDispatchValidatorTest
 {
-    public class AutoDispatchValidatorTest
+    [Fact]
+    public void TestIsInterface()
     {
-        [Fact]
-        public void TestIsInterface()
-        {
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockRootElement = new Mock<Type>();
-            var elements = new HashSet<Type> { mockRootElement.Object };
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockRootElement = new Mock<Type>();
+        var elements = new HashSet<Type> { mockRootElement.Object };
 
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-            mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl")
-                .Returns(TypeAttributes.Interface);
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+        mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl")
+            .Returns(TypeAttributes.Interface);
 
-            IsInterface().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(QueriesAttribute),
+        IsInterface().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(QueriesAttribute),
+            mockAnnotatedElements.Object);
+    }
+
+    [Fact]
+    public void TestClassVisibilityValidation()
+    {
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockRootElement = new Mock<Type>();
+        var elements = new HashSet<Type> { mockRootElement.Object };
+
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+        mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl").Returns(TypeAttributes.Public);
+
+        ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(QueriesAttribute),
+            mockAnnotatedElements.Object);
+    }
+
+    [Fact]
+    public void TestIsQueriesProtocolAnInterface()
+    {
+        var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockElementsUtil = new Mock<Type>();
+        var elements = new HashSet<Type> { typeof(IQueriesTest) };
+
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+
+        mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
+        mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+        IsQueriesProtocolAnInterface()
+            .Invoke(mockProcessingEnvironment.Object, typeof(QueriesAttribute), mockAnnotatedElements.Object);
+    }
+
+    [Fact]
+    public void TestModelWithoutQueryValidator()
+    {
+        var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockElementsUtil = new Mock<Type>();
+        var elements = new HashSet<Type> { typeof(IQueriesTest) };
+
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+        mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+        ModelWithoutQueryValidator()
+            .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.ModelAttribute),
                 mockAnnotatedElements.Object);
-        }
+    }
 
-        [Fact]
-        public void TestClassVisibilityValidation()
-        {
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockRootElement = new Mock<Type>();
-            var elements = new HashSet<Type> { mockRootElement.Object };
+    [Fact]
+    public void TestBodyForRouteValidator()
+    {
+        var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockElementsUtil = new Mock<Type>();
+        var elements = new HashSet<Type> { typeof(IQueriesTest) };
 
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-            mockRootElement.Protected().Setup<TypeAttributes>("GetAttributeFlagsImpl").Returns(TypeAttributes.Public);
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
 
-            ClassVisibilityValidation().Invoke(new Mock<ProcessingEnvironment>().Object, typeof(QueriesAttribute),
+        mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
+        mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+        BodyForRouteValidator()
+            .Invoke(mockProcessingEnvironment.Object, typeof(QueriesAttribute), mockAnnotatedElements.Object);
+    }
+
+    [Fact]
+    public void TestRouteWithoutResponseValidator()
+    {
+        var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockElementsUtil = new Mock<Type>();
+        var elements = new HashSet<Type> { typeof(IRouteResponseTest) };
+
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+        mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+
+        RouteWithoutResponseValidator()
+            .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.ModelAttribute),
                 mockAnnotatedElements.Object);
-        }
+    }
 
-        [Fact]
-        public void TestIsQueriesProtocolAnInterface()
-        {
-            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockElementsUtil = new Mock<Type>();
-            var elements = new HashSet<Type> { typeof(IQueriesTest) };
+    [Fact]
+    public void TestRouteHasQueryOrModelValidator()
+    {
+        var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockElementsUtil = new Mock<Type>();
+        var elements = new HashSet<Type> { typeof(IQueriesTest) };
 
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+        mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
-            mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
-            mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+        RouteHasQueryOrModelValidator()
+            .Invoke(mockProcessingEnvironment.Object, typeof(RouteAttribute), mockAnnotatedElements.Object);
+    }
 
-            IsQueriesProtocolAnInterface()
-                .Invoke(mockProcessingEnvironment.Object, typeof(QueriesAttribute), mockAnnotatedElements.Object);
-        }
+    [Fact]
+    public void TestHandlerWithoutValidMethodValidator()
+    {
+        var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        var mockElementsUtil = new Mock<Type>();
+        var elements = new HashSet<Type> { typeof(IQueriesTest) };
 
-        [Fact]
-        public void TestModelWithoutQueryValidator()
-        {
-            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockElementsUtil = new Mock<Type>();
-            var elements = new HashSet<Type> { typeof(IQueriesTest) };
+        mockAnnotatedElements
+            .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
+            .Returns(elements);
+        mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
 
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-            mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
+        HandlerWithoutValidMethodValidator().Invoke(mockProcessingEnvironment.Object,
+            typeof(Turbo.Annotation.AutoDispatch.ModelAttribute), mockAnnotatedElements.Object);
+    }
 
-            ModelWithoutQueryValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.ModelAttribute),
-                    mockAnnotatedElements.Object);
-        }
+    [Queries(Protocol = typeof(IQueriesProtocolTest))]
+    public interface IQueriesTest
+    {
+        [Route(Method = Method.Get)]
+        public string TestGet();
+    }
 
-        [Fact]
-        public void TestBodyForRouteValidator()
-        {
-            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockElementsUtil = new Mock<Type>();
-            var elements = new HashSet<Type> { typeof(IQueriesTest) };
+    public interface IQueriesProtocolTest
+    {
+    }
 
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-
-            mockElementsUtil.Setup(s => s.GetElementType()).Returns(mockElementsUtil.Object);
-            mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
-
-            BodyForRouteValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(QueriesAttribute), mockAnnotatedElements.Object);
-        }
-
-        [Fact]
-        public void TestRouteWithoutResponseValidator()
-        {
-            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockElementsUtil = new Mock<Type>();
-            var elements = new HashSet<Type> { typeof(IRouteResponseTest) };
-
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-            mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
-
-            RouteWithoutResponseValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(Turbo.Annotation.AutoDispatch.ModelAttribute),
-                    mockAnnotatedElements.Object);
-        }
-
-        [Fact]
-        public void TestRouteHasQueryOrModelValidator()
-        {
-            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockElementsUtil = new Mock<Type>();
-            var elements = new HashSet<Type> { typeof(IQueriesTest) };
-
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-            mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
-
-            RouteHasQueryOrModelValidator()
-                .Invoke(mockProcessingEnvironment.Object, typeof(RouteAttribute), mockAnnotatedElements.Object);
-        }
-
-        [Fact]
-        public void TestHandlerWithoutValidMethodValidator()
-        {
-            var mockProcessingEnvironment = new Mock<ProcessingEnvironment>();
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            var mockElementsUtil = new Mock<Type>();
-            var elements = new HashSet<Type> { typeof(IQueriesTest) };
-
-            mockAnnotatedElements
-                .Setup(s => s.ElementsWith(It.IsAny<object[]>()))
-                .Returns(elements);
-            mockProcessingEnvironment.Setup(s => s.GetElementUtils()).Returns(mockElementsUtil.Object);
-
-            HandlerWithoutValidMethodValidator().Invoke(mockProcessingEnvironment.Object,
-                typeof(Turbo.Annotation.AutoDispatch.ModelAttribute), mockAnnotatedElements.Object);
-        }
-
-        [Queries(Protocol = typeof(IQueriesProtocolTest))]
-        public interface IQueriesTest
-        {
-            [Route(Method = Method.Get)]
-            public string TestGet();
-        }
-
-        public interface IQueriesProtocolTest
-        {
-        }
-
-        public interface IRouteResponseTest
-        {
-            [Route(Method = Method.Post)]
-            public string TestPost(string body);
-        }
+    public interface IRouteResponseTest
+    {
+        [Route(Method = Method.Post)]
+        public string TestPost(string body);
     }
 }

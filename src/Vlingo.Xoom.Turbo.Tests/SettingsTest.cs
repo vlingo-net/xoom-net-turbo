@@ -8,14 +8,13 @@
 using Vlingo.Xoom.Turbo.Actors;
 using Xunit;
 
-namespace Vlingo.Xoom.Turbo.Tests
+namespace Vlingo.Xoom.Turbo.Tests;
+
+public class SettingsTest
 {
-    public class SettingsTest
+    [Fact]
+    public void TestThatSettingsAreLoadedForBlockingMailbox()
     {
-        [Fact]
-        public void TestThatSettingsAreLoadedForBlockingMailbox()
-        {
-            Assert.Equal(25, Settings.Properties().Count);
-        }
+        Assert.Equal(25, Settings.Properties().Count);
     }
 }

@@ -11,37 +11,36 @@ using System.Reflection;
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
+
+public class AdapterEntriesContentLoader : TypeBasedContentLoader
 {
-    public class AdapterEntriesContentLoader : TypeBasedContentLoader
+    public AdapterEntriesContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(
+        annotatedClass, environment)
     {
-        public AdapterEntriesContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(
-            annotatedClass, environment)
+    }
+
+    protected override TemplateStandard Standard()
+    {
+        var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
+
+        if (persistence!.IsJournal())
         {
+            return new TemplateStandard(TemplateStandardType.DomainEvent);
         }
 
-        protected override TemplateStandard Standard()
+        return new TemplateStandard(TemplateStandardType.AggregateState);
+    }
+
+    protected override List<Type> RetrieveContentSource()
+    {
+        var adapters = AnnotatedClass?.GetCustomAttribute<AdaptersAttribute>();
+
+        if (adapters == null)
         {
-            var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
-
-            if (persistence!.IsJournal())
-            {
-                return new TemplateStandard(TemplateStandardType.DomainEvent);
-            }
-
-            return new TemplateStandard(TemplateStandardType.AggregateState);
+            return new List<Type>();
         }
 
-        protected override List<Type> RetrieveContentSource()
-        {
-            var adapters = AnnotatedClass?.GetCustomAttribute<AdaptersAttribute>();
-
-            if (adapters == null)
-            {
-                return new List<Type>();
-            }
-
-            return TypeRetriever.TypesFrom(new List<Type> { adapters.GetType() }, _ => adapters.Value!);
-        }
+        return TypeRetriever.TypesFrom(new List<Type> { adapters.GetType() }, _ => adapters.Value!);
     }
 }

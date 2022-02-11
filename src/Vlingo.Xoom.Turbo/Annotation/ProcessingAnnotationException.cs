@@ -7,16 +7,15 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation
-{
-	public class ProcessingAnnotationException : Exception
-	{
-		public ProcessingAnnotationException(string message) : base(message)
-		{
-		}
+namespace Vlingo.Xoom.Turbo.Annotation;
 
-		public ProcessingAnnotationException(Exception exception) : base(exception.Message)
-		{
-		}
+public class ProcessingAnnotationException : Exception
+{
+	public ProcessingAnnotationException(string message) : base(message)
+	{
+	}
+
+	public ProcessingAnnotationException(Exception exception) : base(exception.Message)
+	{
 	}
 }

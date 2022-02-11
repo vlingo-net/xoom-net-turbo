@@ -5,19 +5,18 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Exchange
+namespace Vlingo.Xoom.Turbo.Exchange;
+
+public class ExchangeSettingsItem
 {
-    public class ExchangeSettingsItem
+    public readonly string Key;
+    public readonly string Value;
+
+    public ExchangeSettingsItem(string key, string value)
     {
-        public readonly string Key;
-        public readonly string Value;
-
-        public ExchangeSettingsItem(string key, string value)
-        {
-            Key = key;
-            Value = value;
-        }
-
-        public bool HasKey(string key) => Key == key;
+        Key = key;
+        Value = value;
     }
+
+    public bool HasKey(string key) => Key == key;
 }

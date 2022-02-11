@@ -6,52 +6,51 @@ using System.Runtime.CompilerServices;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Dialect;
 
-namespace Vlingo.Xoom.Turbo.Annotation
+namespace Vlingo.Xoom.Turbo.Annotation;
+
+public abstract class AnnotationProcessor
 {
-    public abstract class AnnotationProcessor
+    protected ProcessingEnvironment? Environment;
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
+    public void Init(ProcessingEnvironment environment)
     {
-        protected ProcessingEnvironment? Environment;
+        Environment = environment;
+        ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.CSharp));
+    }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Init(ProcessingEnvironment environment)
+    public bool Process(ISet<Type> set)
+    {
+        var annotatedElements = AnnotatedElements.From(SupportedAnnotationClasses());
+
+        if (annotatedElements.Exists)
         {
-            Environment = environment;
-            ComponentRegistry.Register<CodeElementFormatter>(CodeElementFormatter.With(Dialect.CSharp));
-        }
-
-        public bool Process(ISet<Type> set)
-        {
-            var annotatedElements = AnnotatedElements.From(SupportedAnnotationClasses());
-
-            if (annotatedElements.Exists)
+            try
             {
-                try
-                {
-                    Generate(annotatedElements);
-                }
-                catch (ProcessingAnnotationException exception)
-                {
-                    PrintError(exception);
-                }
+                Generate(annotatedElements);
             }
-
-            return true;
+            catch (ProcessingAnnotationException exception)
+            {
+                PrintError(exception);
+            }
         }
 
-        protected abstract void Generate(AnnotatedElements annotatedElements);
+        return true;
+    }
 
-        public abstract List<Type> SupportedAnnotationClasses();
+    protected abstract void Generate(AnnotatedElements annotatedElements);
 
-        private void PrintError(ProcessingAnnotationException exception)
-        {
-            Console.WriteLine($"ERROR: {exception.Message}");
-        }
+    public abstract List<Type> SupportedAnnotationClasses();
 
-        public ISet<string> GetSupportedAnnotationTypes()
-        {
-            return SupportedAnnotationClasses()
-                .Select(type => type.Name)
-                .ToImmutableHashSet();
-        }
+    private void PrintError(ProcessingAnnotationException exception)
+    {
+        Console.WriteLine($"ERROR: {exception.Message}");
+    }
+
+    public ISet<string> GetSupportedAnnotationTypes()
+    {
+        return SupportedAnnotationClasses()
+            .Select(type => type.Name)
+            .ToImmutableHashSet();
     }
 }

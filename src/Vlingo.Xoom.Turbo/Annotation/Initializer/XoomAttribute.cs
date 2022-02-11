@@ -7,11 +7,10 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer;
+
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+public class XoomAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class XoomAttribute : Attribute
-    {
-        public string? Name { get; set; }
-    }
+    public string? Name { get; set; }
 }

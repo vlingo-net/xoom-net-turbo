@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Stateful;
+
+public interface IEntity1
 {
-	public interface IEntity1
-	{
-		void ChangeName(string name);
-		void IncreaseAge();
-		Entity1State State();
-	}
+	void ChangeName(string name);
+	void IncreaseAge();
+	Entity1State State();
 }

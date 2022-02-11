@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Codegen.Content
-{
-	public interface IContentLoader
-	{
-		public void Load(CodeGenerationContext context);
+namespace Vlingo.Xoom.Turbo.Codegen.Content;
 
-		public bool ShouldLoad();
-	}
+public interface IContentLoader
+{
+	public void Load(CodeGenerationContext context);
+
+	public bool ShouldLoad();
 }

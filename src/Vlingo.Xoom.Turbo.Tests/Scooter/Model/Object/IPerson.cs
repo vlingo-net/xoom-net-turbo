@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object;
+
+public interface IPerson
 {
-    public interface IPerson
-    {
-        void Identify(string name, int age);
-        void Change(string name);
-        void IncreaseAge();
-    }
+    void Identify(string name, int age);
+    void Change(string name);
+    void IncreaseAge();
 }

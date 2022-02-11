@@ -9,28 +9,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template
+namespace Vlingo.Xoom.Turbo.Codegen.Template;
+
+public abstract class TemplateData
 {
-    public abstract class TemplateData
-    {
-        private readonly List<TemplateData> _dependencies = new List<TemplateData>();
+    private readonly List<TemplateData> _dependencies = new List<TemplateData>();
 
-        public abstract TemplateParameters Parameters();
+    public abstract TemplateParameters Parameters();
 
-        public abstract TemplateStandard Standard();
+    public abstract TemplateStandard Standard();
 
-        protected void DependOn(TemplateData templateData) => DependOn(new List<TemplateData> { templateData });
+    protected void DependOn(TemplateData templateData) => DependOn(new List<TemplateData> { templateData });
 
-        protected void DependOn(params List<TemplateData>[] templatesData) => _dependencies.AddRange(templatesData.SelectMany(x => x));
+    protected void DependOn(params List<TemplateData>[] templatesData) => _dependencies.AddRange(templatesData.SelectMany(x => x));
 
-        public virtual void HandleDependencyOutcome(TemplateStandard standard, string outcome) => throw new NotSupportedException("Unable to handle dependency outcome");
+    public virtual void HandleDependencyOutcome(TemplateStandard standard, string outcome) => throw new NotSupportedException("Unable to handle dependency outcome");
 
-        public virtual string Filename() => Standard().ResolveFilename(Parameters());
+    public virtual string Filename() => Standard().ResolveFilename(Parameters());
 
-        public bool HasStandard(TemplateStandardType standard) => Standard().Equals(standard);
+    public bool HasStandard(TemplateStandardType standard) => Standard().Equals(standard);
 
-        public IReadOnlyList<TemplateData> Dependencies() => _dependencies;
+    public IReadOnlyList<TemplateData> Dependencies() => _dependencies;
 
-        public bool IsPlaceholder => false;
-    }
+    public bool IsPlaceholder => false;
 }

@@ -7,12 +7,11 @@
 
 using Vlingo.Xoom.Symbio;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence;
+
+public class SnapshotState : State<string>
 {
-	public class SnapshotState : State<string>
+	public SnapshotState() : base("123", typeof(string), 1, "data", 1, null)
 	{
-		public SnapshotState() : base("123", typeof(string), 1, "data", 1, null)
-		{
-		}
 	}
 }

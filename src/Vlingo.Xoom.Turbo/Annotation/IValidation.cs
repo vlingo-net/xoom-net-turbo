@@ -7,10 +7,9 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation
+namespace Vlingo.Xoom.Turbo.Annotation;
+
+public interface IValidation
 {
-	public interface IValidation
-	{
-		public void Validate(ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements);
-	}
+	public void Validate(ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements);
 }

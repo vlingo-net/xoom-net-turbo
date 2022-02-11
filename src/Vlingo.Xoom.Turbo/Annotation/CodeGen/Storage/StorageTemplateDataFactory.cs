@@ -10,19 +10,18 @@ using Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
-{
-	public class StorageTemplateDataFactory
-	{
-		public static List<TemplateData> Build(string basePackage, IReadOnlyList<ContentBase> contents, StorageType storageType, ProjectionType projectionType, bool useCqrs)
-		{
-			var persistencePackage = PersistenceDetail.ResolvePackage(basePackage);
-			var templatesData = new List<TemplateData>();
-			templatesData.AddRange(AdapterTemplateData.From(persistencePackage, storageType, contents));
-			templatesData.AddRange(StorageProviderTemplateData.From(persistencePackage, storageType, projectionType, 
-				templatesData, contents, ModelTypeExtensions.ApplicableTo(useCqrs)));
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 
-			return templatesData;
-		}
+public class StorageTemplateDataFactory
+{
+	public static List<TemplateData> Build(string basePackage, IReadOnlyList<ContentBase> contents, StorageType storageType, ProjectionType projectionType, bool useCqrs)
+	{
+		var persistencePackage = PersistenceDetail.ResolvePackage(basePackage);
+		var templatesData = new List<TemplateData>();
+		templatesData.AddRange(AdapterTemplateData.From(persistencePackage, storageType, contents));
+		templatesData.AddRange(StorageProviderTemplateData.From(persistencePackage, storageType, projectionType, 
+			templatesData, contents, ModelTypeExtensions.ApplicableTo(useCqrs)));
+
+		return templatesData;
 	}
 }

@@ -10,19 +10,18 @@ using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
+
+public class ProjectionDispatcherProviderTemplateData : TemplateData
 {
-	public class ProjectionDispatcherProviderTemplateData : TemplateData
+	private readonly TemplateParameters _parameters = null!;
+
+	public ProjectionDispatcherProviderTemplateData(ProjectionType projectionType,
+		IEnumerable<CodeGenerationParameter> projectionActors, IReadOnlyList<ContentBase> contents)
 	{
-		private readonly TemplateParameters _parameters = null!;
-
-		public ProjectionDispatcherProviderTemplateData(ProjectionType projectionType,
-			IEnumerable<CodeGenerationParameter> projectionActors, IReadOnlyList<ContentBase> contents)
-		{
-		}
-
-		public override TemplateParameters Parameters() => _parameters;
-
-		public override TemplateStandard Standard() => AnnotationBasedTemplateStandard.ProjectionDispatcherProvider;
 	}
+
+	public override TemplateParameters Parameters() => _parameters;
+
+	public override TemplateStandard Standard() => AnnotationBasedTemplateStandard.ProjectionDispatcherProvider;
 }

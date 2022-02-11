@@ -9,33 +9,32 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced;
+
+public abstract class ProductParent : ProductGrandParent
 {
-	public abstract class ProductParent : ProductGrandParent
+	public string Category { get; set; }
+
+	protected ProductParent(string type, string category) : base(type)
 	{
-		public string Category { get; set; }
+		Category = category;
 
-		protected ProductParent(string type, string category) : base(type)
-		{
-			Category = category;
+		Apply(new ProductParentCategorized(category));
+	}
 
-			Apply(new ProductParentCategorized(category));
-		}
-
-		public ProductParent(List<Source<DomainEvent>> eventStream, int streamVersion) : base(eventStream, streamVersion)
-		{
-		}
+	public ProductParent(List<Source<DomainEvent>> eventStream, int streamVersion) : base(eventStream, streamVersion)
+	{
+	}
 		
-		static ProductParent()
+	static ProductParent()
+	{
+		RegisterConsumer<ProductParent, ProductParentCategorized>(delegate(Source<DomainEvent> source)
 		{
-			RegisterConsumer<ProductParent, ProductParentCategorized>(delegate(Source<DomainEvent> source)
-			{
-				WhenProductParentCategorized(source as ProductParentCategorized);
-			});
-		}
+			WhenProductParentCategorized(source as ProductParentCategorized);
+		});
+	}
 
-		static void WhenProductParentCategorized(ProductParentCategorized @event)
-		{
-		}
+	static void WhenProductParentCategorized(ProductParentCategorized @event)
+	{
 	}
 }

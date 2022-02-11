@@ -8,19 +8,18 @@
 using System;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Content
+namespace Vlingo.Xoom.Turbo.Codegen.Content;
+
+public class ProtocolBasedContent : TypeBasedContent
 {
-    public class ProtocolBasedContent : TypeBasedContent
+    public readonly Type ContentProtocolType;
+
+    public ProtocolBasedContent(TemplateStandard standard, Type contentProtocolType, Type contentType) : base(standard, contentType)
     {
-        public readonly Type ContentProtocolType;
-
-        public ProtocolBasedContent(TemplateStandard standard, Type contentProtocolType, Type contentType) : base(standard, contentType)
-        {
-            ContentProtocolType = contentProtocolType;
-        }
-
-        public override string RetrieveProtocolQualifiedName() => ContentProtocolType.FullName!;
-
-        public override bool IsProtocolBased => true;
+        ContentProtocolType = contentProtocolType;
     }
+
+    public override string RetrieveProtocolQualifiedName() => ContentProtocolType.FullName!;
+
+    public override bool IsProtocolBased => true;
 }

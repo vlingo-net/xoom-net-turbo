@@ -7,19 +7,18 @@
 
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Dialect
-{
-	public enum Dialect
-	{
-		CSharp
-	}
-	
-	public static class DialectExtensions
-	{
-		public static Dialect FindDefault() => Dialect.CSharp;
+namespace Vlingo.Xoom.Turbo.Codegen.Dialect;
 
-		public static void ResolvePreParametersProcessing(this Dialect dialect, CodeGenerationParameters parameters)
-		{
-		}
+public enum Dialect
+{
+	CSharp
+}
+	
+public static class DialectExtensions
+{
+	public static Dialect FindDefault() => Dialect.CSharp;
+
+	public static void ResolvePreParametersProcessing(this Dialect dialect, CodeGenerationParameters parameters)
+	{
 	}
 }

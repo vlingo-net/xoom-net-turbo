@@ -7,22 +7,21 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+
+public class HandlerEntry
 {
-    public class HandlerEntry
+    public int Index { get; }
+    public Delegate Handler { get; }
+
+    public static HandlerEntry Of<TB, TResult>(int index, Func<TB, TResult> handler) => new HandlerEntry(index, handler);
+    public static HandlerEntry Of<TB, TC, TResult>(int index, Func<TB, TC, TResult> handler) => new HandlerEntry(index, handler);
+    public static HandlerEntry Of<TB, TC, TD, TResult>(int index, Func<TB, TC, TD, TResult> handler) => new HandlerEntry(index, handler);
+    public static HandlerEntry Of<TB, TC, TD, TE, TResult>(int index, Func<TB, TC, TD, TE, TResult> handler) => new HandlerEntry(index, handler);
+
+    private HandlerEntry(int index, Delegate handler)
     {
-        public int Index { get; }
-        public Delegate Handler { get; }
-
-        public static HandlerEntry Of<TB, TResult>(int index, Func<TB, TResult> handler) => new HandlerEntry(index, handler);
-        public static HandlerEntry Of<TB, TC, TResult>(int index, Func<TB, TC, TResult> handler) => new HandlerEntry(index, handler);
-        public static HandlerEntry Of<TB, TC, TD, TResult>(int index, Func<TB, TC, TD, TResult> handler) => new HandlerEntry(index, handler);
-        public static HandlerEntry Of<TB, TC, TD, TE, TResult>(int index, Func<TB, TC, TD, TE, TResult> handler) => new HandlerEntry(index, handler);
-
-        private HandlerEntry(int index, Delegate handler)
-        {
-            Index = index;
-            Handler = handler;
-        }
+        Index = index;
+        Handler = handler;
     }
 }

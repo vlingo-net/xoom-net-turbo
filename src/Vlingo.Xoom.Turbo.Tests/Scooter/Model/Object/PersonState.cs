@@ -9,62 +9,61 @@ using System;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Symbio.Store.Object;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object;
+
+public class PersonState : StateObject, IComparable<PersonState>
 {
-    public class PersonState : StateObject, IComparable<PersonState>
+    private static readonly AtomicLong IdentityGenerator = new AtomicLong(0);
+
+    public readonly string Name;
+    public readonly int Age;
+
+    public PersonState(long id, string name, int age) : base(id)
     {
-        private static readonly AtomicLong IdentityGenerator = new AtomicLong(0);
-
-        public readonly string Name;
-        public readonly int Age;
-
-        public PersonState(long id, string name, int age) : base(id)
-        {
-            Name = name;
-            Age = age;
-        }
-
-        public PersonState()
-        {
-            Name = "";
-            Age = 0;
-        }
-
-        public PersonState(string name, int age) : base(IdentityGenerator.IncrementAndGet())
-        {
-            Name = name;
-            Age = age;
-        }
-
-        public PersonState With(string name) => new PersonState(PersistenceId, name, Age);
-
-        public PersonState With(int age) => new PersonState(PersistenceId, Name, age);
-        public int GetHashCode(PersonState obj) => 31 * Name.GetHashCode() * Age;
-
-        public override bool Equals(object other) => Equals((PersonState)other);
-
-        protected bool Equals(PersonState other)
-        {
-            if (other == null || other.GetType() != GetType())
-            {
-                return false;
-            }
-
-            if (this == other)
-            {
-                return true;
-            }
-
-            var otherPerson = other;
-
-            return PersistenceId == otherPerson.PersistenceId;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(base.GetHashCode(), Name, Age);
-        }
-
-        public int CompareTo(PersonState otherPerson) => PersistenceId.CompareTo(otherPerson.PersistenceId);
+        Name = name;
+        Age = age;
     }
+
+    public PersonState()
+    {
+        Name = "";
+        Age = 0;
+    }
+
+    public PersonState(string name, int age) : base(IdentityGenerator.IncrementAndGet())
+    {
+        Name = name;
+        Age = age;
+    }
+
+    public PersonState With(string name) => new PersonState(PersistenceId, name, Age);
+
+    public PersonState With(int age) => new PersonState(PersistenceId, Name, age);
+    public int GetHashCode(PersonState obj) => 31 * Name.GetHashCode() * Age;
+
+    public override bool Equals(object other) => Equals((PersonState)other);
+
+    protected bool Equals(PersonState other)
+    {
+        if (other == null || other.GetType() != GetType())
+        {
+            return false;
+        }
+
+        if (this == other)
+        {
+            return true;
+        }
+
+        var otherPerson = other;
+
+        return PersistenceId == otherPerson.PersistenceId;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(base.GetHashCode(), Name, Age);
+    }
+
+    public int CompareTo(PersonState otherPerson) => PersistenceId.CompareTo(otherPerson.PersistenceId);
 }

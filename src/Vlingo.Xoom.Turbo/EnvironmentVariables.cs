@@ -7,48 +7,47 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo
+namespace Vlingo.Xoom.Turbo;
+
+public class EnvironmentVariables
 {
-    public class EnvironmentVariables
+    public static string Retrieve(string key)
     {
-        public static string Retrieve(string key)
+        RegisterDefaultRetrieverIfNotRegistered();
+
+        return ComponentRegistry
+            .WithType<IEnvironmentVariablesRetriever>()
+            .Retrieve(key);
+    }
+
+    public static bool ContainsKey(string key)
+    {
+        RegisterDefaultRetrieverIfNotRegistered();
+
+        return ComponentRegistry
+            .WithType<IEnvironmentVariablesRetriever>()
+            .ContainsKey(key);
+    }
+
+    private static void RegisterDefaultRetrieverIfNotRegistered()
+    {
+        if (!ComponentRegistry.Has<IEnvironmentVariablesRetriever>())
         {
-            RegisterDefaultRetrieverIfNotRegistered();
-
-            return ComponentRegistry
-                .WithType<IEnvironmentVariablesRetriever>()
-                .Retrieve(key);
+            ComponentRegistry.Register<IEnvironmentVariablesRetriever>(new DefaultRetriever());
         }
+    }
 
-        public static bool ContainsKey(string key)
-        {
-            RegisterDefaultRetrieverIfNotRegistered();
-
-            return ComponentRegistry
-                .WithType<IEnvironmentVariablesRetriever>()
-                .ContainsKey(key);
-        }
-
-        private static void RegisterDefaultRetrieverIfNotRegistered()
-        {
-            if (!ComponentRegistry.Has<IEnvironmentVariablesRetriever>())
-            {
-                ComponentRegistry.Register<IEnvironmentVariablesRetriever>(new DefaultRetriever());
-            }
-        }
-
-        public interface IEnvironmentVariablesRetriever
-        {
-            string Retrieve(string key);
-            bool ContainsKey(string key);
-        }
+    public interface IEnvironmentVariablesRetriever
+    {
+        string Retrieve(string key);
+        bool ContainsKey(string key);
+    }
 
 
-        public class DefaultRetriever : IEnvironmentVariablesRetriever
-        {
-            public string Retrieve(string key) => Environment.GetEnvironmentVariable(key) ?? string.Empty;
+    public class DefaultRetriever : IEnvironmentVariablesRetriever
+    {
+        public string Retrieve(string key) => Environment.GetEnvironmentVariable(key) ?? string.Empty;
 
-            public bool ContainsKey(string key) => Environment.GetEnvironmentVariables().Contains(key);
-        }
+        public bool ContainsKey(string key) => Environment.GetEnvironmentVariables().Contains(key);
     }
 }

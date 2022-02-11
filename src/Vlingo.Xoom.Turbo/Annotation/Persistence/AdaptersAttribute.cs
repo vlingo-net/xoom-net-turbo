@@ -7,11 +7,10 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Annotation.Persistence;
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class AdaptersAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class AdaptersAttribute : Attribute
-    {
-        public Type[]? Value { get; set; }
-    }
+    public Type[]? Value { get; set; }
 }

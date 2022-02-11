@@ -8,25 +8,24 @@
 using System;
 using Vlingo.Xoom.Turbo.Codegen;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
+
+public abstract class ContentLoaderBase<T>
 {
-    public abstract class ContentLoaderBase<T>
+    protected readonly Type AnnotatedClass;
+    protected readonly TypeRetriever TypeRetriever;
+    protected readonly ProcessingEnvironment Environment;
+
+    protected ContentLoaderBase(Type annotatedClass, ProcessingEnvironment environment)
     {
-        protected readonly Type AnnotatedClass;
-        protected readonly TypeRetriever TypeRetriever;
-        protected readonly ProcessingEnvironment Environment;
-
-        protected ContentLoaderBase(Type annotatedClass, ProcessingEnvironment environment)
-        {
-            Environment = environment;
-            AnnotatedClass = annotatedClass;
-            TypeRetriever = TypeRetriever.With(environment);
-        }
-
-        public abstract void Load(CodeGenerationContext context);
-
-        public bool ShouldLoad => AnnotatedClass != null;
-
-        protected abstract T RetrieveContentSource();
+        Environment = environment;
+        AnnotatedClass = annotatedClass;
+        TypeRetriever = TypeRetriever.With(environment);
     }
+
+    public abstract void Load(CodeGenerationContext context);
+
+    public bool ShouldLoad => AnnotatedClass != null;
+
+    protected abstract T RetrieveContentSource();
 }

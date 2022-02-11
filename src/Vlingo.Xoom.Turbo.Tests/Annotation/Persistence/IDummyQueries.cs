@@ -7,10 +7,9 @@
 
 using Vlingo.Xoom.Common;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
+
+public interface IDummyQueries
 {
-    public interface IDummyQueries
-    {
-        ICompletes<DummyData> AllDummies();
-    }
+    ICompletes<DummyData> AllDummies();
 }

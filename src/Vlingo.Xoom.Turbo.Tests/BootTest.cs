@@ -7,18 +7,17 @@
 
 using Xunit;
 
-namespace Vlingo.Xoom.Turbo.Tests
+namespace Vlingo.Xoom.Turbo.Tests;
+
+public class BootTest
 {
-    public class BootTest
+    private const string BOOT_WORLD_NAME = "test-boot";
+
+    [Fact]
+    public void TestThatWorldStarts()
     {
-        private const string BOOT_WORLD_NAME = "test-boot";
+        var world = Boot.Start(BOOT_WORLD_NAME);
 
-        [Fact]
-        public void TestThatWorldStarts()
-        {
-            var world = Boot.Start(BOOT_WORLD_NAME);
-
-            Assert.Equal(BOOT_WORLD_NAME, world.Name);
-        }
+        Assert.Equal(BOOT_WORLD_NAME, world.Name);
     }
 }

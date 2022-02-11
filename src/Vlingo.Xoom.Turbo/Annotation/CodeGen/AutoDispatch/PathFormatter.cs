@@ -7,58 +7,57 @@
 
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
+
+public class PathFormatter
 {
-    public class PathFormatter
+    public static string FormatAbsoluteRoutePath(CodeGenerationParameter routeParameter)
     {
-        public static string FormatAbsoluteRoutePath(CodeGenerationParameter routeParameter)
+        var routePath = routeParameter.RetrieveRelatedValue(Label.RoutePath);
+        var uriRoot = routeParameter.Parent().RetrieveRelatedValue(Label.UriRoot);
+        return FormatAbsoluteRoutePath(uriRoot, routePath);
+    }
+
+    public static string FormatRelativeRoutePath(CodeGenerationParameter routeParameter)
+    {
+        var routePath = routeParameter.RetrieveRelatedValue(Label.RoutePath);
+        if (routePath == string.Empty || RemoveSurplusesSlashes(routePath) == "/")
         {
-            var routePath = routeParameter.RetrieveRelatedValue(Label.RoutePath);
-            var uriRoot = routeParameter.Parent().RetrieveRelatedValue(Label.UriRoot);
-            return FormatAbsoluteRoutePath(uriRoot, routePath);
+            return string.Empty;
+        }
+        if (routePath.EndsWith("/"))
+        {
+            return routePath.Substring(0, routePath.Length - 1);
+        }
+        return routePath;
+    }
+
+    public static string FormatRootPath(string uriRoot) => RemoveSurplusesSlashes(string.Format("/{0}", uriRoot));
+
+    public static string FormatAbsoluteRoutePath(string rootPath, string routePath)
+    {
+        if (routePath == string.Empty || routePath == "/")
+        {
+            return rootPath;
         }
 
-        public static string FormatRelativeRoutePath(CodeGenerationParameter routeParameter)
+        if (!routePath.StartsWith(rootPath))
         {
-            var routePath = routeParameter.RetrieveRelatedValue(Label.RoutePath);
-            if (routePath == string.Empty || RemoveSurplusesSlashes(routePath) == "/")
-            {
-                return string.Empty;
-            }
-            if (routePath.EndsWith("/"))
-            {
-                return routePath.Substring(0, routePath.Length - 1);
-            }
-            return routePath;
+            return PrependRootPath(rootPath, routePath);
         }
 
-        public static string FormatRootPath(string uriRoot) => RemoveSurplusesSlashes(string.Format("/{0}", uriRoot));
+        return routePath;
+    }
 
-        public static string FormatAbsoluteRoutePath(string rootPath, string routePath)
+    private static string PrependRootPath(string rootPath, string routePath) => RemoveSurplusesSlashes(string.Format("{0}/{1}", rootPath, routePath));
+
+    private static string RemoveSurplusesSlashes(string path)
+    {
+        var cleanPath = path;
+        while (cleanPath.Contains("//"))
         {
-            if (routePath == string.Empty || routePath == "/")
-            {
-                return rootPath;
-            }
-
-            if (!routePath.StartsWith(rootPath))
-            {
-                return PrependRootPath(rootPath, routePath);
-            }
-
-            return routePath;
+            cleanPath = cleanPath.Replace("//", "/");
         }
-
-        private static string PrependRootPath(string rootPath, string routePath) => RemoveSurplusesSlashes(string.Format("{0}/{1}", rootPath, routePath));
-
-        private static string RemoveSurplusesSlashes(string path)
-        {
-            var cleanPath = path;
-            while (cleanPath.Contains("//"))
-            {
-                cleanPath = cleanPath.Replace("//", "/");
-            }
-            return cleanPath;
-        }
+        return cleanPath;
     }
 }

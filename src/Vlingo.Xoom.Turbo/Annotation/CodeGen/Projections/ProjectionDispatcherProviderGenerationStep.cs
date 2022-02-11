@@ -12,24 +12,23 @@ using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Projections;
+
+public class ProjectionDispatcherProviderGenerationStep : TemplateProcessingStep
 {
-	public class ProjectionDispatcherProviderGenerationStep : TemplateProcessingStep
+	protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context)
 	{
-		protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context)
+		var projectionType = context.ParameterOf(Label.ProjectionType, x =>
 		{
-			var projectionType = context.ParameterOf(Label.ProjectionType, x =>
-			{
-				Enum.TryParse(x, out ProjectionType value);
-				return value;
-			});
+			Enum.TryParse(x, out ProjectionType value);
+			return value;
+		});
 
-			var projectionDispatcherProviderTemplateData = new ProjectionDispatcherProviderTemplateData(projectionType,
-				context.ParametersOf(Label.ProjectionActor), context.Contents());
-			return new List<TemplateData> { projectionDispatcherProviderTemplateData };
-		}
-
-		public override bool ShouldProcess(CodeGenerationContext context) =>
-			ContentQuery.Exists(new TemplateStandard(TemplateStandardType.Projection), context.Contents());
+		var projectionDispatcherProviderTemplateData = new ProjectionDispatcherProviderTemplateData(projectionType,
+			context.ParametersOf(Label.ProjectionActor), context.Contents());
+		return new List<TemplateData> { projectionDispatcherProviderTemplateData };
 	}
+
+	public override bool ShouldProcess(CodeGenerationContext context) =>
+		ContentQuery.Exists(new TemplateStandard(TemplateStandardType.Projection), context.Contents());
 }

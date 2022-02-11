@@ -8,12 +8,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Vlingo.Xoom.Turbo.Exchange
+namespace Vlingo.Xoom.Turbo.Exchange;
+
+public class ExchangeSettingsNotFoundException : SystemException
 {
-    public class ExchangeSettingsNotFoundException : SystemException
+    public ExchangeSettingsNotFoundException(List<string> parameters) : base(string.Concat("The following exchange parameter(s) were not informed: " + string.Join(", ", parameters)))
     {
-        public ExchangeSettingsNotFoundException(List<string> parameters) : base(string.Concat("The following exchange parameter(s) were not informed: " + string.Join(", ", parameters)))
-        {
-        }
     }
 }

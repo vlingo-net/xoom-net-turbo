@@ -7,17 +7,16 @@
 
 using Vlingo.Xoom.Symbio.Store.Object;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model
-{
-    public class DummyState : StateObject
-    {
-        public string Name { get; }
-        public string Id { get; }
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Model;
 
-        public DummyState(string id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
+public class DummyState : StateObject
+{
+    public string Name { get; }
+    public string Id { get; }
+
+    public DummyState(string id, string name)
+    {
+        Id = id;
+        Name = name;
     }
 }

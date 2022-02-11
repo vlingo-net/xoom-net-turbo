@@ -5,20 +5,19 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Codegen
+namespace Vlingo.Xoom.Turbo.Codegen;
+
+public class TextExpectation
 {
-	public class TextExpectation
+	private readonly Dialect.Dialect _dialect;
+
+	private TextExpectation(Dialect.Dialect dialect) => _dialect = dialect;
+
+	public static TextExpectation OnCSharp => new TextExpectation(Dialect.Dialect.CSharp);
+
+	public string Read(string textFileName)
 	{
-		private readonly Dialect.Dialect _dialect;
-
-		private TextExpectation(Dialect.Dialect dialect) => _dialect = dialect;
-
-		public static TextExpectation OnCSharp => new TextExpectation(Dialect.Dialect.CSharp);
-
-		public string Read(string textFileName)
-		{
-			var path = $"/resources/TextExpectation/Csharp/{textFileName}.txt";
-			return System.IO.File.ReadAllText(path);
-		}
+		var path = $"/resources/TextExpectation/Csharp/{textFileName}.txt";
+		return System.IO.File.ReadAllText(path);
 	}
 }

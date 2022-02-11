@@ -7,12 +7,11 @@
 
 using Vlingo.Xoom.Lattice.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
-{
-	public class Test2Happened : DomainEvent
-	{
-		private readonly string _id;
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence;
 
-		public Test2Happened(string id) => _id = id;
-	}
+public class Test2Happened : DomainEvent
+{
+	private readonly string _id;
+
+	public Test2Happened(string id) => _id = id;
 }

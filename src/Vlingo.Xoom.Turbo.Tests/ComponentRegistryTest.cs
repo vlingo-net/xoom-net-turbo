@@ -8,26 +8,25 @@
 using System;
 using Xunit;
 
-namespace Vlingo.Xoom.Turbo.Tests
+namespace Vlingo.Xoom.Turbo.Tests;
+
+public class ComponentRegistryTest : IDisposable
 {
-    public class ComponentRegistryTest : IDisposable
+    [Fact]
+    public void TestThatComponentsAreRegistered()
     {
-        [Fact]
-        public void TestThatComponentsAreRegistered()
-        {
-            ComponentRegistry.Register("appName", "xoom-app");
-            ComponentRegistry.Register<string>(bool.TrueString);
+        ComponentRegistry.Register("appName", "xoom-app");
+        ComponentRegistry.Register<string>(bool.TrueString);
 
-            Assert.True(ComponentRegistry.Has("appName"));
-            Assert.True(ComponentRegistry.Has<string>());
+        Assert.True(ComponentRegistry.Has("appName"));
+        Assert.True(ComponentRegistry.Has<string>());
 
-            Assert.False(ComponentRegistry.Has("component"));
-            Assert.False(ComponentRegistry.Has<int>());
+        Assert.False(ComponentRegistry.Has("component"));
+        Assert.False(ComponentRegistry.Has<int>());
 
-            Assert.Equal("xoom-app", ComponentRegistry.WithName("appName"));
-            Assert.Equal(bool.TrueString, ComponentRegistry.WithType<string>());
-        }
-
-        public void Dispose() => ComponentRegistry.Clear();
+        Assert.Equal("xoom-app", ComponentRegistry.WithName("appName"));
+        Assert.Equal(bool.TrueString, ComponentRegistry.WithType<string>());
     }
+
+    public void Dispose() => ComponentRegistry.Clear();
 }

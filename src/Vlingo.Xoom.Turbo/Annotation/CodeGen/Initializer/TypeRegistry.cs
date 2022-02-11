@@ -9,23 +9,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
+
+public class TypeRegistry
 {
-	public class TypeRegistry
+	private readonly string _className;
+	private readonly string _objectName;
+
+	private TypeRegistry(string className, string objectName)
 	{
-		private readonly string _className;
-		private readonly string _objectName;
-
-		private TypeRegistry(string className, string objectName)
-		{
-			_className = className;
-			_objectName = objectName;
-		}
-
-		public static List<TypeRegistry> From(StorageType storageType, bool useCqrs) => storageType
-			.FindRelatedStorageTypes(useCqrs)
-			.Select(relatedStorageType =>
-				new TypeRegistry(relatedStorageType.TypeRegistryClassName(), relatedStorageType.TypeRegistryObjectName()))
-			.ToList();
+		_className = className;
+		_objectName = objectName;
 	}
+
+	public static List<TypeRegistry> From(StorageType storageType, bool useCqrs) => storageType
+		.FindRelatedStorageTypes(useCqrs)
+		.Select(relatedStorageType =>
+			new TypeRegistry(relatedStorageType.TypeRegistryClassName(), relatedStorageType.TypeRegistryObjectName()))
+		.ToList();
 }

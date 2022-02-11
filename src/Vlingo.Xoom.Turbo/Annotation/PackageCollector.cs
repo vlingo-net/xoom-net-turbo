@@ -9,40 +9,39 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
-namespace Vlingo.Xoom.Turbo.Annotation
+namespace Vlingo.Xoom.Turbo.Annotation;
+
+public class PackageCollector
 {
-	public class PackageCollector
+	private readonly string? _projectPath;
+	private readonly string _basePackage;
+
+	private PackageCollector(string? projectPath, string basePackage)
 	{
-		private readonly string? _projectPath;
-		private readonly string _basePackage;
-
-		private PackageCollector(string? projectPath, string basePackage)
-		{
-			_projectPath = projectPath;
-			_basePackage = basePackage;
-		}
-
-		public static PackageCollector From(string? projectPath, string basePackage) =>
-			new PackageCollector(projectPath, basePackage);
-
-		public ImmutableHashSet<string> CollectAll()
-		{
-			var basePackageDirectory = ResolvePackagePath(_basePackage);
-			return Directory
-				.GetDirectories(basePackageDirectory, "*", SearchOption.AllDirectories)
-				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}bin"))
-				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"))
-				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}obj"))
-				.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
-				.ToImmutableHashSet();
-		}
-
-		private string ResolvePackagePath(string packageName)
-		{
-			var sourceFolderPath = ResolveSourceFolderPath();
-			return Path.GetFullPath(sourceFolderPath);
-		}
-
-		private string ResolveSourceFolderPath() => Path.GetFullPath(_projectPath!);
+		_projectPath = projectPath;
+		_basePackage = basePackage;
 	}
+
+	public static PackageCollector From(string? projectPath, string basePackage) =>
+		new PackageCollector(projectPath, basePackage);
+
+	public ImmutableHashSet<string> CollectAll()
+	{
+		var basePackageDirectory = ResolvePackagePath(_basePackage);
+		return Directory
+			.GetDirectories(basePackageDirectory, "*", SearchOption.AllDirectories)
+			.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}bin"))
+			.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}"))
+			.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}obj"))
+			.Where(path => !path.Contains($@"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}"))
+			.ToImmutableHashSet();
+	}
+
+	private string ResolvePackagePath(string packageName)
+	{
+		var sourceFolderPath = ResolveSourceFolderPath();
+		return Path.GetFullPath(sourceFolderPath);
+	}
+
+	private string ResolveSourceFolderPath() => Path.GetFullPath(_projectPath!);
 }

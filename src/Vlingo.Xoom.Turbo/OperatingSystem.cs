@@ -7,18 +7,17 @@
 
 using System.Runtime.InteropServices;
 
-namespace Vlingo.Xoom.Turbo
+namespace Vlingo.Xoom.Turbo;
+
+public class OperatingSystem
 {
-    public class OperatingSystem
-    {
-        public static OperatingSystemType Detect() => IsWindows ? OperatingSystemType.Windows : OperatingSystemType.Other;
+    public static OperatingSystemType Detect() => IsWindows ? OperatingSystemType.Windows : OperatingSystemType.Other;
 
-        public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    }
+    public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+}
 
-    public enum OperatingSystemType
-    {
-        Windows,
-        Other
-    }
+public enum OperatingSystemType
+{
+    Windows,
+    Other
 }

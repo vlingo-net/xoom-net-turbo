@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Object;
+
+public interface IEmployee
 {
-    public interface IEmployee
-    {
-        void Assign(string number);
-        void Adjust(int salary);
-        void Hire(string number, int salary);
-    }
+    void Assign(string number);
+    void Adjust(int salary);
+    void Hire(string number, int salary);
 }

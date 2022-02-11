@@ -7,10 +7,9 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+
+[AttributeUsage(AttributeTargets.Parameter)]
+public class IdAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class IdAttribute : Attribute
-    {
-    }
 }

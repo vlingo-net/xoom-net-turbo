@@ -7,15 +7,14 @@
 
 using System.Linq;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Content
-{
-    public class ContentCreationStep : ICodeGenerationStep
-    {
-        public void Process(CodeGenerationContext context)
-        {
-            context.Contents().Where(x => x.CanWrite()).ToList();//forEach(ContentBase::create);
-        }
+namespace Vlingo.Xoom.Turbo.Codegen.Content;
 
-        public bool ShouldProcess(CodeGenerationContext context) => true;
+public class ContentCreationStep : ICodeGenerationStep
+{
+    public void Process(CodeGenerationContext context)
+    {
+        context.Contents().Where(x => x.CanWrite()).ToList();//forEach(ContentBase::create);
     }
+
+    public bool ShouldProcess(CodeGenerationContext context) => true;
 }

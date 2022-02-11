@@ -13,26 +13,25 @@ using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 using Vlingo.Xoom.Turbo.Exchange;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
+
+public class ExchangeBootstrapLoader : TypeBasedContentLoader
 {
-    public class ExchangeBootstrapLoader : TypeBasedContentLoader
+    public ExchangeBootstrapLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+        environment)
     {
-        public ExchangeBootstrapLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-            environment)
-        {
-        }
+    }
 
-        protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.ExchangeBootstrap);
+    protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.ExchangeBootstrap);
 
-        protected override List<Type> RetrieveContentSource()
-        {
-            var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
+    protected override List<Type> RetrieveContentSource()
+    {
+        var persistence = AnnotatedClass?.GetCustomAttribute<PersistenceAttribute>();
 
-            var baseDirectory = Context.LocateBaseDirectory(Environment.GetFiler());
+        var baseDirectory = Context.LocateBaseDirectory(Environment.GetFiler());
 
-            var allPackages = PackageCollector.From(baseDirectory, persistence!.BasePackage).CollectAll().ToArray();
+        var allPackages = PackageCollector.From(baseDirectory, persistence!.BasePackage).CollectAll().ToArray();
 
-            return TypeRetriever.SubClassesOf<ExchangeInitializer>(allPackages);
-        }
+        return TypeRetriever.SubClassesOf<ExchangeInitializer>(allPackages);
     }
 }

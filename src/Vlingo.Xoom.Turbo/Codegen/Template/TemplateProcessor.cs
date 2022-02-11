@@ -8,59 +8,58 @@
 using System.IO;
 using System.Linq;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template
+namespace Vlingo.Xoom.Turbo.Codegen.Template;
+
+public class TemplateProcessor
 {
-    public class TemplateProcessor
+    private static TemplateProcessor? _instance;
+    private static readonly string TemplatePathPattern = "Resources/Codegen/Csharp/{0}.tt";
+
+    private TemplateProcessor()
     {
-        private static TemplateProcessor? _instance;
-        private static readonly string TemplatePathPattern = "Resources/Codegen/Csharp/{0}.tt";
+    }
 
-        private TemplateProcessor()
+    public static TemplateProcessor Instance()
+    {
+        if (_instance == null)
         {
+            _instance = new TemplateProcessor();
         }
+        return _instance;
+    }
 
-        public static TemplateProcessor Instance()
+    public string Process(TemplateData mainTemplateData)
+    {
+        mainTemplateData.Dependencies().ToList().ForEach(templateData =>
         {
-            if (_instance == null)
-            {
-                _instance = new TemplateProcessor();
-            }
-            return _instance;
-        }
+            var outcome = Process(templateData.Standard(), templateData.Parameters());
 
-        public string Process(TemplateData mainTemplateData)
+            mainTemplateData.HandleDependencyOutcome(templateData.Standard(), outcome);
+        });
+
+        return Process(mainTemplateData.Standard(), mainTemplateData.Parameters());
+    }
+
+    private string Process(TemplateStandard standard, TemplateParameters parameters)
+    {
+        try
         {
-            mainTemplateData.Dependencies().ToList().ForEach(templateData =>
-            {
-                var outcome = Process(templateData.Standard(), templateData.Parameters());
+            var templateFilename = standard.RetrieveTemplateFilename(parameters);
 
-                mainTemplateData.HandleDependencyOutcome(templateData.Standard(), outcome);
-            });
+            var templatePath = string.Format(TemplatePathPattern, templateFilename);
 
-            return Process(mainTemplateData.Standard(), mainTemplateData.Parameters());
+            //var template = TemplateProcessorConfiguration.Instance().configuration.GetTemplate(templatePath);
+
+            var writer = new StringWriter();
+            //template.process(parameters.map(), writer);
+            return writer.ToString();
         }
-
-        private string Process(TemplateStandard standard, TemplateParameters parameters)
+        catch (IOException exception)
         {
-            try
-            {
-                var templateFilename = standard.RetrieveTemplateFilename(parameters);
-
-                var templatePath = string.Format(TemplatePathPattern, templateFilename);
-
-                //var template = TemplateProcessorConfiguration.Instance().configuration.GetTemplate(templatePath);
-
-                var writer = new StringWriter();
-                //template.process(parameters.map(), writer);
-                return writer.ToString();
-            }
-            catch (IOException exception)
-            {
-                throw new CodeGenerationException(exception);
-            }
-            //catch (TemplateException exception)
-            //    throw new CodeGenerationException(exception);
-            //}
+            throw new CodeGenerationException(exception);
         }
+        //catch (TemplateException exception)
+        //    throw new CodeGenerationException(exception);
+        //}
     }
 }

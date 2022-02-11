@@ -7,57 +7,56 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation
+namespace Vlingo.Xoom.Turbo.Annotation;
+
+public abstract class Validation : IValidation
 {
-	public abstract class Validation : IValidation
+	public abstract void Validate(ProcessingEnvironment processingEnvironment, Type annotation,
+		AnnotatedElements annotatedElements);
+
+	public static Action<ProcessingEnvironment, Type, AnnotatedElements> SingularityValidation() => (
+		ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
 	{
-		public abstract void Validate(ProcessingEnvironment processingEnvironment, Type annotation,
-			AnnotatedElements annotatedElements);
-
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> SingularityValidation() => (
-			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+		if (annotatedElements.Count(annotation) > 1)
 		{
-			if (annotatedElements.Count(annotation) > 1)
-			{
-				throw new ProcessingAnnotationException($"Only one class should be annotated with {annotation.FullName}");
-			}
-		};
+			throw new ProcessingAnnotationException($"Only one class should be annotated with {annotation.FullName}");
+		}
+	};
 
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> TargetValidation() => (
-			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+	public static Action<ProcessingEnvironment, Type, AnnotatedElements> TargetValidation() => (
+		ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+	{
+		foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 		{
-			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			if (!rootElement.IsClass)
 			{
-				if (!rootElement.IsClass)
-				{
-					throw new ProcessingAnnotationException($"The {annotation.FullName}");
-				}
+				throw new ProcessingAnnotationException($"The {annotation.FullName}");
 			}
-		};
+		}
+	};
 
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> ClassVisibilityValidation() => (
-			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+	public static Action<ProcessingEnvironment, Type, AnnotatedElements> ClassVisibilityValidation() => (
+		ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+	{
+		foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 		{
-			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			if (rootElement.IsNotPublic)
 			{
-				if (rootElement.IsNotPublic)
-				{
-					throw new ProcessingAnnotationException($"The class {annotation.FullName} is not public");
-				}
+				throw new ProcessingAnnotationException($"The class {annotation.FullName} is not public");
 			}
-		};
+		}
+	};
 
-		public static Action<ProcessingEnvironment, Type, AnnotatedElements> IsInterface() => (
-			ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+	public static Action<ProcessingEnvironment, Type, AnnotatedElements> IsInterface() => (
+		ProcessingEnvironment processingEnvironment, Type annotation, AnnotatedElements annotatedElements) =>
+	{
+		foreach (var rootElement in annotatedElements.ElementsWith(annotation))
 		{
-			foreach (var rootElement in annotatedElements.ElementsWith(annotation))
+			if (!rootElement.IsInterface)
 			{
-				if (!rootElement.IsInterface)
-				{
-					throw new ProcessingAnnotationException(
-						$"The {annotation.FullName} annotation is only allowed at interface level");
-				}
+				throw new ProcessingAnnotationException(
+					$"The {annotation.FullName} annotation is only allowed at interface level");
 			}
-		};
-	}
+		}
+	};
 }

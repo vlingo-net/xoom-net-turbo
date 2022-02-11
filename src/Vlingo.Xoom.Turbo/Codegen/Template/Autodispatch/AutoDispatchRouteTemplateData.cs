@@ -13,38 +13,37 @@ using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template.Model;
 using Vlingo.Xoom.Turbo.Codegen.Template.Resource;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
+
+public class AutoDispatchRouteTemplateData : TemplateData
 {
-    public class AutoDispatchRouteTemplateData : TemplateData
+
+    private readonly TemplateParameters _parameters;
+
+    public static List<TemplateData> From(IEnumerable<CodeGenerationParameter> routes) => routes.Select(x => (TemplateData)new AutoDispatchRouteTemplateData(x)).ToList();
+
+    private AutoDispatchRouteTemplateData(CodeGenerationParameter route)
     {
-
-        private readonly TemplateParameters _parameters;
-
-        public static List<TemplateData> From(IEnumerable<CodeGenerationParameter> routes) => routes.Select(x => (TemplateData)new AutoDispatchRouteTemplateData(x)).ToList();
-
-        private AutoDispatchRouteTemplateData(CodeGenerationParameter route)
-        {
-            var aggregate = route.Parent(Label.Aggregate);
-            _parameters =
-                    TemplateParameters.With(TemplateParameter.RetrievalRoute, IsRetrievalRoute(route))
-                            .And(TemplateParameter.IdType, FieldDetail.TypeOf(aggregate, "id"))
-                            .And(TemplateParameter.RouteMethod, route.RetrieveRelatedValue(Label.RouteMethod))
-                            .And(TemplateParameter.RoutePath, PathFormatter.FormatRelativeRoutePath(route))
-                            .And(TemplateParameter.DataObjectName, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregate.Value))
-                            .And(TemplateParameter.RouteMappingValue, AutoDispatchMappingValueFormatter.Format(route.Value))
-                            .And(TemplateParameter.RequireEntityLoading, route.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x))
-                            .And(TemplateParameter.AutoDispatchHandlersMappingName, new TemplateStandard(TemplateStandardType.AutoDispatchHandlersMapping).ResolveClassname(aggregate.Value))
-                            .And(TemplateParameter.MethodName, route.Value);
-        }
-
-        private bool IsRetrievalRoute(CodeGenerationParameter route)
-        {
-            var method = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
-            return method.IsGet() || method.IsOptions();
-        }
-
-        public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchRoute);
-
-        public override TemplateParameters Parameters() => _parameters;
+        var aggregate = route.Parent(Label.Aggregate);
+        _parameters =
+            TemplateParameters.With(TemplateParameter.RetrievalRoute, IsRetrievalRoute(route))
+                .And(TemplateParameter.IdType, FieldDetail.TypeOf(aggregate, "id"))
+                .And(TemplateParameter.RouteMethod, route.RetrieveRelatedValue(Label.RouteMethod))
+                .And(TemplateParameter.RoutePath, PathFormatter.FormatRelativeRoutePath(route))
+                .And(TemplateParameter.DataObjectName, new TemplateStandard(TemplateStandardType.DataObject).ResolveClassname(aggregate.Value))
+                .And(TemplateParameter.RouteMappingValue, AutoDispatchMappingValueFormatter.Format(route.Value))
+                .And(TemplateParameter.RequireEntityLoading, route.RetrieveRelatedValue(Label.RequireEntityLoading, x => bool.TrueString.ToLower() == x))
+                .And(TemplateParameter.AutoDispatchHandlersMappingName, new TemplateStandard(TemplateStandardType.AutoDispatchHandlersMapping).ResolveClassname(aggregate.Value))
+                .And(TemplateParameter.MethodName, route.Value);
     }
+
+    private bool IsRetrievalRoute(CodeGenerationParameter route)
+    {
+        var method = route.RetrieveRelatedValue(Label.RouteMethod, MethodExtensions.ToMethod);
+        return method.IsGet() || method.IsOptions();
+    }
+
+    public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchRoute);
+
+    public override TemplateParameters Parameters() => _parameters;
 }

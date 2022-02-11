@@ -9,31 +9,30 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Model
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Model;
+
+public enum MethodScopeType
 {
-    public enum MethodScopeType
-    {
-        Instance,
-        Static
-    }
+    Instance,
+    Static
+}
     
-    public class MethodScope
+public class MethodScope
+{
+    public readonly Type[] RequiredClasses;
+
+    public MethodScope(params Type[] requiredClasses) => RequiredClasses = requiredClasses;
+
+    public bool IsStatic(MethodScopeType methodScopeType) => methodScopeType == MethodScopeType.Static;
+
+    public bool IsInstance(MethodScopeType methodScopeType) => methodScopeType == MethodScopeType.Instance;
+
+    public static IEnumerable<MethodScopeType> Infer(CodeGenerationParameter method)
     {
-        public readonly Type[] RequiredClasses;
-
-        public MethodScope(params Type[] requiredClasses) => RequiredClasses = requiredClasses;
-
-        public bool IsStatic(MethodScopeType methodScopeType) => methodScopeType == MethodScopeType.Static;
-
-        public bool IsInstance(MethodScopeType methodScopeType) => methodScopeType == MethodScopeType.Instance;
-
-        public static IEnumerable<MethodScopeType> Infer(CodeGenerationParameter method)
+        if (method.RetrieveRelatedValue(Label.FactoryMethod, x => x == bool.TrueString.ToLower()))
         {
-            if (method.RetrieveRelatedValue(Label.FactoryMethod, x => x == bool.TrueString.ToLower()))
-            {
-                return new List<MethodScopeType>() { MethodScopeType.Instance, MethodScopeType.Static };
-            }
-            return new List<MethodScopeType>() { MethodScopeType.Instance };
+            return new List<MethodScopeType>() { MethodScopeType.Instance, MethodScopeType.Static };
         }
+        return new List<MethodScopeType>() { MethodScopeType.Instance };
     }
 }

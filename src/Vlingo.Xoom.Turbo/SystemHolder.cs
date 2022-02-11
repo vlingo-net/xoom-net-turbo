@@ -8,33 +8,32 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Vlingo.Xoom.Turbo
+namespace Vlingo.Xoom.Turbo;
+
+public class SystemHolder
 {
-    public class SystemHolder
+    private static readonly IDictionary<string, string> Variables = new Dictionary<string, string>();
+
+    static SystemHolder() => LoadVariables();
+
+    public static string GetValue(string key) => Variables.FirstOrDefault(x => x.Key == key).Value;
+
+    public static void SetValue(string key, string value)
     {
-        private static readonly IDictionary<string, string> Variables = new Dictionary<string, string>();
-
-        static SystemHolder() => LoadVariables();
-
-        public static string GetValue(string key) => Variables.FirstOrDefault(x => x.Key == key).Value;
-
-        public static void SetValue(string key, string value)
+        if (Variables.ContainsKey(key))
         {
-            if (Variables.ContainsKey(key))
-            {
-                Variables[key] = value;
-            }
-            else
-            {
-                Variables.Add(key, value);
-            }
+            Variables[key] = value;
         }
-
-        public static bool ContainsKey(string key) => Variables.ContainsKey(key);
-
-        private static void LoadVariables()
+        else
         {
-            //variables.Add("key", "value");
+            Variables.Add(key, value);
         }
+    }
+
+    public static bool ContainsKey(string key) => Variables.ContainsKey(key);
+
+    private static void LoadVariables()
+    {
+        //variables.Add("key", "value");
     }
 }

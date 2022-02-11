@@ -10,25 +10,24 @@ using System.Linq;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
+
+public class RestResource
 {
-	public class RestResource
+	private readonly CodeElementFormatter _formatter;
+	private readonly string _className;
+
+	private RestResource(CodeElementFormatter formatter, string className)
 	{
-		private readonly CodeElementFormatter _formatter;
-		private readonly string _className;
+		_formatter = formatter;
+		_className = className;
+	}
 
-		private RestResource(CodeElementFormatter formatter, string className)
-		{
-			_formatter = formatter;
-			_className = className;
-		}
-
-		public static List<RestResource> From(IReadOnlyList<ContentBase> contents)
-		{
-			var formatter = ComponentRegistry.WithType<CodeElementFormatter>();
-			var classNames = ContentQuery.FindClassNames(contents, new TemplateStandard(TemplateStandardType.RestResource),
-				AnnotationBasedTemplateStandard.AutoDispatchResourceHandler);
-			return classNames.Select(className => new RestResource(formatter, className)).ToList();
-		}
+	public static List<RestResource> From(IReadOnlyList<ContentBase> contents)
+	{
+		var formatter = ComponentRegistry.WithType<CodeElementFormatter>();
+		var classNames = ContentQuery.FindClassNames(contents, new TemplateStandard(TemplateStandardType.RestResource),
+			AnnotationBasedTemplateStandard.AutoDispatchResourceHandler);
+		return classNames.Select(className => new RestResource(formatter, className)).ToList();
 	}
 }

@@ -7,21 +7,20 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Content
+namespace Vlingo.Xoom.Turbo.Codegen.Content;
+
+public class CodeElementFormatter
 {
-	public class CodeElementFormatter
-	{
-		private readonly Dialect.Dialect _dialect;
+	private readonly Dialect.Dialect _dialect;
 
-		private CodeElementFormatter(Dialect.Dialect dialect) => _dialect = dialect;
+	private CodeElementFormatter(Dialect.Dialect dialect) => _dialect = dialect;
 
-		public static CodeElementFormatter With(Dialect.Dialect dialect) => new CodeElementFormatter(dialect);
+	public static CodeElementFormatter With(Dialect.Dialect dialect) => new CodeElementFormatter(dialect);
 
-		public string SimpleNameToAttribute(string simpleName) => simpleName;
+	public string SimpleNameToAttribute(string simpleName) => simpleName;
 
-		public string SimpleNameOf(string qualifiedName) =>
-			qualifiedName.Substring(qualifiedName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+	public string SimpleNameOf(string qualifiedName) =>
+		qualifiedName.Substring(qualifiedName.LastIndexOf(".", StringComparison.Ordinal) + 1);
 
-		public string QualifiedNameOf(string packageName, string className) => packageName + "." + className;
-	}
+	public string QualifiedNameOf(string packageName, string className) => packageName + "." + className;
 }

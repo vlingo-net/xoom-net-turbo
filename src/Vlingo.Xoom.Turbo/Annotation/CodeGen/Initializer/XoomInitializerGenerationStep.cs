@@ -9,13 +9,12 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer
-{
-	public class XoomInitializerGenerationStep : TemplateProcessingStep
-	{
-		protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context) =>
-			new List<TemplateData> { new XoomInitializerTemplateData(context) };
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
 
-		public override bool ShouldProcess(CodeGenerationContext context) => true;
-	}
+public class XoomInitializerGenerationStep : TemplateProcessingStep
+{
+	protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context) =>
+		new List<TemplateData> { new XoomInitializerTemplateData(context) };
+
+	public override bool ShouldProcess(CodeGenerationContext context) => true;
 }

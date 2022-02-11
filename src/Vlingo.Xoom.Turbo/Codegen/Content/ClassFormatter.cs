@@ -8,18 +8,17 @@
 using System;
 using System.Linq;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Content
+namespace Vlingo.Xoom.Turbo.Codegen.Content;
+
+public class ClassFormatter
 {
-    public class ClassFormatter
-    {
-        public static string QualifiedNameOf(string packageName, string className) => string.Concat(packageName, ".", className);
+    public static string QualifiedNameOf(string packageName, string className) => string.Concat(packageName, ".", className);
 
-        public static string SimpleNameToAttribute(string simpleName) => simpleName.Length == 1 ? simpleName.ToLowerInvariant() : simpleName.All(x => Char.IsUpper(x)) ? simpleName : string.Concat(simpleName.Substring(0, 1).ToLowerInvariant(), simpleName.Substring(1, simpleName.Length - 1));
+    public static string SimpleNameToAttribute(string simpleName) => simpleName.Length == 1 ? simpleName.ToLowerInvariant() : simpleName.All(x => Char.IsUpper(x)) ? simpleName : string.Concat(simpleName.Substring(0, 1).ToLowerInvariant(), simpleName.Substring(1, simpleName.Length - 1));
 
-        public static string QualifiedNameToAttribute(string qualifiedName) => SimpleNameToAttribute(SimpleNameOf(qualifiedName));
+    public static string QualifiedNameToAttribute(string qualifiedName) => SimpleNameToAttribute(SimpleNameOf(qualifiedName));
 
-        public static string SimpleNameOf(string qualifiedName) => qualifiedName.Substring(qualifiedName.LastIndexOf(".") + 1);
+    public static string SimpleNameOf(string qualifiedName) => qualifiedName.Substring(qualifiedName.LastIndexOf(".") + 1);
 
-        public static string PackageOf(string qualifiedName) => qualifiedName.Substring(0, qualifiedName.LastIndexOf("."));
-    }
+    public static string PackageOf(string qualifiedName) => qualifiedName.Substring(0, qualifiedName.LastIndexOf("."));
 }

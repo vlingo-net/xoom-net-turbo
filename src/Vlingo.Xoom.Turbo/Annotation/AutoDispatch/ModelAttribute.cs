@@ -7,15 +7,14 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
+public class ModelAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
-	public class ModelAttribute : Attribute
-	{
-		public Type? Protocol { get; set; }
+	public Type? Protocol { get; set; }
 
-		public Type? Actor { get; set; }
+	public Type? Actor { get; set; }
 
-		public Type? Data { get; set; }
-	}
+	public Type? Data { get; set; }
 }

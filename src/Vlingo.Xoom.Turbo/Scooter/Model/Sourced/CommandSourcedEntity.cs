@@ -9,16 +9,15 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 
-namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
-{
-    public abstract class CommandSourcedEntity : SourcedEntity<Command>
-    {
-        public CommandSourcedEntity() : base()
-        {
-        }
+namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 
-        public CommandSourcedEntity(List<Source<Command>> stream, int currentVersion) : base(stream, currentVersion)
-        {
-        }
+public abstract class CommandSourcedEntity : SourcedEntity<Command>
+{
+    public CommandSourcedEntity() : base()
+    {
+    }
+
+    public CommandSourcedEntity(List<Source<Command>> stream, int currentVersion) : base(stream, currentVersion)
+    {
     }
 }

@@ -7,10 +7,9 @@
 
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Codegen.File
+namespace Vlingo.Xoom.Turbo.Codegen.File;
+
+public interface IFileLocationResolver
 {
-    public interface IFileLocationResolver
-    {
-        string Resolve(CodeGenerationContext context, TemplateData templateData);
-    }
+    string Resolve(CodeGenerationContext context, TemplateData templateData);
 }

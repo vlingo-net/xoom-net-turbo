@@ -9,19 +9,18 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
-{
-    public class XoomInitializerParameterResolver
-    {
-        public static XoomInitializerParameterResolver From(string basePackage, Type bootStrapClass,
-            ProcessingEnvironment environment)
-        {
-            throw new NotImplementedException();
-        }
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer;
 
-        public IReadOnlyDictionary<Label, string> Resolve()
-        {
-            throw new NotImplementedException();
-        }
+public class XoomInitializerParameterResolver
+{
+    public static XoomInitializerParameterResolver From(string basePackage, Type bootStrapClass,
+        ProcessingEnvironment environment)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IReadOnlyDictionary<Label, string> Resolve()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -7,16 +7,15 @@
 
 using System.Collections.Generic;
 
-namespace Vlingo.Xoom.Turbo.Tests
+namespace Vlingo.Xoom.Turbo.Tests;
+
+public class MockIEnvironmentVariables : EnvironmentVariables.IEnvironmentVariablesRetriever
 {
-    public class MockIEnvironmentVariables : EnvironmentVariables.IEnvironmentVariablesRetriever
-    {
-        private readonly Dictionary<string, string> _values;
+    private readonly Dictionary<string, string> _values;
 
-        public MockIEnvironmentVariables(Dictionary<string, string> values) => _values = values;
+    public MockIEnvironmentVariables(Dictionary<string, string> values) => _values = values;
 
-        public string Retrieve(string key) => _values.GetValueOrDefault(key);
+    public string Retrieve(string key) => _values.GetValueOrDefault(key);
 
-        public bool ContainsKey(string key) => _values.ContainsKey(key);
-    }
+    public bool ContainsKey(string key) => _values.ContainsKey(key);
 }

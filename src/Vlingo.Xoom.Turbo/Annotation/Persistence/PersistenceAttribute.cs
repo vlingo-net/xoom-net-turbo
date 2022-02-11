@@ -8,27 +8,26 @@
 using System;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Annotation.Persistence;
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class PersistenceAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-	public class PersistenceAttribute : Attribute
+	private readonly StorageType _storageType;
+
+	public PersistenceAttribute(StorageType storageType, string basePackage)
 	{
-		private readonly StorageType _storageType;
-
-		public PersistenceAttribute(StorageType storageType, string basePackage)
-		{
-			_storageType = storageType;
-			BasePackage = basePackage;
-		}
-
-		public string BasePackage { get; set; }
-
-		bool Cqrs() => false;
-
-		public bool IsStateStore() => _storageType == StorageType.StateStore;
-
-		public bool IsJournal() => _storageType == StorageType.Journal;
-
-		public bool IsObjectStore() => _storageType == StorageType.ObjectStore;
+		_storageType = storageType;
+		BasePackage = basePackage;
 	}
+
+	public string BasePackage { get; set; }
+
+	bool Cqrs() => false;
+
+	public bool IsStateStore() => _storageType == StorageType.StateStore;
+
+	public bool IsJournal() => _storageType == StorageType.Journal;
+
+	public bool IsObjectStore() => _storageType == StorageType.ObjectStore;
 }

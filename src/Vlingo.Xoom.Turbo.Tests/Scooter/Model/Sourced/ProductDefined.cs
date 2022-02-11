@@ -8,23 +8,22 @@
 using System;
 using Vlingo.Xoom.Lattice.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
-{
-	public class ProductDefined : DomainEvent
-	{
-		public string Name { get; }
-		public string Description { get; }
-		public long Price { get; }
-		public DateTime OccurredOn { get; }
-		public int Version { get; }
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced;
 
-		public ProductDefined(string name, string description, long price)
-		{
-			Name = name;
-			Description = description;
-			Price = price;
-			OccurredOn = DateTime.Now;
-			Version = 1;
-		}
+public class ProductDefined : DomainEvent
+{
+	public string Name { get; }
+	public string Description { get; }
+	public long Price { get; }
+	public DateTime OccurredOn { get; }
+	public int Version { get; }
+
+	public ProductDefined(string name, string description, long price)
+	{
+		Name = name;
+		Description = description;
+		Price = price;
+		OccurredOn = DateTime.Now;
+		Version = 1;
 	}
 }

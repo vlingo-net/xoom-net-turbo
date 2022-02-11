@@ -12,39 +12,38 @@ using System.Reflection;
 using Vlingo.Xoom.Http.Resource;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer.ContentLoader;
+
+public class RestResourceContentLoader : TypeBasedContentLoader
 {
-    public class RestResourceContentLoader : TypeBasedContentLoader
+    public RestResourceContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
+        environment)
     {
-        public RestResourceContentLoader(Type annotatedClass, ProcessingEnvironment environment) : base(annotatedClass,
-            environment)
+    }
+
+    protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.RestResource);
+
+    protected override List<Type> RetrieveContentSource()
+    {
+        var resourceHandlers = AnnotatedClass?.GetCustomAttribute<ResourceHandlersAttribute>();
+
+        if (ShouldIgnore(resourceHandlers!))
+            return new List<Type>();
+        if (IsPackageBased(resourceHandlers!))
         {
+            return TypeRetriever.SubClassesOf<DynamicResourceHandler>(resourceHandlers?.Packages!).ToList();
         }
 
-        protected override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.RestResource);
+        return TypeRetriever.TypesFrom(new List<Type> { resourceHandlers!.GetType() },
+            _ => resourceHandlers.Value!);
+    }
 
-        protected override List<Type> RetrieveContentSource()
-        {
-            var resourceHandlers = AnnotatedClass?.GetCustomAttribute<ResourceHandlersAttribute>();
+    private bool ShouldIgnore(ResourceHandlersAttribute resourceHandlersAnnotation) =>
+        resourceHandlersAnnotation.Value?.Length == 0 && !IsPackageBased(resourceHandlersAnnotation);
 
-            if (ShouldIgnore(resourceHandlers!))
-                return new List<Type>();
-            if (IsPackageBased(resourceHandlers!))
-            {
-                return TypeRetriever.SubClassesOf<DynamicResourceHandler>(resourceHandlers?.Packages!).ToList();
-            }
-
-            return TypeRetriever.TypesFrom(new List<Type> { resourceHandlers!.GetType() },
-                _ => resourceHandlers.Value!);
-        }
-
-        private bool ShouldIgnore(ResourceHandlersAttribute resourceHandlersAnnotation) =>
-            resourceHandlersAnnotation.Value?.Length == 0 && !IsPackageBased(resourceHandlersAnnotation);
-
-        private bool IsPackageBased(ResourceHandlersAttribute resourceHandlersAnnotation)
-        {
-            var packages = resourceHandlersAnnotation.Packages;
-            return packages?.Length != 1 || !string.IsNullOrEmpty(packages[0]);
-        }
+    private bool IsPackageBased(ResourceHandlersAttribute resourceHandlersAnnotation)
+    {
+        var packages = resourceHandlersAnnotation.Packages;
+        return packages?.Length != 1 || !string.IsNullOrEmpty(packages[0]);
     }
 }

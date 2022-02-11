@@ -14,133 +14,132 @@ using System.Threading.Tasks;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
 
-namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking
+namespace Vlingo.Xoom.Turbo.Scooter.Plugin.Mailbox.Blocking;
+
+public class BlockingMailbox : IMailbox
 {
-	public class BlockingMailbox : IMailbox
+	private readonly AtomicBoolean _closed;
+	private readonly AtomicBoolean _delivering;
+	private readonly ConcurrentQueue<IMessage> _queue;
+	private readonly AtomicReference<Stack<List<Type>>> _suspendedOverrides;
+
+	public BlockingMailbox()
 	{
-		private readonly AtomicBoolean _closed;
-		private readonly AtomicBoolean _delivering;
-		private readonly ConcurrentQueue<IMessage> _queue;
-		private readonly AtomicReference<Stack<List<Type>>> _suspendedOverrides;
+		TaskScheduler = null!;
+		_closed = new AtomicBoolean(false);
+		_delivering = new AtomicBoolean(false);
+		_queue = new ConcurrentQueue<IMessage>();
+		_suspendedOverrides = new AtomicReference<Stack<List<Type>>>();
+	}
 
-		public BlockingMailbox()
+	public void Run()
+	{
+		throw new InvalidOperationException("BlockingMailbox does not support this operation.");
+	}
+
+	public void Close() => _closed.Set(true);
+
+	public int ConcurrencyCapacity { get; }
+
+	public void Resume(string name)
+	{
+		if (_suspendedOverrides.Get()!.Any())
 		{
-			TaskScheduler = null!;
-			_closed = new AtomicBoolean(false);
-			_delivering = new AtomicBoolean(false);
-			_queue = new ConcurrentQueue<IMessage>();
-			_suspendedOverrides = new AtomicReference<Stack<List<Type>>>();
+			_suspendedOverrides.Get()!.Pop();
 		}
 
-		public void Run()
+		DeliverAll();
+	}
+
+	private bool DeliverAll()
+	{
+		var any = false;
+
+		while (_queue.Any())
 		{
-			throw new InvalidOperationException("BlockingMailbox does not support this operation.");
-		}
-
-		public void Close() => _closed.Set(true);
-
-		public int ConcurrencyCapacity { get; }
-
-		public void Resume(string name)
-		{
-			if (_suspendedOverrides.Get()!.Any())
+			_queue.TryDequeue(out var queued);
+			if (queued != null)
 			{
-				_suspendedOverrides.Get()!.Pop();
-			}
-
-			DeliverAll();
-		}
-
-		private bool DeliverAll()
-		{
-			var any = false;
-
-			while (_queue.Any())
-			{
-				_queue.TryDequeue(out var queued);
-				if (queued != null)
+				var actor = queued.Actor;
+				if (actor != null)
 				{
-					var actor = queued.Actor;
-					if (actor != null)
-					{
-						any = true;
-						actor.ViewTestStateInitialization(null);
-						queued.Deliver();
-					}
+					any = true;
+					actor.ViewTestStateInitialization(null);
+					queued.Deliver();
 				}
 			}
-
-			return any;
 		}
 
-		public void Send(IMessage message)
+		return any;
+	}
+
+	public void Send(IMessage message)
+	{
+		if (IsClosed) return;
+
+		_queue.Enqueue(message);
+
+		if (IsSuspended)
 		{
-			if (IsClosed) return;
+			return;
+		}
 
-			_queue.Enqueue(message);
+		try
+		{
+			var deliver = true;
 
-			if (IsSuspended)
+			while (deliver)
 			{
-				return;
-			}
-
-			try
-			{
-				var deliver = true;
-
-				while (deliver)
+				if (_delivering.CompareAndSet(false, true))
 				{
-					if (_delivering.CompareAndSet(false, true))
-					{
-						while (DeliverAll())
-							;
-						_delivering.Set(false);
-					}
-
-					deliver = false;
-				}
-			}
-			catch (Exception t)
-			{
-				// should never happen because message
-				// delivery is protected by supervision,
-				// although it could be a mailbox problem
-				if (_delivering.Get())
-				{
+					while (DeliverAll())
+						;
 					_delivering.Set(false);
 				}
 
-				throw new Exception(t.Message, t);
+				deliver = false;
 			}
 		}
-
-		public void SuspendExceptFor(string name, params Type[] overrides) => _suspendedOverrides.Get()!.Push(overrides.ToList());
-
-		public bool IsSuspendedFor(string name)
+		catch (Exception t)
 		{
-			throw new NotImplementedException();
-		}
+			// should never happen because message
+			// delivery is protected by supervision,
+			// although it could be a mailbox problem
+			if (_delivering.Get())
+			{
+				_delivering.Set(false);
+			}
 
-		public IMessage Receive()
-		{
-			throw new InvalidOperationException("BlockingMailbox does not support this operation.");
+			throw new Exception(t.Message, t);
 		}
-
-		public void Send<T>(Actor actor, Action<T> consumer, ICompletes? completes, string representation)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Send(Actor actor, Type protocol, LambdaExpression consumer, ICompletes? completes, string representation)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool IsClosed => _closed.Get();
-		public bool IsDelivering => _delivering.Get();
-		public bool IsSuspended => _suspendedOverrides.Get()!.Any();
-		public int PendingMessages => _queue.Count;
-		public bool IsPreallocated { get; }
-		public TaskScheduler TaskScheduler { get; }
 	}
+
+	public void SuspendExceptFor(string name, params Type[] overrides) => _suspendedOverrides.Get()!.Push(overrides.ToList());
+
+	public bool IsSuspendedFor(string name)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IMessage Receive()
+	{
+		throw new InvalidOperationException("BlockingMailbox does not support this operation.");
+	}
+
+	public void Send<T>(Actor actor, Action<T> consumer, ICompletes? completes, string representation)
+	{
+		throw new NotImplementedException();
+	}
+
+	public void Send(Actor actor, Type protocol, LambdaExpression consumer, ICompletes? completes, string representation)
+	{
+		throw new NotImplementedException();
+	}
+
+	public bool IsClosed => _closed.Get();
+	public bool IsDelivering => _delivering.Get();
+	public bool IsSuspended => _suspendedOverrides.Get()!.Any();
+	public int PendingMessages => _queue.Count;
+	public bool IsPreallocated { get; }
+	public TaskScheduler TaskScheduler { get; }
 }

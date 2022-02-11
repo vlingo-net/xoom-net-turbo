@@ -13,14 +13,13 @@ using Vlingo.Xoom.Symbio.Store.Journal.InMemory;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
-namespace Vlingo.Xoom.Turbo.Storage
+namespace Vlingo.Xoom.Turbo.Storage;
+
+public class InMemoryJournalActorBuilder : IStoreActorBuilder
 {
-	public class InMemoryJournalActorBuilder : IStoreActorBuilder
-	{
-		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
-			(stage.ActorFor<InMemoryJournalActor<IState>>(typeof(IJournal), dispatchers) as T)!;
+	public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
+		(stage.ActorFor<InMemoryJournalActor<IState>>(typeof(IJournal), dispatchers) as T)!;
 		
-		public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
-			storageType.IsJournal() && databaseType.IsInMemory();
-	}
+	public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
+		storageType.IsJournal() && databaseType.IsInMemory();
 }

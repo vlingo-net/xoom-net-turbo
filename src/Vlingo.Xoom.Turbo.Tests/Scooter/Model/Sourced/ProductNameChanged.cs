@@ -8,19 +8,18 @@
 using System;
 using Vlingo.Xoom.Lattice.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
-{
-	public class ProductNameChanged : DomainEvent
-	{
-		public string Name { get; }
-		public DateTime OccurredOn { get; }
-		public int Version { get; }
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced;
 
-		public ProductNameChanged(string name)
-		{
-			Name = name;
-			OccurredOn = DateTime.Now;
-			Version = 1;
-		}
+public class ProductNameChanged : DomainEvent
+{
+	public string Name { get; }
+	public DateTime OccurredOn { get; }
+	public int Version { get; }
+
+	public ProductNameChanged(string name)
+	{
+		Name = name;
+		OccurredOn = DateTime.Now;
+		Version = 1;
 	}
 }

@@ -7,11 +7,10 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Annotation.Persistence;
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class ProjectionsAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-	public class ProjectionsAttribute : Attribute
-	{
-		public ProjectionAttribute[]? Value { get; set; }
-	}
+	public ProjectionAttribute[]? Value { get; set; }
 }

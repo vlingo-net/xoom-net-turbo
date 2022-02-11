@@ -10,56 +10,55 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Turbo.Stepflow;
 
-namespace Vlingo.Xoom.Turbo.Management.Endpoints
+namespace Vlingo.Xoom.Turbo.Management.Endpoints;
+
+public class StepFlowEndpoint
 {
-    public class StepFlowEndpoint
+    private readonly IDictionary<string, IStepFlow<State<object>, State<object>, Type>> _stepFlow = new Dictionary<string, IStepFlow<State<object>, State<object>, Type>>();
+
+    public IReadOnlyDictionary<string, object> Map(string flowName)
     {
-        private readonly IDictionary<string, IStepFlow<State<object>, State<object>, Type>> _stepFlow = new Dictionary<string, IStepFlow<State<object>, State<object>, Type>>();
+        var nodes = new HashSet<string>();
+        var portCount = new Dictionary<string, int>();
+        var links = new HashSet<IDictionary<string, object>>();
+        var results = new Dictionary<string, object>();
 
-        public IReadOnlyDictionary<string, object> Map(string flowName)
+        var kernel = _stepFlow[flowName].GetKernel().Await();
+        var states = kernel.GetStates().Await();
+
+        states.ToList().ForEach(state =>
         {
-            var nodes = new HashSet<string>();
-            var portCount = new Dictionary<string, int>();
-            var links = new HashSet<IDictionary<string, object>>();
-            var results = new Dictionary<string, object>();
+            nodes.Add(state.GetName().Split(new string[] { "::" }, StringSplitOptions.None)[0]);
+        });
 
-            var kernel = _stepFlow[flowName].GetKernel().Await();
-            var states = kernel.GetStates().Await();
+        states.SelectMany(state => state.GetTransitionHandlers<Type>()).ToList().ForEach(handler => DefineGraph(portCount, links, handler));
 
-            states.ToList().ForEach(state =>
-            {
-                nodes.Add(state.GetName().Split(new string[] { "::" }, StringSplitOptions.None)[0]);
-            });
+        results.Add("nodes", nodes);
+        results.Add("edges", links);
+        results.Add("flow", _stepFlow[flowName].GetName().Await());
 
-            states.SelectMany(state => state.GetTransitionHandlers<Type>()).ToList().ForEach(handler => DefineGraph(portCount, links, handler));
+        return results;
+    }
 
-            results.Add("nodes", nodes);
-            results.Add("edges", links);
-            results.Add("flow", _stepFlow[flowName].GetName().Await());
+    private void DefineGraph(IReadOnlyDictionary<string, int> portCount, HashSet<IDictionary<string, object>> links, TransitionHandler<State<object>, State<object>, Type> handler)
+    {
+        var link = new Dictionary<string, object>();
 
-            return results;
-        }
+        var address = handler.GetAddress().Split(new string[] { "::" }, StringSplitOptions.None);
 
-        private void DefineGraph(IReadOnlyDictionary<string, int> portCount, HashSet<IDictionary<string, object>> links, TransitionHandler<State<object>, State<object>, Type> handler)
-        {
-            var link = new Dictionary<string, object>();
+        link.Add("source", handler.GetStateTransition().GetSourceName());
+        link.Add("target", handler.GetStateTransition().GetTargetName());
 
-            var address = handler.GetAddress().Split(new string[] { "::" }, StringSplitOptions.None);
+        link.Add("label", address.Length == 3 ? address[2] : "TO");
 
-            link.Add("source", handler.GetStateTransition().GetSourceName());
-            link.Add("target", handler.GetStateTransition().GetTargetName());
+        var sourcePortKey = handler.GetStateTransition().GetSourceName();
+        var sourcePort = address.Length != 3 ? (portCount[sourcePortKey] != 0 ? portCount[sourcePortKey] + 1 : 0) : 1;
 
-            link.Add("label", address.Length == 3 ? address[2] : "TO");
+        var targetPortKey = string.Concat("TO", "::", handler.GetStateTransition().GetTargetName());
+        var targetPort = address.Length != 3 ? (portCount[targetPortKey] != 0 ? portCount[targetPortKey] + 1 : 1) : 0;
 
-            var sourcePortKey = handler.GetStateTransition().GetSourceName();
-            var sourcePort = address.Length != 3 ? (portCount[sourcePortKey] != 0 ? portCount[sourcePortKey] + 1 : 0) : 1;
+        link.Add("port", sourcePort + targetPort);
 
-            var targetPortKey = string.Concat("TO", "::", handler.GetStateTransition().GetTargetName());
-            var targetPort = address.Length != 3 ? (portCount[targetPortKey] != 0 ? portCount[targetPortKey] + 1 : 1) : 0;
-
-            link.Add("port", sourcePort + targetPort);
-
-            links.Add(link);
-        }
+        links.Add(link);
     }
 }

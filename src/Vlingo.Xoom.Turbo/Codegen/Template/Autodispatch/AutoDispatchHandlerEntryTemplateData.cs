@@ -11,45 +11,44 @@ using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template.Model;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
+
+public class AutoDispatchHandlerEntryTemplateData : TemplateData
 {
-    public class AutoDispatchHandlerEntryTemplateData : TemplateData
+    private readonly TemplateParameters? _parameters;
+
+    public static IEnumerable<TemplateData> From(CodeGenerationParameter aggregate) => aggregate.RetrieveAllRelated(Label.RouteSignature).Where(route => !route.HasAny(Label.ReadOnly)).Select(x => new AutoDispatchHandlerEntryTemplateData());
+
+    public AutoDispatchHandlerEntryTemplateData()
     {
-        private readonly TemplateParameters? _parameters;
-
-        public static IEnumerable<TemplateData> From(CodeGenerationParameter aggregate) => aggregate.RetrieveAllRelated(Label.RouteSignature).Where(route => !route.HasAny(Label.ReadOnly)).Select(x => new AutoDispatchHandlerEntryTemplateData());
-
-        public AutoDispatchHandlerEntryTemplateData()
-        {
-        }
-
-        private AutoDispatchHandlerEntryTemplateData(CodeGenerationParameter route)
-        {
-            var aggregate = route.Parent(Label.Aggregate);
-            var method = AggregateDetail.MethodWithName(aggregate, route.Value);
-            var factoryMethod = method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower());
-
-            //TODO: TemplateStandartType enum methods
-            _parameters =
-                    TemplateParameters.With(TemplateParameter.MethodName, route.Value)
-                            .And(TemplateParameter.FactoryMethod, factoryMethod)
-                            .And(TemplateParameter.AggregateProtocolName, aggregate.Value)
-                            .And(TemplateParameter.DataObjectName, TemplateStandardType.DataObject)
-                            .And(TemplateParameter.AggregateProtocolVariable, Content.ClassFormatter.SimpleNameToAttribute(aggregate.Value))
-                            .And(TemplateParameter.StateName, TemplateStandardType.AggregateState)
-                            .And(TemplateParameter.IndexName, AutoDispatchMappingValueFormatter.Format(route.Value))
-                            .And(TemplateParameter.MethodInvocationParameters, ResolveMethodInvocationParameters(method));
-        }
-
-        private string ResolveMethodInvocationParameters(CodeGenerationParameter method)
-        {
-            var factoryMethod = method.RetrieveRelatedValue(Label.FactoryMethod, x => x == bool.TrueString.ToLower());
-            var methodScope = factoryMethod ? MethodScopeType.Static : MethodScopeType.Instance;
-            return new AggregateArgumentsFormat.MethodInvocation("$stage", "data").Format(method, methodScope);
-        }
-
-        public override TemplateParameters Parameters() => _parameters!;
-
-        public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchHandlerEntry);
     }
+
+    private AutoDispatchHandlerEntryTemplateData(CodeGenerationParameter route)
+    {
+        var aggregate = route.Parent(Label.Aggregate);
+        var method = AggregateDetail.MethodWithName(aggregate, route.Value);
+        var factoryMethod = method.RetrieveRelatedValue(Label.FactoryMethod, x => bool.TrueString.ToLower());
+
+        //TODO: TemplateStandartType enum methods
+        _parameters =
+            TemplateParameters.With(TemplateParameter.MethodName, route.Value)
+                .And(TemplateParameter.FactoryMethod, factoryMethod)
+                .And(TemplateParameter.AggregateProtocolName, aggregate.Value)
+                .And(TemplateParameter.DataObjectName, TemplateStandardType.DataObject)
+                .And(TemplateParameter.AggregateProtocolVariable, Content.ClassFormatter.SimpleNameToAttribute(aggregate.Value))
+                .And(TemplateParameter.StateName, TemplateStandardType.AggregateState)
+                .And(TemplateParameter.IndexName, AutoDispatchMappingValueFormatter.Format(route.Value))
+                .And(TemplateParameter.MethodInvocationParameters, ResolveMethodInvocationParameters(method));
+    }
+
+    private string ResolveMethodInvocationParameters(CodeGenerationParameter method)
+    {
+        var factoryMethod = method.RetrieveRelatedValue(Label.FactoryMethod, x => x == bool.TrueString.ToLower());
+        var methodScope = factoryMethod ? MethodScopeType.Static : MethodScopeType.Instance;
+        return new AggregateArgumentsFormat.MethodInvocation("$stage", "data").Format(method, methodScope);
+    }
+
+    public override TemplateParameters Parameters() => _parameters!;
+
+    public override TemplateStandard Standard() => new TemplateStandard(TemplateStandardType.AutoDispatchHandlerEntry);
 }

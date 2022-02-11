@@ -7,20 +7,19 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Storage
+namespace Vlingo.Xoom.Turbo.Storage;
+
+public class DatabaseParameterNotFoundException : SystemException
 {
-    public class DatabaseParameterNotFoundException : SystemException
+    private static readonly string _exceptionMessagePattern = "{0} Database {1} not informed";
+
+    public DatabaseParameterNotFoundException(Model model) : base(model.ToString())
     {
-        private static readonly string _exceptionMessagePattern = "{0} Database {1} not informed";
+    }
 
-        public DatabaseParameterNotFoundException(Model model) : base(model.ToString())
-        {
-        }
-
-        public DatabaseParameterNotFoundException(Model model, string attribute) : base(model.IsDomainModel ?
-                string.Format(_exceptionMessagePattern, string.Empty, attribute) :
-                string.Format(_exceptionMessagePattern, model, attribute))
-        {
-        }
+    public DatabaseParameterNotFoundException(Model model, string attribute) : base(model.IsDomainModel ?
+        string.Format(_exceptionMessagePattern, string.Empty, attribute) :
+        string.Format(_exceptionMessagePattern, model, attribute))
+    {
     }
 }

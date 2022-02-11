@@ -5,31 +5,30 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template
+namespace Vlingo.Xoom.Turbo.Codegen.Template;
+
+public class TemplateProcessorConfiguration
 {
-    public class TemplateProcessorConfiguration
+    //public readonly Configuration configuration;
+
+    private static TemplateProcessorConfiguration? _instance;
+
+    public static TemplateProcessorConfiguration Instance()
     {
-        //public readonly Configuration configuration;
-
-        private static TemplateProcessorConfiguration? _instance;
-
-        public static TemplateProcessorConfiguration Instance()
+        if (_instance == null)
         {
-            if (_instance == null)
-            {
-                _instance = new TemplateProcessorConfiguration();
-            }
-            return _instance;
+            _instance = new TemplateProcessorConfiguration();
         }
-
-        //TODO
-        //private TemplateProcessorConfiguration()
-        //{
-        //    configuration = new Configuration("DEFAULT_INCOMPATIBLE_IMPROVEMENTS");
-        //    configuration.setClassForTemplateLoading(TemplateProcessor.class, "/");
-        //    configuration.setDefaultEncoding("UTF-8");
-        //    configuration.setLocale(Locale.US);
-        //    configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        //}
+        return _instance;
     }
+
+    //TODO
+    //private TemplateProcessorConfiguration()
+    //{
+    //    configuration = new Configuration("DEFAULT_INCOMPATIBLE_IMPROVEMENTS");
+    //    configuration.setClassForTemplateLoading(TemplateProcessor.class, "/");
+    //    configuration.setDefaultEncoding("UTF-8");
+    //    configuration.setLocale(Locale.US);
+    //    configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+    //}
 }

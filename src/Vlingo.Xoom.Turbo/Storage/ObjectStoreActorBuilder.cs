@@ -11,16 +11,15 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
-namespace Vlingo.Xoom.Turbo.Storage
-{
-	public class ObjectStoreActorBuilder : IStoreActorBuilder
-	{
-		public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class
-		{
-			//TODO: Implement Object Store Actor Builder
-			throw new NotSupportedException("Object Store is not supported");
-		}
+namespace Vlingo.Xoom.Turbo.Storage;
 
-		public bool Support(StorageType storageType, DatabaseCategory databaseType) => storageType.IsObjectStore();
+public class ObjectStoreActorBuilder : IStoreActorBuilder
+{
+	public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class
+	{
+		//TODO: Implement Object Store Actor Builder
+		throw new NotSupportedException("Object Store is not supported");
 	}
+
+	public bool Support(StorageType storageType, DatabaseCategory databaseType) => storageType.IsObjectStore();
 }

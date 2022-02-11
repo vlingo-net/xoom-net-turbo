@@ -10,70 +10,69 @@ using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence;
+
+public class TestEntity : EventSourcedEntity
 {
-	public class TestEntity : EventSourcedEntity
+	public bool Test1
 	{
-		public bool Test1
+		get => _test1;
+		set => _test1 = value;
+	}
+
+	public bool Test2
+	{
+		get => _test2;
+		set => _test2 = value;
+	}
+
+	private static string _id;
+	private static bool _test1;
+	private static bool _test2;
+
+	public TestEntity(string id)
+	{
+		_id = id;
+	}
+
+	public TestEntity(IEnumerable<ISource> sources, int streamStreamVersion) : base()
+	{
+	}
+
+	public override string Id() => StreamName();
+
+	protected override string StreamName() => _id;
+
+	public void DoTest1()
+	{
+		Apply(new Test1Happened(_id));
+	}
+
+	static TestEntity()
+	{
+		RegisterConsumer<TestEntity, Test1Happened>(delegate(Source<DomainEvent> source)
 		{
-			get => _test1;
-			set => _test1 = value;
-		}
-
-		public bool Test2
+			WhenDoTest1(source as Test1Happened);
+		});
+		RegisterConsumer<TestEntity, Test2Happened>(delegate(Source<DomainEvent> source)
 		{
-			get => _test2;
-			set => _test2 = value;
-		}
+			WhenDoTest2(source as Test2Happened);
+		});
+	}
 
-		private static string _id;
-		private static bool _test1;
-		private static bool _test2;
+	static void WhenDoTest1(Test1Happened @event)
+	{
+		_id = @event.Id;
+		_test1 = true;
+	}
+	static void WhenDoTest2(Test2Happened @event)
+	{
+		_id = @event.Id;
+		_test2 = true;
+	}
 
-		public TestEntity(string id)
-		{
-			_id = id;
-		}
-
-		public TestEntity(IEnumerable<ISource> sources, int streamStreamVersion) : base()
-		{
-		}
-
-		public override string Id() => StreamName();
-
-		protected override string StreamName() => _id;
-
-		public void DoTest1()
-		{
-			Apply(new Test1Happened(_id));
-		}
-
-		static TestEntity()
-		{
-			RegisterConsumer<TestEntity, Test1Happened>(delegate(Source<DomainEvent> source)
-			{
-				WhenDoTest1(source as Test1Happened);
-			});
-			RegisterConsumer<TestEntity, Test2Happened>(delegate(Source<DomainEvent> source)
-			{
-				WhenDoTest2(source as Test2Happened);
-			});
-		}
-
-		static void WhenDoTest1(Test1Happened @event)
-		{
-			_id = @event.Id;
-			_test1 = true;
-		}
-		static void WhenDoTest2(Test2Happened @event)
-		{
-			_id = @event.Id;
-			_test2 = true;
-		}
-
-		public void DoTest2()
-		{
-			Apply(new Test2Happened(_id));
-		}
+	public void DoTest2()
+	{
+		Apply(new Test2Happened(_id));
 	}
 }

@@ -7,14 +7,13 @@
 
 using Xunit;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Initializer;
+
+public class XoomInitializerTest
 {
-    public class XoomInitializerTest
+    [Fact]
+    public void TestInitialization()
     {
-        [Fact]
-        public void TestInitialization()
-        {
-            // Need xoom-net-lattice..
-        }
+        // Need xoom-net-lattice..
     }
 }

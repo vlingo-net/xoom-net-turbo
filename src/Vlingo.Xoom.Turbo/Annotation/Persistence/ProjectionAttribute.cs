@@ -7,13 +7,12 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Persistence
-{
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-	public class ProjectionAttribute : Attribute
-	{
-		public Type? Actor { get; set; }
+namespace Vlingo.Xoom.Turbo.Annotation.Persistence;
 
-		public Type[]? BecauseOf { get; set; }
-	}
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class ProjectionAttribute : Attribute
+{
+	public Type? Actor { get; set; }
+
+	public Type[]? BecauseOf { get; set; }
 }

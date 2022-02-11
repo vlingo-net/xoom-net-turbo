@@ -5,33 +5,32 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Persistence;
+
+public class Entity2
 {
-	public class Entity2
+	public string Id { get; }
+	public string Value { get; }
+
+	public Entity2(string id, string value)
 	{
-		public string Id { get; }
-		public string Value { get; }
-
-		public Entity2(string id, string value)
-		{
-			Id = id;
-			Value = value;
-		}
+		Id = id;
+		Value = value;
+	}
 		
-		public override bool Equals(object obj) => Equals((Entity2)obj);
+	public override bool Equals(object obj) => Equals((Entity2)obj);
 
-		protected bool Equals(Entity2 other)
+	protected bool Equals(Entity2 other)
+	{
+		if (other == null || other.GetType() != GetType())
 		{
-			if (other == null || other.GetType() != GetType())
-			{
-				return false;
-			}
-			return Id == other.Id;
+			return false;
 		}
+		return Id == other.Id;
+	}
 
-		public override int GetHashCode()
-		{
-			throw new System.NotImplementedException();
-		}
+	public override int GetHashCode()
+	{
+		throw new System.NotImplementedException();
 	}
 }

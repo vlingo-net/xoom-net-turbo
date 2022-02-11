@@ -10,33 +10,32 @@ using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 
-namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced
+namespace Vlingo.Xoom.Turbo.Tests.Scooter.Model.Sourced;
+
+public abstract class ProductGrandParent : EventSourcedEntity
 {
-	public abstract class ProductGrandParent : EventSourcedEntity
+	public override string Type { get; }
+
+	protected ProductGrandParent(string type)
 	{
-		public override string Type { get; }
+		Type = type;
 
-		protected ProductGrandParent(string type)
+		Apply(new ProductGrandParentTyped(type));
+	}
+
+	public ProductGrandParent(List<Source<DomainEvent>> eventStream, int streamVersion) : base(eventStream, streamVersion)
+	{
+	}
+
+	static ProductGrandParent()
+	{
+		RegisterConsumer<ProductGrandParent, ProductGrandParentTyped>(delegate(Source<DomainEvent> source)
 		{
-			Type = type;
+			WhenProductGrandParentTyped(source as ProductGrandParentTyped);
+		});
+	}
 
-			Apply(new ProductGrandParentTyped(type));
-		}
-
-		public ProductGrandParent(List<Source<DomainEvent>> eventStream, int streamVersion) : base(eventStream, streamVersion)
-		{
-		}
-
-		static ProductGrandParent()
-		{
-			RegisterConsumer<ProductGrandParent, ProductGrandParentTyped>(delegate(Source<DomainEvent> source)
-			{
-				WhenProductGrandParentTyped(source as ProductGrandParentTyped);
-			});
-		}
-
-		static void WhenProductGrandParentTyped(ProductGrandParentTyped @event)
-		{
-		}
+	static void WhenProductGrandParentTyped(ProductGrandParentTyped @event)
+	{
 	}
 }

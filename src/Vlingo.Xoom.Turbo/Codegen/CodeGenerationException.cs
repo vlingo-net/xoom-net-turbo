@@ -7,17 +7,16 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Codegen
+namespace Vlingo.Xoom.Turbo.Codegen;
+
+public class CodeGenerationException : SystemException
 {
-    public class CodeGenerationException : SystemException
+
+    public CodeGenerationException(Exception exception) : base(exception.Message, exception)
     {
+    }
 
-        public CodeGenerationException(Exception exception) : base(exception.Message, exception)
-        {
-        }
-
-        public CodeGenerationException(string message) : base(message)
-        {
-        }
+    public CodeGenerationException(string message) : base(message)
+    {
     }
 }

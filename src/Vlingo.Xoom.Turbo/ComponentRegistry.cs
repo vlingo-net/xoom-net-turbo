@@ -7,25 +7,24 @@
 
 using System.Collections.Generic;
 
-namespace Vlingo.Xoom.Turbo
+namespace Vlingo.Xoom.Turbo;
+
+public class ComponentRegistry
 {
-    public class ComponentRegistry
-    {
-        private static readonly IDictionary<string, object> Components = new Dictionary<string, object>();
+    private static readonly IDictionary<string, object> Components = new Dictionary<string, object>();
 
-        public static void Register(string componentName, object componentInstance) => 
-            Components.Add(componentName, componentInstance);
+    public static void Register(string componentName, object componentInstance) => 
+        Components.Add(componentName, componentInstance);
 
-        public static void Register<T>(object componentInstance) => Components.Add(typeof(T).FullName!, componentInstance);
+    public static void Register<T>(object componentInstance) => Components.Add(typeof(T).FullName!, componentInstance);
 
-        public static bool Has<T>() => Components.ContainsKey(typeof(T).FullName!);
+    public static bool Has<T>() => Components.ContainsKey(typeof(T).FullName!);
 
-        public static object WithName(string name) => Components[name];
+    public static object WithName(string name) => Components[name];
 
-        public static T WithType<T>() => (T)WithName(typeof(T).FullName!);
+    public static T WithType<T>() => (T)WithName(typeof(T).FullName!);
 
-        public static bool Has(string componentName) => Components.ContainsKey(componentName);
+    public static bool Has(string componentName) => Components.ContainsKey(componentName);
 
-        public static void Clear() => Components.Clear();
-    }
+    public static void Clear() => Components.Clear();
 }

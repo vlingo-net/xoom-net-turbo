@@ -8,16 +8,15 @@
 using System;
 using Vlingo.Xoom.Common;
 
-namespace Vlingo.Xoom.Turbo.Stepflow
+namespace Vlingo.Xoom.Turbo.Stepflow;
+
+/// <summary>
+/// A <see cref="IStateHandler{TState, TRawState, TTypeState}" /> is a functional interface that describes a <see cref="StateTransition{TState, TRawState, TA}" />.
+/// </summary>
+/// <typeparam name="TState">The source <see cref="State{T}" /></typeparam>
+/// <typeparam name="TRawState">The source <see cref="State{T}" /></typeparam>
+/// <typeparam name="TTypeState">The type of the handler</typeparam>
+public interface IStateHandler<TState, TRawState, TTypeState> where TState : State<object> where TRawState : State<object> where TTypeState : Type
 {
-    /// <summary>
-    /// A <see cref="IStateHandler{TState, TRawState, TTypeState}" /> is a functional interface that describes a <see cref="StateTransition{TState, TRawState, TA}" />.
-    /// </summary>
-    /// <typeparam name="TState">The source <see cref="State{T}" /></typeparam>
-    /// <typeparam name="TRawState">The source <see cref="State{T}" /></typeparam>
-    /// <typeparam name="TTypeState">The type of the handler</typeparam>
-    public interface IStateHandler<TState, TRawState, TTypeState> where TState : State<object> where TRawState : State<object> where TTypeState : Type
-    {
-        ICompletes<StateTransition<TState, TRawState, TTypeState>> Execute();
-    }
+    ICompletes<StateTransition<TState, TRawState, TTypeState>> Execute();
 }

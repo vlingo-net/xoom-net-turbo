@@ -7,13 +7,12 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
-{
-	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
-	public class AutoDispatchAttribute : Attribute
-	{
-		public string? Path { get; set; }
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 
-		public Type? Handlers { get; set; }
-	}
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
+public class AutoDispatchAttribute : Attribute
+{
+	public string? Path { get; set; }
+
+	public Type? Handlers { get; set; }
 }

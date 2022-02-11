@@ -9,16 +9,15 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Lattice.Model;
 using Vlingo.Xoom.Symbio;
 
-namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced
-{
-    public abstract class EventSourcedEntity : SourcedEntity<DomainEvent>
-    {
-        public EventSourcedEntity()
-        {
-        }
+namespace Vlingo.Xoom.Turbo.Scooter.Model.Sourced;
 
-        public EventSourcedEntity(List<Source<DomainEvent>> stream, int currentVersion) : base(stream, currentVersion)
-        {
-        }
+public abstract class EventSourcedEntity : SourcedEntity<DomainEvent>
+{
+    public EventSourcedEntity()
+    {
+    }
+
+    public EventSourcedEntity(List<Source<DomainEvent>> stream, int currentVersion) : base(stream, currentVersion)
+    {
     }
 }

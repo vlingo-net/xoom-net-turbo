@@ -9,18 +9,17 @@ using System.IO;
 using Vlingo.Xoom.Turbo.Annotation;
 using Xunit;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation
+namespace Vlingo.Xoom.Turbo.Tests.Annotation;
+
+public class PackageCollectorTest
 {
-    public class PackageCollectorTest
+    [Fact]
+    public void TestThatPackagesAreCollected()
     {
-        [Fact]
-        public void TestThatPackagesAreCollected()
-        {
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()!).Parent!.Parent!.FullName;
+        var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()!).Parent!.Parent!.FullName;
 
-            var packages = PackageCollector.From(projectPath, "Vlingo.Xoom.Turbo.Tests.Annotation").CollectAll();
+        var packages = PackageCollector.From(projectPath, "Vlingo.Xoom.Turbo.Tests.Annotation").CollectAll();
 
-            Assert.Equal(17, packages.Count); // WIP collect packages/namespaces from GetCurrentDirectory
-        }
+        Assert.Equal(17, packages.Count); // WIP collect packages/namespaces from GetCurrentDirectory
     }
 }

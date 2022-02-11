@@ -8,26 +8,25 @@
 using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Resource;
+
+public interface IHandlerInvocationResolver
 {
-    public interface IHandlerInvocationResolver
+    public abstract string ResolveRouteHandlerInvocation(CodeGenerationParameter parentParameter, CodeGenerationParameter routeSignatureParameter);
+
+    public abstract string ResolveAdapterHandlerInvocation(CodeGenerationParameter parentParameter, CodeGenerationParameter routeSignatureParameter);
+}
+
+public class HandlerInvocationResolver
+{
+    protected static readonly string QueriesParameter = "$queries";
+
+    public static IHandlerInvocationResolver With(CodeGenerationParameter parentParameter)
     {
-        public abstract string ResolveRouteHandlerInvocation(CodeGenerationParameter parentParameter, CodeGenerationParameter routeSignatureParameter);
-
-        public abstract string ResolveAdapterHandlerInvocation(CodeGenerationParameter parentParameter, CodeGenerationParameter routeSignatureParameter);
-    }
-
-    public class HandlerInvocationResolver
-    {
-        protected static readonly string QueriesParameter = "$queries";
-
-        public static IHandlerInvocationResolver With(CodeGenerationParameter parentParameter)
+        if (parentParameter.IsLabeled(Label.AutoDispatchName))
         {
-            if (parentParameter.IsLabeled(Label.AutoDispatchName))
-            {
-                return new AutoDispatchHandlerInvocationResolver();
-            }
-            return new DefaultHandlerInvocationResolver();
+            return new AutoDispatchHandlerInvocationResolver();
         }
+        return new DefaultHandlerInvocationResolver();
     }
 }

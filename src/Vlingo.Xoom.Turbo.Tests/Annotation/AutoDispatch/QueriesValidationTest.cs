@@ -10,18 +10,17 @@ using Vlingo.Xoom.Turbo.Annotation;
 using Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 using Xunit;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch
-{
-    public class QueriesValidationTest
-    {
-        [Fact]
-        public void TestThatSingularityValidationPasses()
-        {
-            var mockAnnotatedElements = new Mock<AnnotatedElements>();
-            mockAnnotatedElements.Setup(s => s.Count(It.IsAny<QueriesAttribute>())).Returns(1);
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.AutoDispatch;
 
-            Validation.SingularityValidation().Invoke(new Mock<ProcessingEnvironment>().Object,
-                typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object);
-        }
+public class QueriesValidationTest
+{
+    [Fact]
+    public void TestThatSingularityValidationPasses()
+    {
+        var mockAnnotatedElements = new Mock<AnnotatedElements>();
+        mockAnnotatedElements.Setup(s => s.Count(It.IsAny<QueriesAttribute>())).Returns(1);
+
+        Validation.SingularityValidation().Invoke(new Mock<ProcessingEnvironment>().Object,
+            typeof(Turbo.Annotation.Initializer.XoomAttribute), mockAnnotatedElements.Object);
     }
 }

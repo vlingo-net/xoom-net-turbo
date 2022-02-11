@@ -7,32 +7,31 @@
 
 using System.Collections.Generic;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+
+public enum ModelType
 {
-    public enum ModelType
-    {
-        Domain,
-        Command,
-        Query
-    }
+    Domain,
+    Command,
+    Query
+}
 
-    public static class ModelTypeExtensions
+public static class ModelTypeExtensions
+{
+    public static IEnumerable<ModelType> ApplicableTo(bool useCqrs)
     {
-        public static IEnumerable<ModelType> ApplicableTo(bool useCqrs)
+        if (useCqrs)
         {
-            if (useCqrs)
-            {
-                return new List<ModelType>() { ModelType.Query, ModelType.Command };
-            }
-            return new List<ModelType>() { ModelType.Domain };
+            return new List<ModelType>() { ModelType.Query, ModelType.Command };
         }
-
-        public static bool IsCommandModel(this ModelType modelType) => modelType.Equals(ModelType.Command);
-
-        public static bool IsQueryModel(this ModelType modelType) => modelType.Equals(ModelType.Query);
-
-        public static bool IsDomainModel(this ModelType modelType) => modelType.Equals(ModelType.Domain);
-        public static bool RequireAdapter(this ModelType modelType) => !modelType.IsQueryModel();
-        
+        return new List<ModelType>() { ModelType.Domain };
     }
+
+    public static bool IsCommandModel(this ModelType modelType) => modelType.Equals(ModelType.Command);
+
+    public static bool IsQueryModel(this ModelType modelType) => modelType.Equals(ModelType.Query);
+
+    public static bool IsDomainModel(this ModelType modelType) => modelType.Equals(ModelType.Domain);
+    public static bool RequireAdapter(this ModelType modelType) => !modelType.IsQueryModel();
+        
 }

@@ -7,16 +7,15 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Actors
-{
-    public class PropertiesLoadingException : SystemException
-    {
-        public PropertiesLoadingException(string message) : base(message)
-        {
-        }
+namespace Vlingo.Xoom.Turbo.Actors;
 
-        public PropertiesLoadingException(string message, Exception cause) : base(message, cause)
-        {
-        }
+public class PropertiesLoadingException : SystemException
+{
+    public PropertiesLoadingException(string message) : base(message)
+    {
+    }
+
+    public PropertiesLoadingException(string message, Exception cause) : base(message, cause)
+    {
     }
 }

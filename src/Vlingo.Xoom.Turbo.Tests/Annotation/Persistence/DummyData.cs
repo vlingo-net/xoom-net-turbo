@@ -7,14 +7,13 @@
 
 using Vlingo.Xoom.Turbo.Tests.Annotation.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
+
+public class DummyData
 {
-    public class DummyData
-    {
-        public static DummyData From(DummyState state) => new DummyData(state.Name);
+    public static DummyData From(DummyState state) => new DummyData(state.Name);
 
-        public DummyData(string name) => Name = name;
+    public DummyData(string name) => Name = name;
 
-        public string Name { get; }
-    }
+    public string Name { get; }
 }

@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Storage
+namespace Vlingo.Xoom.Turbo.Storage;
+
+public enum ModelType
 {
-    public enum ModelType
-    {
-        Domain,
-        Command,
-        Query
-    }
+    Domain,
+    Command,
+    Query
 }

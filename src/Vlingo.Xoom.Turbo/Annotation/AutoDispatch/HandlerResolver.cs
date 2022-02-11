@@ -10,31 +10,30 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Annotation.AutoDispatch;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+
+public class HandlerResolver
 {
-	public class HandlerResolver
+	private static readonly string _handlerEntryClassName = nameof(HandlerEntry);
+
+	private readonly TypeReader _handlersConfigReader;
+	private readonly List<HandlerInvocation> _handlerInvocations = new List<HandlerInvocation>();
+
+	public static HandlerResolver With(Type handlersConfig, ProcessingEnvironment environment) =>
+		new HandlerResolver(handlersConfig, environment);
+
+	private HandlerResolver(Type handlersConfig, ProcessingEnvironment environment)
 	{
-		private static readonly string _handlerEntryClassName = nameof(HandlerEntry);
-
-		private readonly TypeReader _handlersConfigReader;
-		private readonly List<HandlerInvocation> _handlerInvocations = new List<HandlerInvocation>();
-
-		public static HandlerResolver With(Type handlersConfig, ProcessingEnvironment environment) =>
-			new HandlerResolver(handlersConfig, environment);
-
-		private HandlerResolver(Type handlersConfig, ProcessingEnvironment environment)
-		{
-			_handlersConfigReader = TypeReader.From(handlersConfig);
-			_handlerInvocations.AddRange(ResolveInvocations());
-		}
-
-		public HandlerInvocation Find(int index) =>
-			_handlerInvocations.FirstOrDefault(invocation => invocation.Index == index) ??
-			throw new ArgumentException(string.Concat("Handler Invocation with index ", index, " not found"));
-
-		private List<HandlerInvocation> ResolveInvocations() => _handlersConfigReader.FindMembers()
-			.Where(element => element.DeclaringType!.Name.StartsWith(_handlerEntryClassName))
-			.Select(handlerEntry => new HandlerInvocation(_handlersConfigReader, (handlerEntry as Type)!))
-			.ToList();
+		_handlersConfigReader = TypeReader.From(handlersConfig);
+		_handlerInvocations.AddRange(ResolveInvocations());
 	}
+
+	public HandlerInvocation Find(int index) =>
+		_handlerInvocations.FirstOrDefault(invocation => invocation.Index == index) ??
+		throw new ArgumentException(string.Concat("Handler Invocation with index ", index, " not found"));
+
+	private List<HandlerInvocation> ResolveInvocations() => _handlersConfigReader.FindMembers()
+		.Where(element => element.DeclaringType!.Name.StartsWith(_handlerEntryClassName))
+		.Select(handlerEntry => new HandlerInvocation(_handlersConfigReader, (handlerEntry as Type)!))
+		.ToList();
 }

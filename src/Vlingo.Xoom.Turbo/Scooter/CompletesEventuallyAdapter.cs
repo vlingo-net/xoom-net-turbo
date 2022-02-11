@@ -9,22 +9,21 @@ using System;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
 
-namespace Vlingo.Xoom.Turbo.Scooter
+namespace Vlingo.Xoom.Turbo.Scooter;
+
+public class CompletesEventuallyAdapter : ICompletesEventually
 {
-    public class CompletesEventuallyAdapter : ICompletesEventually
-    {
-        private readonly ICompletes<Type> _completes;
+    private readonly ICompletes<Type> _completes;
 
-        public CompletesEventuallyAdapter(ICompletes<Type> completes) => _completes = completes;
+    public CompletesEventuallyAdapter(ICompletes<Type> completes) => _completes = completes;
 
-        public IAddress Address => NoAddress.NoAddressValue;
+    public IAddress Address => NoAddress.NoAddressValue;
 
-        public bool IsStopped => throw new NotImplementedException();
+    public bool IsStopped => throw new NotImplementedException();
 
-        public void Conclude() => throw new NotImplementedException();
+    public void Conclude() => throw new NotImplementedException();
 
-        public void Stop() => throw new NotImplementedException();
+    public void Stop() => throw new NotImplementedException();
 
-        public void With(object? outcome) => _completes.With(outcome);
-    }
+    public void With(object? outcome) => _completes.With(outcome);
 }

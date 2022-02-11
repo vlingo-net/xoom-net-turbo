@@ -10,16 +10,15 @@ using System.Linq;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
+
+public class AutoDispatchMappingTemplateDataFactory
 {
-    public class AutoDispatchMappingTemplateDataFactory
+    public static List<TemplateData> Build(CodeGenerationParameters parameters, List<TemplateData> queriesData, List<ContentBase> contents)
     {
-        public static List<TemplateData> Build(CodeGenerationParameters parameters, List<TemplateData> queriesData, List<ContentBase> contents)
-        {
-            var basePackage = parameters.RetrieveValue(Label.Package);
-            var useCqrs = parameters.RetrieveValue(Label.Cqrs, x => bool.TrueString.ToLower() == x);
-            return parameters.RetrieveAll(Label.Aggregate).SelectMany(x => new List<TemplateData>() { new AutoDispatchMappingTemplateData(basePackage, x, useCqrs, contents),
-                            new AutoDispatchHandlersMappingTemplateData(basePackage, x, queriesData, contents, useCqrs) }).ToList();
-        }
+        var basePackage = parameters.RetrieveValue(Label.Package);
+        var useCqrs = parameters.RetrieveValue(Label.Cqrs, x => bool.TrueString.ToLower() == x);
+        return parameters.RetrieveAll(Label.Aggregate).SelectMany(x => new List<TemplateData>() { new AutoDispatchMappingTemplateData(basePackage, x, useCqrs, contents),
+            new AutoDispatchHandlersMappingTemplateData(basePackage, x, queriesData, contents, useCqrs) }).ToList();
     }
 }

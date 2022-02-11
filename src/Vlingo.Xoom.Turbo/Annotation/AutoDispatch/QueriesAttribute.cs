@@ -7,13 +7,12 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
-{	
-	[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
-	public class QueriesAttribute : Attribute
-	{
-		public Type? Protocol { get; set; }
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
 
-		public Type? Actor { get; set; }
-	}
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
+public class QueriesAttribute : Attribute
+{
+	public Type? Protocol { get; set; }
+
+	public Type? Actor { get; set; }
 }

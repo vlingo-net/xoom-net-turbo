@@ -7,15 +7,14 @@
 
 using System.Globalization;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch
+namespace Vlingo.Xoom.Turbo.Codegen.Template.Autodispatch;
+
+public class AutoDispatchMappingValueFormatter
 {
-    public class AutoDispatchMappingValueFormatter
+    public static string Format(string signature)
     {
-        public static string Format(string signature)
-        {
-            var titleCase = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(signature);
-            titleCase.Replace(" ", "");
-            return string.Concat(titleCase.Substring(0, 1).ToLower(), titleCase.Substring(1, titleCase.Length - 1));
-        }
+        var titleCase = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(signature);
+        titleCase.Replace(" ", "");
+        return string.Concat(titleCase.Substring(0, 1).ToLower(), titleCase.Substring(1, titleCase.Length - 1));
     }
 }

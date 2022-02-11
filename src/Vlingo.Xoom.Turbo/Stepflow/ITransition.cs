@@ -5,18 +5,17 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Turbo.Stepflow
+namespace Vlingo.Xoom.Turbo.Stepflow;
+
+/// <summary>
+/// A <see cref="ITransition"/> is a base interface for a <see cref="StateTransition{TState, TRawState, TA}"/> and describes the identity of a source
+/// state and a target state.
+/// </summary>
+public interface ITransition
 {
-    /// <summary>
-    /// A <see cref="ITransition"/> is a base interface for a <see cref="StateTransition{TState, TRawState, TA}"/> and describes the identity of a source
-    /// state and a target state.
-    /// </summary>
-    public interface ITransition
-    {
-        string GetSourceName();
+    string GetSourceName();
 
-        string GetTargetName();
+    string GetTargetName();
 
-        void LogResult<TState, TRawState>(TState s, TRawState t) where TState : State<object> where TRawState : State<object>;
-    }
+    void LogResult<TState, TRawState>(TState s, TRawState t) where TState : State<object> where TRawState : State<object>;
 }

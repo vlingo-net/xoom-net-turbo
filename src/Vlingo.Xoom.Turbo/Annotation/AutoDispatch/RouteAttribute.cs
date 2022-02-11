@@ -8,15 +8,14 @@
 using System;
 using Vlingo.Xoom.Http;
 
-namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch
+namespace Vlingo.Xoom.Turbo.Annotation.AutoDispatch;
+
+[AttributeUsage(AttributeTargets.Method)]
+public class RouteAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Method)]
-	public class RouteAttribute : Attribute
-	{
-		public Method Method { get; set; }
+	public Method Method { get; set; }
 
-		public string Path { get; set; } = string.Empty;
+	public string Path { get; set; } = string.Empty;
 
-		public int Handler { get; set; } = -1;
-	}
+	public int Handler { get; set; } = -1;
 }

@@ -7,33 +7,32 @@
 
 using System.IO;
 
-namespace Vlingo.Xoom.Turbo.Codegen.Template
+namespace Vlingo.Xoom.Turbo.Codegen.Template;
+
+public class OutputFile
 {
-	public class OutputFile
+	private readonly string _absolutePath;
+	private readonly string _filename;
+	private readonly string _offset;
+	private readonly bool _placeholder;
+
+	public OutputFile(string absolutePath, string filename) : this(absolutePath, filename, "", false)
 	{
-		private readonly string _absolutePath;
-		private readonly string _filename;
-		private readonly string _offset;
-		private readonly bool _placeholder;
-
-		public OutputFile(string absolutePath, string filename) : this(absolutePath, filename, "", false)
-		{
-		}
-
-		private OutputFile(string absolutePath, string filename, string offset, bool placeholder)
-		{
-			_absolutePath = absolutePath;
-			_filename = filename;
-			_offset = offset;
-			_placeholder = placeholder;
-		}
-
-		public FileStream ToFile()
-		{
-			Directory.CreateDirectory(Path.GetDirectoryName(FilePath())!);
-			return new FileStream(FilePath(), FileMode.Create);
-		}
-
-		private string FilePath() => Path.Combine(_absolutePath, _filename);
 	}
+
+	private OutputFile(string absolutePath, string filename, string offset, bool placeholder)
+	{
+		_absolutePath = absolutePath;
+		_filename = filename;
+		_offset = offset;
+		_placeholder = placeholder;
+	}
+
+	public FileStream ToFile()
+	{
+		Directory.CreateDirectory(Path.GetDirectoryName(FilePath())!);
+		return new FileStream(FilePath(), FileMode.Create);
+	}
+
+	private string FilePath() => Path.Combine(_absolutePath, _filename);
 }

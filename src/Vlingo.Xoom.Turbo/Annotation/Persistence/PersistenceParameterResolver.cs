@@ -9,18 +9,17 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Persistence
-{
-	public class PersistenceParameterResolver
-	{
-		public static PersistenceParameterResolver From(Type persistenceSetupClass, ProcessingEnvironment environment)
-		{
-			throw new NotImplementedException();
-		}
+namespace Vlingo.Xoom.Turbo.Annotation.Persistence;
 
-		public IReadOnlyDictionary<Label,string> Resolve()
-		{
-			throw new NotImplementedException();
-		}
+public class PersistenceParameterResolver
+{
+	public static PersistenceParameterResolver From(Type persistenceSetupClass, ProcessingEnvironment environment)
+	{
+		throw new NotImplementedException();
+	}
+
+	public IReadOnlyDictionary<Label,string> Resolve()
+	{
+		throw new NotImplementedException();
 	}
 }

@@ -10,15 +10,14 @@ using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch
-{
-	public class AutoDispatchResourceHandlerGenerationStep : TemplateProcessingStep
-	{
-		protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context) =>
-			AutoDispatchResourceHandlerTemplateData.From(context);
+namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 
-		public override bool ShouldProcess(CodeGenerationContext context) => context.HasParameter(Label.UseAutoDispatch) &&
-		                                                                     context.ParameterOf(Label.UseAutoDispatch,
-			                                                                     bool.Parse);
-	}
+public class AutoDispatchResourceHandlerGenerationStep : TemplateProcessingStep
+{
+	protected override List<TemplateData> BuildTemplatesData(CodeGenerationContext context) =>
+		AutoDispatchResourceHandlerTemplateData.From(context);
+
+	public override bool ShouldProcess(CodeGenerationContext context) => context.HasParameter(Label.UseAutoDispatch) &&
+	                                                                     context.ParameterOf(Label.UseAutoDispatch,
+		                                                                     bool.Parse);
 }

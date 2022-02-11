@@ -10,14 +10,13 @@ using Vlingo.Xoom.Lattice.Query;
 using Vlingo.Xoom.Symbio.Store.State;
 using Vlingo.Xoom.Turbo.Tests.Annotation.Model;
 
-namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence
-{
-    public class DummyQueriesActor : StateStoreQueryActor<DummyState>, IDummyQueries
-    {
-        public DummyQueriesActor(IStateStore stateStore) : base(stateStore)
-        {
-        }
+namespace Vlingo.Xoom.Turbo.Tests.Annotation.Persistence;
 
-        public ICompletes<DummyData> AllDummies() => Completes().With<DummyData>(null);
+public class DummyQueriesActor : StateStoreQueryActor<DummyState>, IDummyQueries
+{
+    public DummyQueriesActor(IStateStore stateStore) : base(stateStore)
+    {
     }
+
+    public ICompletes<DummyData> AllDummies() => Completes().With<DummyData>(null);
 }

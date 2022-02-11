@@ -7,13 +7,12 @@
 
 using System;
 
-namespace Vlingo.Xoom.Turbo.Annotation.Initializer
-{
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class ResourceHandlersAttribute : Attribute
-    {
-        public string[]? Packages { get; set; }
+namespace Vlingo.Xoom.Turbo.Annotation.Initializer;
 
-        public Type[]? Value { get; set; }
-    }
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+public class ResourceHandlersAttribute : Attribute
+{
+    public string[]? Packages { get; set; }
+
+    public Type[]? Value { get; set; }
 }
