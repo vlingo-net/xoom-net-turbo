@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.IO;
 using Vlingo.Xoom.Turbo.Annotation.Codegen;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 using Vlingo.Xoom.Turbo.Codegen;
@@ -16,6 +15,8 @@ using Xunit;
 using static Vlingo.Xoom.Turbo.Codegen.Dialect.Dialect;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.AutoDispatch;
+
+using System.IO;
 
 public class AutoDispatchResourceHandlerGenerationStepTest
 {

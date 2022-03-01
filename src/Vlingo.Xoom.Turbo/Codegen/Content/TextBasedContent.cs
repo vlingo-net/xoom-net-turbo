@@ -6,11 +6,12 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using System.IO;
 using Vlingo.Xoom.Turbo.Codegen.Template;
-using static System.IO.File;
 
 namespace Vlingo.Xoom.Turbo.Codegen.Content;
+
+using System.IO;
+using static System.IO.File;
 
 public class TextBasedContent : ContentBase
 {

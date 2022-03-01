@@ -5,9 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.IO;
-
 namespace Vlingo.Xoom.Turbo.Codegen.Template;
+
+using System.IO;
 
 public class OutputFile
 {

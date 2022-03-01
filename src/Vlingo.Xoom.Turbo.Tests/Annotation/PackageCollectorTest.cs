@@ -5,11 +5,12 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.IO;
 using Vlingo.Xoom.Turbo.Annotation;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation;
+
+using System.IO;
 
 public class PackageCollectorTest
 {

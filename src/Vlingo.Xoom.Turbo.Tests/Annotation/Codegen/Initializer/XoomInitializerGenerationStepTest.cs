@@ -6,7 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using System.IO;
 using Moq;
 using Vlingo.Xoom.Turbo.Annotation.Codegen;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Initializer;
@@ -19,6 +18,8 @@ using Vlingo.Xoom.Turbo.Codegen.Template;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Annotation.Codegen.Initializer;
+
+using System.IO;
 
 public class XoomInitializerGenerationStepTest : IDisposable
 {
