@@ -24,7 +24,7 @@ public class StoreActorBuilder
 			new ObjectStoreActorBuilder()
 		};
 
-	static T From<T>(
+	public static T From<T>(
 		Stage stage,
 		Model model,
 		IDispatcher dispatcher,
