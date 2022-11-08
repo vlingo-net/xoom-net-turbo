@@ -9,7 +9,7 @@ using Vlingo.Xoom.Symbio.Store.Dispatch;
 
 namespace Vlingo.Xoom.Turbo.Tests.Storage;
 
-public class MockDispatcher<E, RS> : IDispatcher
+public class MockDispatcher : IDispatcher
 {
     public void ControlWith(IDispatcherControl control)
     {

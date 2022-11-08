@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Xoom.Turbo;
 
@@ -21,8 +22,22 @@ public class ApplicationProperty
         var propertiesValue = RetrieveFromProperties(key, properties);
         return propertiesValue != null ? propertiesValue : RetrieveFromEnvironment(key);
     }
+    
+    public static string? ReadValue(string key, Properties properties)
+    {
+        var propertiesValue = RetrieveFromProperties(key, properties);
+        return propertiesValue != null ? propertiesValue : RetrieveFromEnvironment(key);
+    }
 
     public static List<string> ReadMultipleValues(string key, string separator, IReadOnlyDictionary<string, string> properties)
+    {
+        var value = ReadValue(key, properties);
+        return value == null
+            ? new List<string>()
+            : value.Split(new[] { separator }, StringSplitOptions.None).ToList();
+    }
+    
+    public static List<string> ReadMultipleValues(string key, string separator, Properties properties)
     {
         var value = ReadValue(key, properties);
         return value == null
@@ -38,6 +53,18 @@ public class ApplicationProperty
         }
 
         var value = properties.FirstOrDefault(x => x.Key == key).Value.Trim();
+
+        return string.IsNullOrEmpty(value) ? null : value;
+    }
+    
+    private static string? RetrieveFromProperties(string key, Properties properties)
+    {
+        if (!properties.Keys.Contains(key))
+        {
+            return null;
+        }
+
+        var value = properties.GetProperty(key)!.Trim();
 
         return string.IsNullOrEmpty(value) ? null : value;
     }

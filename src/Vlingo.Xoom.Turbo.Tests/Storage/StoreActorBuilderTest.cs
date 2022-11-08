@@ -7,7 +7,9 @@
 
 using System;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using Vlingo.Xoom.Symbio.Store.State;
+using Vlingo.Xoom.Turbo.Storage;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Xunit;
 
 namespace Vlingo.Xoom.Turbo.Tests.Storage;
@@ -26,6 +28,15 @@ public class StoreActorBuilderTest : IDisposable
         //   StorageType.Journal, DefaultDatabaseProperties(Codegen.Template.Storage.ModelType.Command), false);
     }
 
+    [Fact]
+    public void TestThatInMemoryStateStoreActorIsBuilt() {
+        var stateStore =
+            StoreActorBuilder.From<IStateStore>(_world.Stage, new Model(ModelType.Command.ToString()),
+                new MockDispatcher(), StorageType.StateStore, InMemoryDatabaseProperties(), false);
+
+        Assert.NotNull(stateStore);
+    }
+
     private Properties DefaultDatabaseProperties(ModelType modelType)
     {
         var prefix = ModelType.Query.Equals(modelType) ? "query." : "";
@@ -37,6 +48,12 @@ public class StoreActorBuilderTest : IDisposable
         properties.SetProperty(prefix + "database.username", "xoom_test");
         properties.SetProperty(prefix + "database.password", "vlingo123");
         properties.SetProperty(prefix + "database.originator", "MAIN");
+        return properties;
+    }
+
+    private Properties InMemoryDatabaseProperties() {
+        var properties = new Properties();
+        properties.SetProperty("database.category", "InMemory");
         return properties;
     }
 

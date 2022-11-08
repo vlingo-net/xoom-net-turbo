@@ -6,11 +6,20 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
+using Vlingo.Xoom.Symbio.Ado.Common;
 
 namespace Vlingo.Xoom.Turbo.Storage;
 
 public class Database
 {
+	public readonly Func<DatabaseParameters, Configuration> Mapper;
+
+	public Database(DatabaseCategory? databaseCategory)
+	{
+		if (databaseCategory == DatabaseCategory.InMemory)
+			Mapper = (param) => null;
+	}
+
 	public static DatabaseCategory? From(string name)
 	{
 		if (name == null)
@@ -39,8 +48,5 @@ public static class DatabaseCategoryExtensions
 public enum DatabaseCategory
 {
 	InMemory,
-	Postgres,
-	Hsqldb,
-	Mysql,
-	YugaByte
+	MsSql
 }

@@ -17,6 +17,7 @@ namespace Vlingo.Xoom.Turbo.Actors;
 public class Settings : ConfigurationProperties
 {
     private static IDictionary<string, string> _properties = new Dictionary<string, string>();
+    private static Properties __properties = new Properties();
     private const string PropertiesFileName = "/xoom-turbo.json";
     private static readonly IDictionary<object, object> DefaultDatabaseProperties = new Dictionary<object, object>() {
         { "database", "IN_MEMORY" },
@@ -31,6 +32,7 @@ public class Settings : ConfigurationProperties
         {
             var props = new Properties();
             props.Load(new FileInfo(PropertiesFileName));
+            __properties.Load(new FileInfo(PropertiesFileName));
             var keys = props.Keys;
 
             if (keys.Count == 0)
@@ -52,5 +54,6 @@ public class Settings : ConfigurationProperties
         }
     }
 
-    public static IDictionary<string, string> Properties() => _properties;
+    // public static IDictionary<string, string> Properties() => _properties;
+    public static Properties Properties() => __properties;
 }

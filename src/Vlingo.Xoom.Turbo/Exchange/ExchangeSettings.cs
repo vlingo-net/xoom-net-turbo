@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Lattice.Exchange;
 
 namespace Vlingo.Xoom.Turbo.Exchange;
@@ -50,7 +51,30 @@ public class ExchangeSettings
 
         return AllExchangeParameters ?? new List<ExchangeSettings>();
     }
+    
+    public static List<ExchangeSettings> Load(Properties properties)
+    {
+        if (!AllExchangeParameters.Any())
+        {
+            Func<string, ExchangeSettings> mapper = exchangeNames =>
+                new ExchangeSettings(exchangeNames, properties);
 
+            var exchangeParameters = ApplicationProperty
+                .ReadMultipleValues(ExchangeNames, ";", properties).Select(mapper);
+            AllExchangeParameters.AddRange(exchangeParameters);
+        }
+
+        return AllExchangeParameters ?? new List<ExchangeSettings>();
+    }
+
+    private ExchangeSettings(string exchangeName, Properties properties)
+    {
+        _exchangeName = exchangeName;
+        _keys = PrepareKeys(exchangeName);
+        _parameters = RetrieveParameters(properties);
+
+        Validate();
+    }
     private ExchangeSettings(string exchangeName, IReadOnlyDictionary<string, string> properties)
     {
         _exchangeName = exchangeName;
@@ -76,6 +100,12 @@ public class ExchangeSettings
     }
 
     private List<ExchangeSettingsItem> RetrieveParameters(IReadOnlyDictionary<string, string> properties)
+        => _keys
+            .Select(key =>
+                new ExchangeSettingsItem(key, ApplicationProperty.ReadValue(key, properties) ?? string.Empty))
+            .ToList();
+    
+    private List<ExchangeSettingsItem> RetrieveParameters(Properties properties)
         => _keys
             .Select(key =>
                 new ExchangeSettingsItem(key, ApplicationProperty.ReadValue(key, properties) ?? string.Empty))

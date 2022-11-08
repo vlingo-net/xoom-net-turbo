@@ -7,7 +7,8 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Configuration = Vlingo.Xoom.Symbio.Ado.Common.Configuration;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage;
