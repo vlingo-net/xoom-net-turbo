@@ -14,7 +14,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Exchange;
 
 public class ExchangeSettingsTest
 {
-    public ExchangeSettingsTest() => ExchangeSettings.Load(new ReadOnlyDictionary<string, string>(Settings.Properties()));
+    public ExchangeSettingsTest() => ExchangeSettings.Load(Settings.Properties());
 
     [Fact]
     public void TestThatConnectionSettingsAreMapped()

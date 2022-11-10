@@ -8,20 +8,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using StorageType = Vlingo.Xoom.Turbo.Annotation.Codegen.Storage.StorageType;
 
 namespace Vlingo.Xoom.Turbo.Codegen;
 
 public class CodeGenerationSetup
 {
-    public static IReadOnlyDictionary<StorageType, string> AggreageteTemplates = new List<(StorageType, string)>()
+    public static IReadOnlyDictionary<StorageType, string> AggregateTemplates = new List<(StorageType, string)>()
     {
         (StorageType.ObjectStore, Template.Template.ObjectEntity.ToString()),
         (StorageType.StateStore, Template.Template.StatefulEntity.ToString()),
         (StorageType.Journal, Template.Template.EventSourceEntity.ToString())
     }.ToDictionary(x => x.Item1, x => x.Item2);
 
-    public static readonly IReadOnlyDictionary<StorageType, string> AggregateMethodTempalates =
+    public static readonly IReadOnlyDictionary<StorageType, string> AggregateMethodTemplates =
         new List<(StorageType, string)>()
         {
             (StorageType.ObjectStore, string.Empty),

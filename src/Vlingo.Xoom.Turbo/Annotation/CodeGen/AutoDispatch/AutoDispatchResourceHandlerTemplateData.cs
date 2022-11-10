@@ -7,14 +7,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Xoom.Turbo.Annotation.Codegen;
 using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
-using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using Vlingo.Xoom.Turbo.Codegen;
 using Vlingo.Xoom.Turbo.Codegen.Content;
 using Vlingo.Xoom.Turbo.Codegen.Parameter;
 using Vlingo.Xoom.Turbo.Codegen.Template;
-using Vlingo.Xoom.Turbo.Codegen.Template.Resource;
 
 namespace Vlingo.Xoom.Turbo.Annotation.Codegen.AutoDispatch;
 
@@ -74,7 +71,6 @@ public class AutoDispatchResourceHandlerTemplateData : TemplateData
 		_parameters.Find<List<string>>(TemplateParameter.RouteMethods).Add(outcome);
 
 	public override TemplateParameters Parameters() => _parameters;
-
 
 	public override TemplateStandard Standard() => AnnotationBasedTemplateStandard.AutoDispatchResourceHandler;
 

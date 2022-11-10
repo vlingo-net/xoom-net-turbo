@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Symbio.Ado.Common;
 
 namespace Vlingo.Xoom.Turbo.Storage;
 

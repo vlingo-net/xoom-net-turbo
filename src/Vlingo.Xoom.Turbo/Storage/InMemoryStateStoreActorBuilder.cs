@@ -10,7 +10,8 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Symbio;
 using Vlingo.Xoom.Symbio.Store.State;
 using Vlingo.Xoom.Symbio.Store.State.InMemory;
-using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
+using Configuration = Vlingo.Xoom.Symbio.Ado.Common.Configuration;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage;
@@ -18,7 +19,7 @@ namespace Vlingo.Xoom.Turbo.Storage;
 public class InMemoryStateStoreActorBuilder : IStoreActorBuilder
 {
 	public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
-		(stage.World.Stage.ActorFor<InMemoryStateStoreActor<IState>>(typeof(IStateStore), dispatchers, 5000L, 5000L) as T)!;
+		(stage.World.Stage.ActorFor<IStateStore>(typeof(InMemoryStateStoreActor<IState>), dispatchers, 5000L, 5000L) as T)!;
 
 	public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
 		storageType.IsStateStore() && databaseType.IsInMemory();

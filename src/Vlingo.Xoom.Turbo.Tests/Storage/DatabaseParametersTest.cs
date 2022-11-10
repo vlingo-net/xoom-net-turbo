@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Turbo.Actors;
 using Vlingo.Xoom.Turbo.Storage;
 using Xunit;
@@ -38,8 +38,7 @@ public class DatabaseParametersTest : IDisposable
     [Fact]
     public void TestThatDomainParametersAreLoaded()
     {
-        var parameters = new DatabaseParameters(new Model(ModelType.Domain.ToString()),
-            new ReadOnlyDictionary<string, string>(Settings.Properties()));
+        var parameters = new DatabaseParameters(new Model(ModelType.Domain.ToString()), Settings.Properties());
 
         Assert.Equal("IN_MEMORY", parameters.Database);
         Assert.True(parameters.AutoCreate);
@@ -48,8 +47,7 @@ public class DatabaseParametersTest : IDisposable
     [Fact]
     public void TestThatCommandParametersAreLoaded()
     {
-        var parameters = new DatabaseParameters(new Model(ModelType.Command.ToString()),
-            new ReadOnlyDictionary<string, string>(Settings.Properties()));
+        var parameters = new DatabaseParameters(new Model(ModelType.Command.ToString()), Settings.Properties());
 
         Assert.Equal("IN_MEMORY", parameters.Database);
         Assert.True(parameters.AutoCreate);
@@ -59,7 +57,7 @@ public class DatabaseParametersTest : IDisposable
     public void TestThatQueryParametersAreLoaded()
     {
         var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
-            new ReadOnlyDictionary<string, string>(Settings.Properties()), true);
+            Settings.Properties(), true);
 
         Assert.Equal("MYSQL", parameters.Database);
         Assert.Equal("STORAGE_TEST", parameters.Name);
@@ -74,8 +72,7 @@ public class DatabaseParametersTest : IDisposable
     [Fact]
     public void TestThatQueryParametersAreLoadedEnvVars()
     {
-        var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
-            new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()), true);
+        var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),new Properties(), true);
 
         Assert.Equal("MYSQL", parameters.Database);
         Assert.Equal("12F", parameters.Name);

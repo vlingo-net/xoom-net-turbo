@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Symbio.Store;
-using Vlingo.Xoom.Turbo.Annotation.Codegen.Storage;
+using Vlingo.Xoom.Turbo.Annotation.Persistence;
 using IDispatcher = Vlingo.Xoom.Symbio.Store.Dispatch.IDispatcher;
 
 namespace Vlingo.Xoom.Turbo.Storage;
@@ -29,16 +29,16 @@ public class StoreActorBuilder
 		Model model,
 		IDispatcher dispatcher,
 		StorageType storageType,
-		IReadOnlyDictionary<string, string> properties,
+		Properties properties,
 		bool autoDatabaseCreation) where T : class =>
 		From<T>(stage, model, new List<IDispatcher> { dispatcher }, storageType, properties, autoDatabaseCreation);
 
-	static T From<T>(
+	public static T From<T>(
 		Stage stage,
 		Model model,
 		List<IDispatcher> dispatcher,
 		StorageType storageType,
-		IReadOnlyDictionary<string, string> properties,
+		Properties properties,
 		bool autoDatabaseCreation) where T : class
 	{
 		try
@@ -48,12 +48,11 @@ public class StoreActorBuilder
 
 			var databaseType = DatabaseType.RetrieveFromConfiguration(configuration);
 
-
 			return Builders
 				.First(resolver => resolver.Support(storageType, databaseType))
 				.Build<T>(stage, dispatcher, configuration);
 		}
-		catch (StorageException)
+		catch (StorageException e)
 		{
 			return storageType.ResolveNoOpStore<T>(stage)!;
 		}
