@@ -7,6 +7,7 @@
 
 using System;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Symbio.Store.Journal;
 using Vlingo.Xoom.Symbio.Store.State;
 using Vlingo.Xoom.Turbo.Storage;
 using Vlingo.Xoom.Turbo.Annotation.Persistence;
@@ -21,11 +22,11 @@ public class StoreActorBuilderTest : IDisposable
     public StoreActorBuilderTest() => _world = World.StartWithDefaults("store-actor-build-tests");
 
     [Fact]
-    public void TestThatMySqlJournalActorIsBuilt()
-    {
-        // var journal = StoreActorBuilder.From(_world.Stage, new Model(ModelType.Command.ToString()),
-        //   new MockDispatcher<,>(),
-        //   StorageType.Journal, DefaultDatabaseProperties(Codegen.Template.Storage.ModelType.Command), false);
+    public void TestThatInMemoryJournalActorIsBuilt() {
+        var journal = StoreActorBuilder.From<IJournal>(_world.Stage, new Model(ModelType.Command.ToString()),
+                new MockDispatcher(), StorageType.Journal, InMemoryDatabaseProperties(), false);
+
+        Assert.NotNull(journal);
     }
 
     [Fact]
@@ -35,20 +36,6 @@ public class StoreActorBuilderTest : IDisposable
                 new MockDispatcher(), StorageType.StateStore, InMemoryDatabaseProperties(), false);
 
         Assert.NotNull(stateStore);
-    }
-
-    private Properties DefaultDatabaseProperties(ModelType modelType)
-    {
-        var prefix = ModelType.Query.Equals(modelType) ? "query." : "";
-        var properties = new Properties();
-        properties.SetProperty(prefix + "database", "MYSQL");
-        properties.SetProperty(prefix + "database.name", "STORAGE_TEST");
-        properties.SetProperty(prefix + "database.url", "jdbc:mysql://localhost:2215/");
-        properties.SetProperty(prefix + "database.driver", "com.mysql.cj.jdbc.Driver");
-        properties.SetProperty(prefix + "database.username", "xoom_test");
-        properties.SetProperty(prefix + "database.password", "vlingo123");
-        properties.SetProperty(prefix + "database.originator", "MAIN");
-        return properties;
     }
 
     private Properties InMemoryDatabaseProperties() {
