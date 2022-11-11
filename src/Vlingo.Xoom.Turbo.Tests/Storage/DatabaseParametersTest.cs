@@ -38,7 +38,7 @@ public class DatabaseParametersTest : IDisposable
     [Fact]
     public void TestThatDomainParametersAreLoaded()
     {
-        var parameters = new DatabaseParameters(new Model(ModelType.Domain.ToString()), Settings.Properties());
+        var parameters = new DatabaseParameters(new Model(ModelType.Domain.ToString()), Settings.Properties);
 
         Assert.Equal("IN_MEMORY", parameters.Database);
         Assert.True(parameters.AutoCreate);
@@ -47,7 +47,7 @@ public class DatabaseParametersTest : IDisposable
     [Fact]
     public void TestThatCommandParametersAreLoaded()
     {
-        var parameters = new DatabaseParameters(new Model(ModelType.Command.ToString()), Settings.Properties());
+        var parameters = new DatabaseParameters(new Model(ModelType.Command.ToString()), Settings.Properties);
 
         Assert.Equal("IN_MEMORY", parameters.Database);
         Assert.True(parameters.AutoCreate);
@@ -56,8 +56,7 @@ public class DatabaseParametersTest : IDisposable
     [Fact]
     public void TestThatQueryParametersAreLoaded()
     {
-        var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()),
-            Settings.Properties(), true);
+        var parameters = new DatabaseParameters(new Model(ModelType.Query.ToString()), Settings.Properties, true);
 
         Assert.Equal("MYSQL", parameters.Database);
         Assert.Equal("STORAGE_TEST", parameters.Name);

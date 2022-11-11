@@ -16,22 +16,20 @@ namespace Vlingo.Xoom.Turbo.Actors;
 
 public class Settings : ConfigurationProperties
 {
-    private static Properties _properties = new Properties();
+    public static Properties Properties { get; } = new Properties();
     private const string PropertiesFileName = "/xoom-turbo.json";
 
     static Settings() => LoadProperties();
 
-    public static void LoadProperties()
+    private static void LoadProperties()
     {
         try
         {
-            _properties.Load(new FileInfo(PropertiesFileName));
+            Properties.Load(new FileInfo(PropertiesFileName));
         }
         catch (IOException e)
         {
             throw new PropertiesLoadingException(e.Message, e);
         }
     }
-
-    public static Properties Properties() => _properties;
 }
