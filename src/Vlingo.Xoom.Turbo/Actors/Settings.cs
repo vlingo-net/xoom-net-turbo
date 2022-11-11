@@ -16,13 +16,8 @@ namespace Vlingo.Xoom.Turbo.Actors;
 
 public class Settings : ConfigurationProperties
 {
-    private static IDictionary<string, string> _dictionaryProperties = new Dictionary<string, string>();
     private static Properties _properties = new Properties();
     private const string PropertiesFileName = "/xoom-turbo.json";
-    private static readonly IDictionary<object, object> DefaultDatabaseProperties = new Dictionary<object, object>() {
-        { "database", "IN_MEMORY" },
-        { "query.database", "IN_MEMORY" }
-    };
 
     static Settings() => LoadProperties();
 
@@ -30,23 +25,7 @@ public class Settings : ConfigurationProperties
     {
         try
         {
-            var props = new Properties();
-            props.Load(new FileInfo(PropertiesFileName));
             _properties.Load(new FileInfo(PropertiesFileName));
-            var keys = props.Keys;
-
-            if (keys.Count == 0)
-            {
-                Console.WriteLine("Unable to read properties. VLINGO/XOOM will set the default mailbox and logger");
-                _dictionaryProperties = DefaultDatabaseProperties.ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value);
-            }
-            else
-            {
-                foreach (var key in keys)
-                {
-                    _dictionaryProperties.Add(key, props.GetProperty(key) ?? string.Empty);
-                }
-            }
         }
         catch (IOException e)
         {
