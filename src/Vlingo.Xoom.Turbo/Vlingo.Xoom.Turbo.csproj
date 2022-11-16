@@ -42,6 +42,9 @@
                 <ProjectReference Include="..\..\..\xoom-net-symbio\src\Vlingo.Xoom.Symbio\Vlingo.Xoom.Symbio.csproj" />
             </ItemGroup>
             <ItemGroup>
+                <ProjectReference Include="..\..\..\xoom-net-symbio-ado\src\Vlingo.Xoom.Symbio.Ado\Vlingo.Xoom.Symbio.Ado.csproj" />
+            </ItemGroup>
+            <ItemGroup>
                 <ProjectReference Include="..\..\..\xoom-net-cluster\src\Vlingo.Xoom.Cluster\Vlingo.Xoom.Cluster.csproj" />
             </ItemGroup>
             <ItemGroup>
