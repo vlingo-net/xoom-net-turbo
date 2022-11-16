@@ -37,11 +37,11 @@ public static class StorageTypeExtensions
 		switch (storageType)
 		{
 			case StorageType.StateStore:
-				return local.ActorFor<NoOpStateStoreActor<IState>>(typeof(IStateStore)) as T;
+				return local.ActorFor<IStateStore>(typeof(NoOpStateStoreActor<IState>)) as T;
 			case StorageType.ObjectStore:
-				return local.ActorFor<NoOpObjectStoreActor<IState>>(typeof(IObjectStore)) as T;
+				return local.ActorFor<IObjectStore>(typeof(NoOpObjectStoreActor<IState>)) as T;
 			case StorageType.Journal:
-				return local.ActorFor<NoOpJournalActor<IState>>(typeof(IJournal)) as T;
+				return local.ActorFor<IJournal>(typeof(NoOpJournalActor<IState>)) as T;
 			default:
 				throw new InvalidOperationException("Unable to resolve no operation store for " + storageType);
 		}

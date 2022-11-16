@@ -19,7 +19,7 @@ namespace Vlingo.Xoom.Turbo.Storage;
 public class InMemoryJournalActorBuilder : IStoreActorBuilder
 {
 	public T Build<T>(Stage stage, IEnumerable<IDispatcher> dispatchers, Configuration configuration) where T : class =>
-		(stage.ActorFor<InMemoryJournalActor<IState>>(typeof(IJournal), dispatchers) as T)!;
+		(stage.ActorFor<IJournal>(typeof(InMemoryJournalActor<IState>), dispatchers) as T)!;
 		
 	public bool Support(StorageType storageType, DatabaseCategory databaseType) =>
 		storageType.IsJournal() && databaseType.IsInMemory();

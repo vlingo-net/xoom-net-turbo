@@ -15,6 +15,6 @@ public class SettingsTest
     [Fact]
     public void TestThatSettingsAreLoadedForBlockingMailbox()
     {
-        Assert.Equal(25, Settings.Properties().Keys.Count);
+        Assert.Equal(25, Settings.Properties.Keys.Count);
     }
 }

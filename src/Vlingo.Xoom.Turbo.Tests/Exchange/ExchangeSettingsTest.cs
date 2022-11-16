@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.Collections.ObjectModel;
 using Vlingo.Xoom.Turbo.Actors;
 using Vlingo.Xoom.Turbo.Exchange;
 using Xunit;
@@ -14,7 +13,7 @@ namespace Vlingo.Xoom.Turbo.Tests.Exchange;
 
 public class ExchangeSettingsTest
 {
-    public ExchangeSettingsTest() => ExchangeSettings.Load(Settings.Properties());
+    public ExchangeSettingsTest() => ExchangeSettings.Load(Settings.Properties);
 
     [Fact]
     public void TestThatConnectionSettingsAreMapped()
